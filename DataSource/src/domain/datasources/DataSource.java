@@ -1,4 +1,4 @@
-package domain;
+package domain.datasources;
 
 import java.time.LocalDate;
 import java.util.Map;

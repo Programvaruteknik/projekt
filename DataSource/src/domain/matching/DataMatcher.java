@@ -1,9 +1,11 @@
-package domain;
+package domain.matching;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import domain.datasources.DataSource;
 
 public class DataMatcher
 {

@@ -8,6 +8,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import domain.datasources.DataSource;
+import domain.matching.DataMatcher;
+import domain.matching.DataPair;
+import domain.matching.Resolution;
+
 public class DataMatcherTest
 {
 

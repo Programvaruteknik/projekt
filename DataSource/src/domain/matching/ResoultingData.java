@@ -1,4 +1,4 @@
-package domain;
+package domain.matching;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package domain;
+package domain.matching;
 
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;

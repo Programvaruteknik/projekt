@@ -6,6 +6,8 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
+import domain.matching.Resolution;
+
 public class ResolutionTest
 {
 

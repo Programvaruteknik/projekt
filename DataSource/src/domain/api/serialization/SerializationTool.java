@@ -4,5 +4,5 @@ import java.lang.reflect.Type;
 
 public interface SerializationTool
 {
-	<T>T deserialize(String json, Type calssType);
+	<T>T deserialize(String json, Type classType);
 }

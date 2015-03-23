@@ -20,7 +20,7 @@ public class DataMatcher
 		this.resolution = resolution;
 	}
 
-	public ResoultingData match()
+	public ResultingData match()
 	{
 		Map<String, Double> normalizedX = normalizeMap(dataSourceX.getData());
 		Map<String, Double> normalizedY = normalizeMap(dataSourceY.getData());
@@ -36,7 +36,7 @@ public class DataMatcher
 			}
 		}
 
-		return new ResoultingData(resultMap);
+		return new ResultingData(resultMap);
 	}
 
 	private Map<String, Double> normalizeMap(Map<LocalDate, Double> input)

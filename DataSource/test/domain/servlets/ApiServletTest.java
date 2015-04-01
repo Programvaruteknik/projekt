@@ -19,7 +19,7 @@ public class ApiServletTest
 
 	HttpServletRequest request;
 	HttpServletResponse response;
-	StringWriter resultingWriter = new StringWriter();
+	StringWriter stringWriter = new StringWriter();
 	ApiServlet apiServlet;
 
 	@Before
@@ -30,7 +30,7 @@ public class ApiServletTest
 		response = mock(HttpServletResponse.class);
 		try
 		{
-			when(response.getWriter()).thenReturn(new PrintWriter(resultingWriter));
+			when(response.getWriter()).thenReturn(new PrintWriter(stringWriter));
 		} catch (IOException ex)
 		{
 			fail("Unexpected Exception thrown");
@@ -50,7 +50,40 @@ public class ApiServletTest
 			fail("Unexpected Exception thrown");
 		}
 		
-		assertEquals(new Integer(HttpServletResponse.SC_BAD_REQUEST), new Integer(response.getStatus()));
+		assertEquals("", stringWriter.toString());
+	}
+	
+	@Test
+	public void testMissingDataSource2()
+	{
+		when(request.getParameter("datasource2")).thenReturn("TotalFotballGoals");
+		
+		try
+		{
+			apiServlet.doGet(request, response);
+		} catch (ServletException | IOException e)
+		{
+			fail("Unexpected Exception thrown");
+		}
+		
+		assertEquals("", stringWriter.toString());
+	}
+	
+	@Test
+	public void testTwoDataSources()
+	{
+		when(request.getParameter("datasource1")).thenReturn("TotalFotballGoals");
+		when(request.getParameter("datasource2")).thenReturn("TotalFotballGoals");
+		
+		try
+		{
+			apiServlet.doGet(request, response);
+		} catch (ServletException | IOException e)
+		{
+			fail("Unexpected Exception thrown");
+		}
+		
+		assertNotEquals("", stringWriter.toString());
 	}
 
 }

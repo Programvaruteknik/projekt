@@ -11,13 +11,11 @@ public class JsonParser implements SerializationTool {
 	public JsonParser() {
 		gson = new Gson();
 	}
-	
-	public JsonParser(boolean pretty)
-	{
+
+	public JsonParser(boolean pretty) {
 		if (pretty) {
-			gson  = new GsonBuilder().setPrettyPrinting().create();
-		}
-		else {
+			gson = new GsonBuilder().setPrettyPrinting().create();
+		} else {
 			gson = new Gson();
 		}
 	}

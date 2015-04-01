@@ -14,30 +14,26 @@ import domain.datasources.workers.TotalFotballGoals;
 import domain.matching.DataMatcher;
 import domain.matching.Resolution;
 
-
 @WebServlet("/ApiServlet")
-public class ApiServlet extends HttpServlet 
-{
+public class ApiServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
-	{
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
-		
-		
+
 		TotalFotballGoals goals = new TotalFotballGoals();
-		
+
 		SunAltitudeAtNoon sunAltitudeAtNoon = new SunAltitudeAtNoon();
-		
-		DataMatcher dataMatcher = new DataMatcher(goals, sunAltitudeAtNoon, Resolution.DAY);
-		
-		
-		
-		response.getWriter().print(new JsonParser(true).serialize(dataMatcher.match()));
-		
+
+		DataMatcher dataMatcher = new DataMatcher(goals, sunAltitudeAtNoon,
+				Resolution.DAY);
+
+		response.getWriter().print(
+				new JsonParser(true).serialize(dataMatcher.match()));
+
 		System.out.println("Done");
-				
+
 	}
 
 }

@@ -24,20 +24,7 @@ public class ApiServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 
-<<<<<<< HEAD
-		TotalFotballGoals goals = new TotalFotballGoals();
 
-		SunAltitudeAtNoon sunAltitudeAtNoon = new SunAltitudeAtNoon();
-
-		DataMatcher dataMatcher = new DataMatcher(goals, sunAltitudeAtNoon,
-				Resolution.DAY);
-
-		response.getWriter().print(
-				new JsonParser(true).serialize(dataMatcher.match()));
-
-		System.out.println("Done");
-
-=======
 		DataSource dataSource1 = DataSourceFactory.getDataSource(request.getParameter("datasource1"));
 		DataSource dataSource2 = DataSourceFactory.getDataSource(request.getParameter("datasource2"));
 		
@@ -56,7 +43,6 @@ public class ApiServlet extends HttpServlet {
 		}
 		
 				
->>>>>>> refs/remotes/origin/dev
 	}
 
 }

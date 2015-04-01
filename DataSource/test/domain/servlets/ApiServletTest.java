@@ -45,12 +45,12 @@ public class ApiServletTest
 		try
 		{
 			apiServlet.doGet(request, response);
+			assertEquals(400, response.getStatus());
 		} catch (ServletException | IOException e)
 		{
 			fail("Unexpected Exception thrown");
 		}
 		
-		assertEquals(new Integer(HttpServletResponse.SC_BAD_REQUEST), new Integer(response.getStatus()));
 	}
 
 }

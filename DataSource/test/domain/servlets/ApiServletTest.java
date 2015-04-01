@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,9 +38,19 @@ public class ApiServletTest
 	}
 	
 	@Test
-	public void testFactoryInServlet()
+	public void testMissingDataSource1()
 	{
+		when(request.getParameter("datasource1")).thenReturn("TotalFotballGoals");
 		
+		try
+		{
+			apiServlet.doGet(request, response);
+		} catch (ServletException | IOException e)
+		{
+			fail("Unexpected Exception thrown");
+		}
+		
+		assertEquals(new Integer(400), new Integer(response.getStatus()));
 	}
 
 }

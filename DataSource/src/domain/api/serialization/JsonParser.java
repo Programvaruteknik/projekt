@@ -5,24 +5,30 @@ import java.lang.reflect.Type;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class JsonParser implements SerializationTool
-{
+public class JsonParser implements SerializationTool {
 	private Gson gson;
+
+	public JsonParser() {
+		gson = new Gson();
+	}
 	
-	public JsonParser()
+	public JsonParser(boolean pretty)
 	{
-		gson  = new GsonBuilder().setPrettyPrinting().create();
+		if (pretty) {
+			gson  = new GsonBuilder().setPrettyPrinting().create();
+		}
+		else {
+			gson = new Gson();
+		}
 	}
 
 	@Override
-	public <T>T deserialize(String json, Type calssType)
-	{
-		return gson.fromJson(json, calssType);
+	public <T> T deserialize(String json, Type classType) {
+		return gson.fromJson(json, classType);
 	}
 
 	@Override
-	public String serialize(Object o)
-	{
+	public String serialize(Object o) {
 		return gson.toJson(o);
 	}
 

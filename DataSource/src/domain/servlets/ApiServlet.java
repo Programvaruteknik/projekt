@@ -34,7 +34,7 @@ public class ApiServlet extends HttpServlet
 		
 		
 		
-		response.getWriter().print(new JsonParser().serialize(dataMatcher.match()));
+		response.getWriter().print(new JsonParser(true).serialize(dataMatcher.match()));
 		
 		System.out.println("Done");
 				

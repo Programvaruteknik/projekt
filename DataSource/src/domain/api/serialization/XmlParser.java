@@ -28,7 +28,10 @@ public class XmlParser implements SerializationTool
 		      }
 		    }
 		  };
-		 GsonXml gsonXml = new GsonXmlBuilder().setXmlParserCreator(parserCreator).create();
+		 GsonXmlBuilder gsonXmlBuilder = new GsonXmlBuilder();
+		 gsonXmlBuilder.setSameNameLists(true);
+		 GsonXml gsonXml = gsonXmlBuilder.setXmlParserCreator(parserCreator).create();
+		 
 
 	   return gsonXml.fromXml(xml, classType);
 		

@@ -1,6 +1,7 @@
 package domain.servlets;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,7 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import domain.api.serialization.JsonParser;
+import domain.datasources.SunAltitudeAtNoon;
 import domain.datasources.TotalFotballGoals;
+import domain.matching.DataMatcher;
+import domain.matching.Resolution;
 
 
 @WebServlet("/ApiServlet")
@@ -24,10 +28,16 @@ public class ApiServlet extends HttpServlet
 		
 		TotalFotballGoals goals = new TotalFotballGoals();
 		
-		response.getWriter().print(new JsonParser().serialize(goals.getData()));
+		SunAltitudeAtNoon sunAltitudeAtNoon = new SunAltitudeAtNoon();
+		
+		DataMatcher dataMatcher = new DataMatcher(goals, sunAltitudeAtNoon, Resolution.DAY);
+		
+		
+		
+		response.getWriter().print(new JsonParser().serialize(dataMatcher.match()));
 		
 		System.out.println("Done");
-		
+				
 	}
 
 }

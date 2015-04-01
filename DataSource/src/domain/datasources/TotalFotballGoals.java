@@ -3,7 +3,6 @@ package domain.datasources;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import domain.api.EverysportApi;
@@ -43,15 +42,5 @@ public class TotalFotballGoals implements DataSource
 			}
 		}
 		return output;
-	}
-	
-	public static void main(String [] args)
-	{
-		TotalFotballGoals goals = new TotalFotballGoals();
-			
-		for (Entry<LocalDate, Double> entry : goals.getData().entrySet())
-		{
-			System.out.println(entry.getValue());
-		}
 	}
 }

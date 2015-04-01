@@ -19,4 +19,10 @@ public class JsonParser implements SerializationTool
 		return gson.fromJson(json, calssType);
 	}
 
+	@Override
+	public String serialize(Object o)
+	{
+		return gson.toJson(o);
+	}
+
 }

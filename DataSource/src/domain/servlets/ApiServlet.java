@@ -1,15 +1,13 @@
 package domain.servlets;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
-
+import domain.api.serialization.JsonParser;
 import domain.datasources.TotalFotballGoals;
 
 
@@ -26,11 +24,10 @@ public class ApiServlet extends HttpServlet
 		
 		TotalFotballGoals goals = new TotalFotballGoals();
 		
-		
-		
-		response.getWriter().print(new Gson().toJson(goals.getData()));
+		response.getWriter().print(new JsonParser().serialize(goals.getData()));
 		
 		System.out.println("Done");
+		
 	}
 
 }

@@ -50,7 +50,7 @@ public class ApiServletTest
 			fail("Unexpected Exception thrown");
 		}
 		
-		assertEquals(new Integer(400), new Integer(response.getStatus()));
+		assertEquals(new Integer(HttpServletResponse.SC_BAD_REQUEST), new Integer(response.getStatus()));
 	}
 
 }

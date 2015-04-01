@@ -43,7 +43,7 @@ public class ApiServlet extends HttpServlet {
 		
 		if(dataSource1 == null || dataSource2 == null)
 		{
-			response.setStatus(400);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		else
 		{

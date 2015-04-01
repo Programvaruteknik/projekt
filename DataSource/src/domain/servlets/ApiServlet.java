@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import domain.api.serialization.JsonParser;
-import domain.datasources.SunAltitudeAtNoon;
-import domain.datasources.TotalFotballGoals;
+import domain.datasources.workers.SunAltitudeAtNoon;
+import domain.datasources.workers.TotalFotballGoals;
 import domain.matching.DataMatcher;
 import domain.matching.Resolution;
 

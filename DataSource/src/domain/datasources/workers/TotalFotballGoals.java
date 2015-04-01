@@ -1,4 +1,4 @@
-package domain.datasources;
+package domain.datasources.workers;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 import domain.api.EverysportApi;
 import domain.api.models.everysport.Event;
+import domain.datasources.DataSource;
 
 public class TotalFotballGoals implements DataSource
 {

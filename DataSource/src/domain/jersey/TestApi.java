@@ -1,9 +1,9 @@
 package domain.jersey;
 
 import javax.annotation.PostConstruct;
-import javax.websocket.server.PathParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 @Path("test")
@@ -23,6 +23,6 @@ public class TestApi {
 	@GET
 	@Path("/{param}")
 	public Response getWithParam(@PathParam("param") String foo){
-		return Response.status(200).entity("HEJSAN").build();
+		return Response.status(200).entity(foo).build();
 	}
 }

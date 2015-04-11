@@ -1,9 +1,7 @@
-var dataSource = angular.module('dataSource', ['ngRoute']);
-
-	dataSource.config(function($routeProvider) {
+angular.module('dataSource', ['ngRoute', 'controllers' ]).config(function($routeProvider) {
         $routeProvider
             .when('/', {
-                templateUrl : './pages/home.html',
-                controller  : 'homeController'
+                templateUrl : './html/pages/chart.html',
+                controller  : 'dataSourceChartController'
             })
     });

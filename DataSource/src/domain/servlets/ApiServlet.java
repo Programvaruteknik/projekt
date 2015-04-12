@@ -24,9 +24,10 @@ public class ApiServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 
-
-		DataSource dataSource1 = DataSourceFactory.getDataSource(request.getParameter("datasource1"));
-		DataSource dataSource2 = DataSourceFactory.getDataSource(request.getParameter("datasource2"));
+		DataSourceFactory factory = new DataSourceFactory();
+		
+		DataSource dataSource1 = factory.getDataSource(request.getParameter("datasource1"));
+		DataSource dataSource2 = factory.getDataSource(request.getParameter("datasource2"));
 		
 		if(dataSource1 == null || dataSource2 == null)
 		{

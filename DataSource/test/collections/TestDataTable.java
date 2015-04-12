@@ -11,11 +11,11 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import collections.DataTable;
+import collections.DataChart;
 import domain.api.serialization.JsonParser;
 
 public class TestDataTable {
-	DataTable source;
+	DataChart source;
 	Map<LocalDate, Double> data;
 
 	@Before
@@ -25,12 +25,12 @@ public class TestDataTable {
 		data.put(LocalDate.parse("2001-01-01"), new Double(1.0));
 		data.put(LocalDate.parse("2001-01-02"), new Double(2.0));
 
-		source = new DataTable(data);
+		source = new DataChart(data);
 	}
 
 	@Test
 	public void testCreateRows() {
-		List<List<Object>> rows = source.toTable(data);
+		List<List<Object>> rows = source.toChart(data);
 		List<Object> rowOne = rows.get(1);
 		List<Object> rowTwo = rows.get(0);
 		

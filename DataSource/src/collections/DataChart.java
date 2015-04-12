@@ -5,19 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class DataTable {
+public class DataChart {
 	private List<List<Object>> table;
 	private Map<LocalDate, Double> map;
 
-	public DataTable(Map<LocalDate, Double> data) {
+	public DataChart(Map<LocalDate, Double> data) {
 		this.map = data;
 	}
 
 	public List<List<Object>> getTable() {
-		return toTable(map);
+		return toChart(map);
 	}
 
-	protected List<List<Object>> toTable(Map<LocalDate, Double> map) {
+	protected List<List<Object>> toChart(Map<LocalDate, Double> map) {
 		List<List<Object>> table = new ArrayList<>();
 		for (LocalDate date : map.keySet()) {
 			List<Object> row = new ArrayList<Object>();

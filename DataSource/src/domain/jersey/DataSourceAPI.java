@@ -2,6 +2,7 @@ package domain.jersey;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import domain.api.serialization.JsonParser;
@@ -16,10 +17,10 @@ public class DataSourceAPI
 {
 	@GET
 	@Path("/correlationData")
-	public Response getCorrelationData()
+	public Response getCorrelationData(@QueryParam("dataSource1") String ds1, @QueryParam("dataSource2") String ds2 )
 	{
-		DataSource dataSource1 = new DataSourceFactory().getDataSource("TotalFotballGoals");
-		DataSource dataSource2 = new DataSourceFactory().getDataSource("SunAltitudeAtNoon");
+		DataSource dataSource1 = new DataSourceFactory().getDataSource(ds1);
+		DataSource dataSource2 = new DataSourceFactory().getDataSource(ds2);
 		
 		ResultingData resultingData= new DataMatcher(dataSource1, dataSource2, Resolution.DAY).match();
 		

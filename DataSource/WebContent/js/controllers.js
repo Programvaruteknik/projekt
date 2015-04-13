@@ -55,9 +55,9 @@ angular.module('controllers', ['googlechart','mm.foundation' ])
 
 	
 	
-	$scope.selected = undefined;
+	$scope.selected1 = undefined;
 	$scope.selected2 = undefined;
-	$scope.datasources = ['total football goals', 'the suns altitude at noon'];
+	$scope.datasources = ['TotalFotballGoals', 'SunAltitudeAtNoon'];
 	
 	
 	$scope.chart = {
@@ -75,10 +75,11 @@ angular.module('controllers', ['googlechart','mm.foundation' ])
 	
 	
 	$scope.onSelect = function(){
-		if($scope.selected !== undefined && $scope.selected2 !== undefined)
+		console.log($scope.selected1);
+		console.log($scope.selected2);
+		if($scope.selected1 !== undefined && $scope.selected2 !== undefined)
 		{
-			$resource("api/dataSource/correlationData").get(function(data) {
-				
+			$resource("api/dataSource/correlationData/:dataSource1/:dataSource2").get({dataSource1:$scope.selected1,dataSource2:$scope.selected2}, function(data) {
 				
 				var chartData = [["test","test"]];
 				angular.forEach(data.resultData, function(ApiData, key) {

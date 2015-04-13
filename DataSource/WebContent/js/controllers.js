@@ -1,15 +1,5 @@
-angular.module('controllers', ['googlechart','mm.foundation' ]).controller("dataSourceChartController", function($scope){
-	
-	 $scope.items = [
-	                 "The first choice!",
-	                 "And another choice for you.",
-	                 "but wait! A third!"
-	               ];
-	$scope.linkItems = {
-		"Google": "http://google.com",
-		"AltaVista": "http://altavista.com"
-	};
-	
+angular.module('controllers', ['googlechart','mm.foundation' ])
+.controller("dataSourceChartController", function($scope){
 	
 	$scope.selected = undefined;
 	$scope.datasources = ['total football goals', 'the suns altitude at noon'];
@@ -17,7 +7,7 @@ angular.module('controllers', ['googlechart','mm.foundation' ]).controller("data
 	
 	$scope.chart = {
 			  "type": "LineChart",
-			  "cssStyle": "height:500px; width:900px;",
+			  "cssStyle": "height:30em; width:100%;",
 			  "displayed": true,
 			  "data":[["",""],[0,0]],
 			  "options": {
@@ -58,5 +48,45 @@ angular.module('controllers', ['googlechart','mm.foundation' ]).controller("data
 		}
 	};
 
+	
+})
+.controller("correlationChartController", function($scope){
+	
+	$scope.selected = undefined;
+	$scope.selected2 = undefined;
+	$scope.datasources = ['total football goals', 'the suns altitude at noon'];
+	
+	
+	$scope.chart = {
+			"type": "ScatterChart",
+			"cssStyle": "height:30em; width:100%;",
+			"displayed": true,
+			"data":[["",""],[0,0]],
+			"options": {
+				title: 'Correlation Chart',
+				pointSize: 12,
+				legend: 'none'
+				
+			}
+	}
+	
+	$scope.onSelect = function(){
+		if($scope.selected !== undefined && $scope.selected2 !== undefined)
+		{
+
+				console.log("Scatter Chart");
+				$scope.chart.data = [
+				                     ['Date', 'Mål'],
+				                     [12,  10],
+				                     [5,  0],
+				                     [6,  12],
+				                     [2,  5],
+				                     [2,  3],
+				                     ];
+				
+
+		}
+	};
+	
 	
 });

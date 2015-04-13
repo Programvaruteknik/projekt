@@ -10,6 +10,7 @@
 <div class="row">
 	<div class="medium-12 columns">
     	<input type="text" ng-model="selected" typeahead="datasource for datasource in datasources | filter:$viewValue | limitTo:8" typeahead-on-select="onSelect()" class="form-control">
-		<div google-chart chart="chart" style="{{chart.cssStyle}}"/>
+		<div google-chart chart="chart" style="{{chart.cssStyle}}"/></div>
+		<a class="button" href="#/correlationChart">Correlation Chart</a>
 	</div>
 </div>

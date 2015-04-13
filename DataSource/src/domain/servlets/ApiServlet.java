@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import domain.api.serialization.JsonParser;
 import domain.datasources.DataSource;
 import domain.datasources.DataSourceFactory;
-import domain.datasources.workers.SunAltitudeAtNoon;
-import domain.datasources.workers.TotalFotballGoals;
 import domain.matching.DataMatcher;
 import domain.matching.Resolution;
 

@@ -1,6 +1,8 @@
 package domain.servlets;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,10 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.api.serialization.JsonParser;
 import domain.datasources.DataSource;
 import domain.datasources.DataSourceFactory;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class TestSingleSource {
 	Map<LocalDate, Double> map;
@@ -67,10 +68,12 @@ public class TestSingleSource {
 	@Test
 	public void testFormated() throws ServletException, IOException {
 
-		String expectedJson = "{\"data\":[[\"2001-01-02\",2.0],[\"2001-01-01\",1.0]]}";
 		servlet.setFactory(mockFactory);
 		servlet.doGet(request, response);
-		assertEquals(expectedJson, writer.toString());
+		
+		Map<String,Double> mappen = new JsonParser().deserialize(writer.toString(), HashMap.class);
+		assertEquals(new Double(1),mappen.get("2001-01-01"));
+		assertEquals(new Double(2),mappen.get("2001-01-02"));
 	}
 
 }

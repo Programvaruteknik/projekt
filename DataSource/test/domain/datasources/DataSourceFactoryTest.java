@@ -10,15 +10,16 @@ import domain.datasources.workers.TotalFotballGoals;
 public class DataSourceFactoryTest
 {
 
+	DataSourceFactory factory = new DataSourceFactory();
     @Test
     public void testGetExistingDataSource() {
-        assertEquals(TotalFotballGoals.class, DataSourceFactory.getDataSource("TotalFotballGoals").getClass());
+        assertEquals(TotalFotballGoals.class, factory.getDataSource("TotalFotballGoals").getClass());
     }
     
     @Test
     public void testGetNonExistingStrategy() {
 
-        assertNull(DataSourceFactory.getDataSource("Totally uselees DataSource"));
+        assertNull(factory.getDataSource("Totally uselees DataSource"));
     }
 
 }

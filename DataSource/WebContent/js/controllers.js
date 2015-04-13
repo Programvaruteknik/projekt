@@ -75,8 +75,6 @@ angular.module('controllers', ['googlechart','mm.foundation' ])
 	
 	
 	$scope.onSelect = function(){
-		console.log($scope.selected1);
-		console.log($scope.selected2);
 		if($scope.selected1 !== undefined && $scope.selected2 !== undefined)
 		{
 			$resource("api/dataSource/correlationData/:dataSource1/:dataSource2").get({dataSource1:$scope.selected1,dataSource2:$scope.selected2}, function(data) {

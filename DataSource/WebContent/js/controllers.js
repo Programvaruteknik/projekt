@@ -50,7 +50,10 @@ angular.module('controllers', ['googlechart','mm.foundation' ])
 
 	
 })
-.controller("correlationChartController", function($scope){
+.controller("correlationChartController", function($scope, $resource){
+	
+
+	
 	
 	$scope.selected = undefined;
 	$scope.selected2 = undefined;
@@ -70,21 +73,20 @@ angular.module('controllers', ['googlechart','mm.foundation' ])
 			}
 	}
 	
+	
 	$scope.onSelect = function(){
 		if($scope.selected !== undefined && $scope.selected2 !== undefined)
 		{
-
-				console.log("Scatter Chart");
-				$scope.chart.data = [
-				                     ['Date', 'Mål'],
-				                     [12,  10],
-				                     [5,  0],
-				                     [6,  12],
-				                     [2,  5],
-				                     [2,  3],
-				                     ];
+			$resource("api/dataSource/correlationData").get(function(data) {
 				
-
+				
+				var chartData = [["test","test"]];
+				angular.forEach(data.resultData, function(ApiData, key) {
+					chartData.push([ApiData.x,ApiData.y])
+				});
+				
+				$scope.chart.data = chartData;
+			});
 		}
 	};
 	

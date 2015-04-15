@@ -1,13 +1,19 @@
 package domain.jersey;
 
+import java.time.LocalDate;
+import java.util.TreeMap;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
+import com.google.gson.GsonBuilder;
+
 import domain.api.serialization.JsonParser;
 import domain.datasources.DataSource;
 import domain.datasources.DataSourceFactory;
+import domain.datasources.Interpolator;
 import domain.matching.DataMatcher;
 import domain.matching.Resolution;
 import domain.matching.ResultingData;
@@ -49,34 +55,46 @@ public class DataSourceAPI {
 		if (source == null) {
 			return badRequestResponse();
 		}
-		String json = getJson(source);
+		Interpolator interpolator = new Interpolator();
+		TreeMap<LocalDate, Double> mappen = (TreeMap<LocalDate, Double>) source
+				.getData();
+		interpolator.fillOutMissingDays(mappen);
+
+		String json = new JsonParser().serializeNulls(mappen);
 		return okRequest(json);
 	}
-/**
- * Returns an Response that is configuration to return BAD_REQUEST.
- * 
- * Used to send an bad_request to the client.
- * @return Response The Response.
- */
+
+	/**
+	 * Returns an Response that is configuration to return BAD_REQUEST.
+	 * 
+	 * Used to send an bad_request to the client.
+	 * 
+	 * @return Response The Response.
+	 */
 	protected Response badRequestResponse() {
 		return Response.status(Response.Status.BAD_REQUEST).build();
 	}
-/**
- * Returns the json of a given data source {@link #DataSource}.
- * @param source The source.
- * @return String The json.
- */
+
+	/**
+	 * Returns the json of a given data source {@link #DataSource}.
+	 * 
+	 * @param source
+	 *            The source.
+	 * @return String The json.
+	 */
 	protected String getJson(DataSource source) {
 		return new JsonParser().serialize(source.getData());
 	}
-/**
- * Returns an OK response which contains the given object.
- * @param obj The given object.
- * @return Response The response.
- */
+
+	/**
+	 * Returns an OK response which contains the given object.
+	 * 
+	 * @param obj
+	 *            The given object.
+	 * @return Response The response.
+	 */
 	protected Response okRequest(Object obj) {
 		return Response.status(Response.Status.OK).entity(obj).build();
 	}
-
 
 }

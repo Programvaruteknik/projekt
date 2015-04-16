@@ -9,7 +9,13 @@
 
 <div class="row">
 	<div class="medium-12 columns">
-    	<input type="text" ng-model="selected" typeahead="datasource for datasource in datasources | filter:$viewValue | limitTo:8" typeahead-on-select="onSelect()" class="form-control">
+    	<select chosen multiple 
+			data-placeholder="Choose a data source"
+			no-results-text="'Could not find any data source'"
+			ng-model="selectedDataSource" 
+			ng-options="dataSource for dataSource in dataSources"
+			ng-change="select()">
+		</select>
 		<div google-chart chart="chart" style="{{chart.cssStyle}}"/></div>
 		<a class="button" href="#/correlationChart">Correlation Chart</a>
 	</div>

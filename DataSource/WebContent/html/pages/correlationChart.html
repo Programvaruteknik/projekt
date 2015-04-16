@@ -15,6 +15,14 @@
     	<input type="text" ng-model="selected2" typeahead="datasource for datasource in datasources | filter:$viewValue | limitTo:8" typeahead-on-select="onSelect()" class="form-control">
     </div>
 	<div class="medium-12 columns">
+		<select chosen multiple 
+			data-placeholder="Choose a data source"
+			no-results-text="'Could not find any data source'"
+			max_selected_options= "2"
+			ng-model="selectedDataSource" 
+			ng-options="dataSource for dataSource in dataSources"
+			ng-change="select()">
+		</select>
 		<div google-chart chart="chart" style="{{chart.cssStyle}}"/></div>
 		<a class="button" href="#/dataSourceChart">Data Source Chart</a>
 	</div>

@@ -1,9 +1,9 @@
 angular.module('controllers', ['googlechart','mm.foundation' ])
 .controller("dataSourceChartController", function($scope){
 	
+	
 	$scope.selected = undefined;
 	$scope.datasources = ['total football goals', 'the suns altitude at noon'];
-	
 	
 	$scope.chart = {
 			  "type": "LineChart",
@@ -54,10 +54,25 @@ angular.module('controllers', ['googlechart','mm.foundation' ])
 	
 
 	
+	$scope.dataSources = ['TotalFotballGoals', 'SunAltitudeAtNoon'];
 	
-	$scope.selected1 = undefined;
-	$scope.selected2 = undefined;
-	$scope.datasources = ['TotalFotballGoals', 'SunAltitudeAtNoon'];
+	$scope.select = function (){
+		
+		if($scope.selectedDataSource.length ===2)
+		{
+			$resource("api/dataSource/correlationData/:dataSource1/:dataSource2").get({dataSource1:$scope.selectedDataSource[0],dataSource2:$scope.selectedDataSource[1]}, function(data) {
+				
+				var chartData = [["test","test"]];
+				angular.forEach(data.resultData, function(ApiData, key) {
+					chartData.push([ApiData.x,ApiData.y])
+				});
+				
+				$scope.chart.data = chartData;
+			});
+			
+		}
+		
+	};
 	
 	
 	$scope.chart = {
@@ -72,22 +87,7 @@ angular.module('controllers', ['googlechart','mm.foundation' ])
 				
 			}
 	}
-	
-	
-	$scope.onSelect = function(){
-		if($scope.selected1 !== undefined && $scope.selected2 !== undefined)
-		{
-			$resource("api/dataSource/correlationData/:dataSource1/:dataSource2").get({dataSource1:$scope.selected1,dataSource2:$scope.selected2}, function(data) {
-				
-				var chartData = [["test","test"]];
-				angular.forEach(data.resultData, function(ApiData, key) {
-					chartData.push([ApiData.x,ApiData.y])
-				});
-				
-				$scope.chart.data = chartData;
-			});
-		}
-	};
+
 	
 	
 });

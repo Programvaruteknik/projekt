@@ -49,7 +49,7 @@ public class DataSourceAPI {
 	}
 
 	@GET
-	@Path("/source/{dataSource}")
+	@Path("/{dataSource}")
 	public Response getSingleSource(@PathParam("dataSource") String ds1) {
 		DataSource source = factory.getDataSource(ds1);
 		if (source == null) {

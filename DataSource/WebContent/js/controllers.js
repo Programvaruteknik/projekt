@@ -1,7 +1,10 @@
 angular.module('controllers', ['googlechart','mm.foundation' ])
 .controller("dataSourceChartController", function($scope, $resource){
 	
-	$scope.dataSources = ['TotalFotballGoals', 'SunAltitudeAtNoon'];
+	
+	$resource("api/dataSource/list").query(function(data) {
+		$scope.dataSources = data;
+	});
 	
 	var selectedDataSources = [];
 	var chartData = [];
@@ -38,7 +41,9 @@ angular.module('controllers', ['googlechart','mm.foundation' ])
 
 .controller("correlationChartController", function($scope, $resource){
 	
-	$scope.dataSources = ['TotalFotballGoals', 'SunAltitudeAtNoon'];
+	$resource("api/dataSource/list").query(function(data) {
+		$scope.dataSources = data;
+	});
 	
 	$scope.select = function (){
 		

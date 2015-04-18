@@ -63,6 +63,13 @@ public class DataSourceAPI {
 		String json = new JsonParser().serializeNulls(mappen);
 		return okRequest(json);
 	}
+	
+	@GET
+	@Path("/list")
+	public Response getListOfDataSources()
+	{
+		return okRequest(new JsonParser().serialize(new DataSourceFactory().getNameAllDataSources()));
+	}
 
 	/**
 	 * Returns an Response that is configuration to return BAD_REQUEST.

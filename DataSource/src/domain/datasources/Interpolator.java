@@ -5,12 +5,13 @@ import java.time.Period;
 import java.util.Map;
 
 /**
- * Creates the missing dates which are not found in a Map. The new entries will
+ * Interpolates the missing dates which are not found in a {@link Map}. The new entries will
  * have their values set to NULL.
  * 
  * @author rasmus
  *
  */
+
 public class Interpolator {
 	/**
 	 * Returns the date which occurs first in the map.

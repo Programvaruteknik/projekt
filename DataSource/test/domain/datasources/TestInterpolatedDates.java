@@ -5,7 +5,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.junit.Before;
@@ -19,7 +21,7 @@ public class TestInterpolatedDates {
 	Interpolator interpolator;
 	String expectedDate;
 	DataSource sc = mock(DataSource.class);
-	
+
 	@Before
 	public void setup() {
 		when(sc.getData()).thenReturn(map);
@@ -43,24 +45,25 @@ public class TestInterpolatedDates {
 
 	@Test
 	public void testGetDistanceInDays() {
-		int expectedDistance = 6;
+		map.put(LocalDate.parse("2001-10-07"), 7.0);
 		map.put(LocalDate.parse("2001-01-07"), 7.0);
-		
+
 		int distance = interpolator.getPeriod(sc);
-		assertEquals(expectedDistance, distance);
+		assertEquals(true,distance > 200);
 	}
 
+
 	@Test
-	public void testFillOutMissingDays() {
-		LocalDate nullDate = LocalDate.parse("2001-01-03");
-		LocalDate endDate = LocalDate.parse("2001-01-04");
-		map.put(endDate, 4.0);
+	public void testFilloutMissingDays() {
+		map.clear();
+		map.put(LocalDate.parse("2014-03-30"), 15.0);
+		map.put(LocalDate.parse("2014-03-31"), 7.0);
+		map.put(LocalDate.parse("2014-04-04"), 4.0);
+		map.put(LocalDate.parse("2014-04-05"), 1.0);
+		DataSource src = interpolator.fillOutMissingDays(sc);
+		TreeMap<LocalDate, Double> mappen = src.getData();
 		
-		DataSource newSrc = interpolator.fillOutMissingDays(sc);
-		
-		Map<LocalDate,Double> mapInSource = newSrc.getData();
-		assertEquals(null, mapInSource.get(nullDate));
-		assertEquals(4, mapInSource.size());
+		assertEquals(7, mappen.size());
 	}
-	
+
 }

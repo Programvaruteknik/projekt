@@ -60,13 +60,17 @@ public class Interpolator {
 	 * @return int The length (measuered in days) of the period.
 	 */
 	protected int getPeriod(DataSource sc) {
-		LocalDate first = getFirst(sc);
+		
 		LocalDate last = getLast(sc);
-		Period p = first.until(last);
+		LocalDate current = getFirst(sc);
+		int counter = 0;
+		
+		while (!current.equals(last)) {
+			counter++;
+			current = current.plusDays(1);
+		}
 
-		int distanceInDays = p.getDays();
-
-		return distanceInDays;
+		return counter;
 	}
 
 	/**

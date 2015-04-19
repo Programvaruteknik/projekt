@@ -18,9 +18,9 @@ angular.module('controllers', ['googlechart','mm.foundation' ])
 			console.log(data);
 			chartData = [["test","test"]];
 			angular.forEach(data, function(apiData, key) {
-				chartData.push([key, apiData])
+				if(angular.isNumber(apiData))
+					chartData.push([key, apiData])
 			});
-			console.log(chartData);
 			$scope.chart.data = chartData;
 		});
 	};

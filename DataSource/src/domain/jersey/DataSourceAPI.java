@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+import javax.servlet.Servlet;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -23,6 +24,13 @@ import domain.matching.DataMatcher;
 import domain.matching.Resolution;
 import domain.matching.ResultingData;
 
+/**
+ * This is a single {@link Servlet} which is routing the paths specified above
+ * each method. And each method will return a response {@link Response} depending on the the contents of the method.
+ * 
+ * @author rasmus
+ *
+ */
 @Path("/dataSource")
 public class DataSourceAPI {
 

@@ -23,7 +23,6 @@ public class DataSourceFactory
 	{
 		sourceMap.put("Total Fotball Goals", new TotalFotballGoals());
 		sourceMap.put("Sun Altitude At Noon", new SunAltitudeAtNoon());
-		sourceMap.put("Test", new InterpolatedMe());
 	}
 	public DataSource getDataSource(String id)
 	{

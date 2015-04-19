@@ -15,21 +15,24 @@ import org.junit.Test;
 public class DataSourceMergerTest
 {
 
-	private DataSource dataSource1, dataSource2;
+	private TreeMap<LocalDate, ArrayList<Double>> dataSource1, dataSource2;
 	
 	@Before
 	public void setUp() throws Exception
 	{
-		dataSource1 = mock(DataSource.class);
-		dataSource2 = mock(DataSource.class);
+		dataSource1 = new TreeMap<LocalDate, ArrayList<Double>>();
+		dataSource2 = new TreeMap<LocalDate, ArrayList<Double>>();
+
+		ArrayList<Double> a1 = new ArrayList<>();
+		a1.add(1d);
+		dataSource1.put(LocalDate.parse("2001-02-01"), a1);
+		ArrayList<Double> a2 = new ArrayList<>();
+		a2.add(2d);
+		dataSource1.put(LocalDate.parse("2001-02-03"), a2);
+		ArrayList<Double> a3 = new ArrayList<>();
+		a3.add(3d);
+		dataSource1.put(LocalDate.parse("2001-02-05"), a3);
 		
-		TreeMap<LocalDate, Double> deafultTestMap = new TreeMap<>();
-		
-		deafultTestMap.put(LocalDate.parse("2001-02-01"), 1d);
-		deafultTestMap.put(LocalDate.parse("2001-02-03"), 2d);
-		deafultTestMap.put(LocalDate.parse("2001-02-05"), 3d);
-		
-		when(dataSource1.getData()).thenReturn(deafultTestMap);
 		
 	}
 
@@ -38,11 +41,15 @@ public class DataSourceMergerTest
 	{
 		TreeMap<LocalDate, Double> map = new TreeMap<>();
 
-		map.put(LocalDate.parse("2001-02-03"), 4d);
-		map.put(LocalDate.parse("2001-02-04"), 5d);
-		map.put(LocalDate.parse("2001-02-05"), 6d);
-		
-		when(dataSource2.getData()).thenReturn(map);
+		ArrayList<Double> b1 = new ArrayList<>();
+		b1.add(4d);
+		dataSource2.put(LocalDate.parse("2001-02-03"), b1);
+		ArrayList<Double> b2 = new ArrayList<>();
+		b2.add(5d);
+		dataSource2.put(LocalDate.parse("2001-02-04"), b2);
+		ArrayList<Double> b3 = new ArrayList<>();
+		b3.add(6d);
+		dataSource2.put(LocalDate.parse("2001-02-05"), b3);
 		
 		TreeMap<LocalDate, ArrayList<Double>> expectedMap = new TreeMap<>();
 		

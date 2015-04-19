@@ -7,9 +7,9 @@ import java.util.TreeMap;
 
 public class DataSourceMerger
 {
-	DataSource dataSource1, dataSource2;
+	TreeMap<LocalDate, ArrayList<Double>> dataSource1, dataSource2;
 
-	public DataSourceMerger(DataSource dataSource1, DataSource dataSource2)
+	public DataSourceMerger(TreeMap<LocalDate, ArrayList<Double>> dataSource1, TreeMap<LocalDate, ArrayList<Double>> dataSource2)
 	{
 		super();
 		this.dataSource1 = dataSource1;
@@ -18,16 +18,32 @@ public class DataSourceMerger
 	
 	public TreeMap<LocalDate, ArrayList<Double>> merge()
 	{
-		LocalDate currentdate = getFirst(dataSource1.getData(), dataSource2.getData());
-		LocalDate lastdate = getLast(dataSource1.getData(), dataSource2.getData()).plusDays(1);
+		LocalDate currentdate = getFirst(dataSource1, dataSource2);
+		LocalDate lastdate = getLast(dataSource1, dataSource2).plusDays(1);
 		
 		TreeMap<LocalDate, ArrayList<Double>> output = new TreeMap<LocalDate, ArrayList<Double>>();
 		
 		while(!currentdate.equals(lastdate))
 		{
-			ArrayList<Double> tmpList = new ArrayList<>();
-			tmpList.add(dataSource1.getData().get(currentdate));
-			tmpList.add(dataSource2.getData().get(currentdate));
+			ArrayList<Double> tmpList = dataSource1.get(currentdate);
+			if(tmpList == null)
+			{
+				tmpList = new ArrayList<>();
+				tmpList.add(null);
+			}
+			
+			
+			ArrayList<Double> tmp = dataSource2.get(currentdate);
+			if(tmp != null)
+			{
+				tmpList.add(tmp.get(0));
+			}
+			else
+			{
+				tmpList.add(null);
+			}
+
+			
 			output.put(currentdate, tmpList);
 			
 			currentdate = currentdate.plusDays(1);
@@ -38,7 +54,7 @@ public class DataSourceMerger
 		return output;
 	}
 	
-	private LocalDate getFirst(TreeMap<LocalDate, Double> map1, TreeMap<LocalDate, Double> map2) 
+	private LocalDate getFirst(TreeMap<LocalDate, ArrayList<Double>> map1, TreeMap<LocalDate, ArrayList<Double>> map2) 
 	{
 		if(map1.firstKey().isBefore(map2.firstKey()))
 		{
@@ -47,7 +63,7 @@ public class DataSourceMerger
 		return map2.firstKey();
 	}
 	
-	private LocalDate getLast(TreeMap<LocalDate, Double> map1, TreeMap<LocalDate, Double> map2) 
+	private LocalDate getLast(TreeMap<LocalDate, ArrayList<Double>> map1, TreeMap<LocalDate, ArrayList<Double>> map2) 
 	{
 		if(map1.lastKey().isAfter(map2.lastKey()))
 		{

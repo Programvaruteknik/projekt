@@ -56,55 +56,31 @@ public class DataSourceAPI {
 	@GET
 	@Path("/{dataSource}")
 	public Response getSources(@PathParam("dataSource") String ds) {
-//		DataSource source = factory.getDataSource(ds1);
-//		if (source == null) {
-//			return badRequestResponse();
-//		}
-//		
-//		TreeMap<LocalDate, Double> mappen = (TreeMap<LocalDate, Double>) source
-//				.getData();
-//		
-//		new Interpolator().fillOutMissingDays(mappen);
-		System.out.println(ds);
+
 		ArrayList<String> input = new JsonParser().deserialize(ds, new TypeToken<ArrayList<String>>(){}.getType());
 		
 		TreeMap<LocalDate, ArrayList<Double>> data = null;
-		if(input.size() == 1)
-		{
-			DataSource tmp = new DataSourceFactory().getDataSource(input.get(0));
-			new Interpolator().fillOutMissingDays(tmp.getData());
-			
-			data = new DataSourceFormatter(new DataSource()
+
+			for (int i = 0; i < input.size(); i++)
 			{
-				
-				@Override
-				public String getUnit()
+				if(i == 0)
 				{
-					return tmp.getUnit();
+					DataSource tmpSource = new DataSourceFactory().getDataSource(input.get(i));
+					
+//					System.out.println(tmpSource.getData().size());
+//					System.out.println(tmpSource.getData());
+					tmpSource = new Interpolator().fillOutMissingDays(tmpSource);
+//					System.out.println(tmpSource.getData().size());
+//					System.out.println(tmpSource.getData());
+					
+					data = new DataSourceFormatter(tmpSource).toMergeableFormat();
 				}
-				
-				@Override
-				public String getName()
+				else
 				{
-					return tmp.getName();
+					data = new DataSourceMerger(data, new DataSourceFormatter(new DataSourceFactory().getDataSource(input.get(i))).toMergeableFormat()).merge();
+					
 				}
-				
-				@Override
-				public TreeMap<LocalDate, Double> getData()
-				{
-					return tmp.getData();
-				}
-			}).toMergeableFormat();
-			
-			
-			
-		}
-		else
-		{
-			
-			
-			data = new DataSourceMerger(new DataSourceFactory().getDataSource(input.get(0)), new DataSourceFactory().getDataSource(input.get(1))).merge();
-		}
+			}
 		
 		
 		input.add(0, "Date");

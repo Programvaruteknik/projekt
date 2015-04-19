@@ -17,7 +17,7 @@ import domain.datasources.DataSource;
 import domain.datasources.DataSourceFactory;
 
 public class TestSingleDataSource {
-	Map<LocalDate, Double> data = new TreeMap<>();
+	TreeMap<LocalDate, Double> data = new TreeMap<>();
 
 	@Before
 	public void setup() {
@@ -38,11 +38,11 @@ public class TestSingleDataSource {
 		DataSourceAPI api = new DataSourceAPI();
 		api.setFactory(factory);
 		String expectedJson = "{\"2001-01-01\":1.0,\"2001-01-02\":2.0}";
-		assertEquals(expectedJson, api.getSingleSource("mockSource")
+		assertEquals(expectedJson, api.getSources("mockSource")
 				.getEntity());
 
 		assertEquals(Response.Status.OK.getStatusCode(),
-				api.getSingleSource("mockSource").getStatus());
+				api.getSources("mockSource").getStatus());
 	}
 
 	@Test
@@ -53,7 +53,7 @@ public class TestSingleDataSource {
 		DataSourceAPI api = new DataSourceAPI();
 		api.setFactory(factory);
 		String expectedJson = null;
-		Response resp = api.getSingleSource("iDontExists");
+		Response resp = api.getSources("iDontExists");
 		assertEquals(expectedJson, resp.getEntity());
 		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
 				resp.getStatus());
@@ -61,7 +61,7 @@ public class TestSingleDataSource {
 
 	@Test
 	public void testGetMissingDates() {
-		Map<LocalDate, Double> data = new TreeMap<>();
+		TreeMap<LocalDate, Double> data = new TreeMap<>();
 
 		data.put(LocalDate.parse("2001-01-04"), 4.0);
 
@@ -75,7 +75,7 @@ public class TestSingleDataSource {
 		DataSourceAPI api = new DataSourceAPI();
 
 		api.setFactory(mockFactory);
-		Response resp = api.getSingleSource("mockSource");
+		Response resp = api.getSources("mockSource");
 		String expectedResp = "{\"2001-01-01\":1.0,\"2001-01-02\":2.0,\"2001-01-03\":null,\"2001-01-04\":4.0}";
 		assertEquals(expectedResp, resp.getEntity());
 	}

@@ -6,20 +6,24 @@ angular.module('controllers', ['googlechart','mm.foundation' ])
 		$scope.dataSources = data;
 	});
 	
-	var selectedDataSources = [];
+//	var selectedDataSources = [];
 	var chartData = [];
 	
 	$scope.select = function (){
 		
-		selected = _.difference($scope.selectedDataSource, selectedDataSources)[0];
-		selectedDataSources = $scope.selectedDataSource;
+//		selected = _.difference($scope.selectedDataSource, selectedDataSources)[0];
+//		selectedDataSources = $scope.selectedDataSource;
 		
-		$resource("api/dataSource/:dataSource").get({dataSource:selected}, function(data) {
+		console.log(angular.toJson($scope.selectedDataSource));
+		
+		$resource("api/dataSource/:dataSource").get({dataSource:angular.toJson($scope.selectedDataSource)}, function(data) {
 			console.log(data);
-			chartData = [["test","test"]];
-			angular.forEach(data, function(apiData, key) {
-				if(angular.isNumber(apiData))
-					chartData.push([key, apiData])
+			chartData = [data.header];
+			angular.forEach(data.data, function(apiData, key) {
+				
+				var output = [key];
+				
+				chartData.push(output.concat(apiData))
 			});
 			$scope.chart.data = chartData;
 		});

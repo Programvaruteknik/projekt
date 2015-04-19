@@ -1,6 +1,7 @@
 package domain.jersey;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 import javax.ws.rs.GET;
@@ -9,11 +10,15 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import domain.api.serialization.JsonParser;
 import domain.datasources.DataSource;
 import domain.datasources.DataSourceFactory;
+import domain.datasources.DataSourceFormatter;
+import domain.datasources.DataSourceMerger;
 import domain.datasources.Interpolator;
+import domain.jersey.model.DataSourcePackage;
 import domain.matching.DataMatcher;
 import domain.matching.Resolution;
 import domain.matching.ResultingData;
@@ -50,17 +55,63 @@ public class DataSourceAPI {
 
 	@GET
 	@Path("/{dataSource}")
-	public Response getSingleSource(@PathParam("dataSource") String ds1) {
-		DataSource source = factory.getDataSource(ds1);
-		if (source == null) {
-			return badRequestResponse();
+	public Response getSources(@PathParam("dataSource") String ds) {
+//		DataSource source = factory.getDataSource(ds1);
+//		if (source == null) {
+//			return badRequestResponse();
+//		}
+//		
+//		TreeMap<LocalDate, Double> mappen = (TreeMap<LocalDate, Double>) source
+//				.getData();
+//		
+//		new Interpolator().fillOutMissingDays(mappen);
+		System.out.println(ds);
+		ArrayList<String> input = new JsonParser().deserialize(ds, new TypeToken<ArrayList<String>>(){}.getType());
+		
+		TreeMap<LocalDate, ArrayList<Double>> data = null;
+		if(input.size() == 1)
+		{
+			DataSource tmp = new DataSourceFactory().getDataSource(input.get(0));
+			new Interpolator().fillOutMissingDays(tmp.getData());
+			
+			data = new DataSourceFormatter(new DataSource()
+			{
+				
+				@Override
+				public String getUnit()
+				{
+					return tmp.getUnit();
+				}
+				
+				@Override
+				public String getName()
+				{
+					return tmp.getName();
+				}
+				
+				@Override
+				public TreeMap<LocalDate, Double> getData()
+				{
+					return tmp.getData();
+				}
+			}).toMergeableFormat();
+			
+			
+			
 		}
-		Interpolator interpolator = new Interpolator();
-		TreeMap<LocalDate, Double> mappen = (TreeMap<LocalDate, Double>) source
-				.getData();
-		interpolator.fillOutMissingDays(mappen);
+		else
+		{
+			
+			
+			data = new DataSourceMerger(new DataSourceFactory().getDataSource(input.get(0)), new DataSourceFactory().getDataSource(input.get(1))).merge();
+		}
+		
+		
+		input.add(0, "Date");
+		
+		DataSourcePackage sourcePackage = new DataSourcePackage(input,data);
 
-		String json = new JsonParser().serializeNulls(mappen);
+		String json = new JsonParser().serializeNulls(sourcePackage);
 		return okRequest(json);
 	}
 	

@@ -25,9 +25,9 @@ public class TotalFotballGoals implements DataSource
 	}
 
 	@Override
-	public Map<LocalDate, Double> getData()
+	public TreeMap<LocalDate, Double> getData()
 	{
-		Map<LocalDate, Double> output = new TreeMap<LocalDate, Double>();
+		TreeMap<LocalDate, Double> output = new TreeMap<LocalDate, Double>();
 		List<Event> events = new EverysportApi().getEvents();
 		
 		for (Event event : events)

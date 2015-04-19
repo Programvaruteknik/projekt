@@ -3,6 +3,7 @@ package domain;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,10 +33,10 @@ public class DataMatcherTest
 		}
 
 		@Override
-		public Map<LocalDate, Double> getData()
+		public TreeMap<LocalDate, Double> getData()
 		{
 
-			Map<LocalDate, Double> tmpMap = new HashMap<>();
+			TreeMap<LocalDate, Double> tmpMap = new TreeMap<>();
 			tmpMap.put(LocalDate.parse("2015-01-01"), 3d);
 			tmpMap.put(LocalDate.parse("2015-01-03"), 10d);
 			tmpMap.put(LocalDate.parse("2015-01-05"), 0d);
@@ -62,9 +63,9 @@ public class DataMatcherTest
 		}
 
 		@Override
-		public Map<LocalDate, Double> getData()
+		public TreeMap<LocalDate, Double> getData()
 		{
-			Map<LocalDate, Double> tmpMap = new HashMap<>();
+			TreeMap<LocalDate, Double> tmpMap = new TreeMap<>();
 			tmpMap.put(LocalDate.parse("2015-01-01"), 255d);
 			tmpMap.put(LocalDate.parse("2015-01-04"), 10d);
 			tmpMap.put(LocalDate.parse("2015-01-07"), 272d);

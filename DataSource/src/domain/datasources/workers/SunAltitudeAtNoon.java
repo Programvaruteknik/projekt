@@ -24,9 +24,9 @@ public class SunAltitudeAtNoon implements DataSource {
 	}
 
 	@Override
-	public Map<LocalDate, Double> getData() {
+	public TreeMap<LocalDate, Double> getData() {
 
-		Map<LocalDate, Double> output = new TreeMap<LocalDate, Double>();
+		TreeMap<LocalDate, Double> output = new TreeMap<LocalDate, Double>();
 		List<Time> times = new WeatherAPI().getTimes();
 
 		for (Time time : times) {

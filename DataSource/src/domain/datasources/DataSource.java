@@ -1,7 +1,7 @@
 package domain.datasources;
 
 import java.time.LocalDate;
-import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 
@@ -14,6 +14,6 @@ public interface DataSource
 
 	public String getUnit();
 
-	public Map<LocalDate, Double> getData();
+	public TreeMap<LocalDate, Double> getData();
 
 }

@@ -6,13 +6,10 @@ angular.module('controllers', ['googlechart','mm.foundation' ])
 		$scope.dataSources = data;
 	});
 	
-//	var selectedDataSources = [];
 	var chartData = [];
 	
 	$scope.select = function (){
-		
-//		selected = _.difference($scope.selectedDataSource, selectedDataSources)[0];
-//		selectedDataSources = $scope.selectedDataSource;
+
 		
 		console.log(angular.toJson($scope.selectedDataSource));
 		

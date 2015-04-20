@@ -28,7 +28,7 @@ import domain.matching.ResultingData;
  * This is a single {@link Servlet} which is routing the paths specified above
  * each method. And each method will return a response {@link Response} depending on the the contents of the method.
  * 
- * @author rasmus
+ * @author Rasmus, Rickard
  *
  */
 @Path("/dataSource")
@@ -75,11 +75,7 @@ public class DataSourceAPI {
 				{
 					DataSource tmpSource = new DataSourceFactory().getDataSource(input.get(i));
 					
-//					System.out.println(tmpSource.getData().size());
-//					System.out.println(tmpSource.getData());
 					tmpSource = new Interpolator().fillOutMissingDays(tmpSource);
-//					System.out.println(tmpSource.getData().size());
-//					System.out.println(tmpSource.getData());
 					
 					data = new DataSourceFormatter(tmpSource).toMergeableFormat();
 				}

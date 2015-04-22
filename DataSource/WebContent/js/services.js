@@ -8,7 +8,7 @@ angular.module('services', [])
 		
 		if(selectedDataSource.length ===2)
 		{
-			$resource("api/dataSource/correlationData/:dataSource1/:dataSource2").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1]}, function(data) {
+			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=DAY").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1]}, function(data) {
 				
 				var chartData = [["test","test"]];
 				angular.forEach(data.resultData, function(apiData, key) {

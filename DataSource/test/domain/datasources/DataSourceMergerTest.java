@@ -12,6 +12,8 @@ import java.util.TreeMap;
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.matching.Resolution;
+
 public class DataSourceMergerTest
 {
 
@@ -75,7 +77,7 @@ public class DataSourceMergerTest
 		expectedMap.put(LocalDate.parse("2001-02-04"), a3);
 		expectedMap.put(LocalDate.parse("2001-02-05"), a4);
 
-		TreeMap<LocalDate, ArrayList<Double>> actualMap = new DataSourceMerger(dataSource1, dataSource2).merge();	
+		TreeMap<LocalDate, ArrayList<Double>> actualMap = new DataSourceMerger(dataSource1, dataSource2).merge(Resolution.DAY);	
 		
 		assertEquals(expectedMap.size(), actualMap.size());
 		assertEquals(expectedMap, actualMap);

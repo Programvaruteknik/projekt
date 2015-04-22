@@ -13,6 +13,8 @@ import java.util.TreeMap;
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.matching.Resolution;
+
 public class TestInterpolatedDates {
 	// Hur många datum som ska sättas in
 	// Färdig interpolerad lista.
@@ -48,7 +50,7 @@ public class TestInterpolatedDates {
 		map.put(LocalDate.parse("2001-10-07"), 7.0);
 		map.put(LocalDate.parse("2001-01-07"), 7.0);
 
-		int distance = interpolator.getPeriod(sc);
+		int distance = interpolator.getPeriod(sc, Resolution.DAY);
 		assertEquals(true,distance > 200);
 	}
 
@@ -60,7 +62,7 @@ public class TestInterpolatedDates {
 		map.put(LocalDate.parse("2014-03-31"), 7.0);
 		map.put(LocalDate.parse("2014-04-04"), 4.0);
 		map.put(LocalDate.parse("2014-04-05"), 1.0);
-		DataSource src = interpolator.fillOutMissingDays(sc);
+		DataSource src = interpolator.fillOutMissingDays(sc, Resolution.DAY);
 		TreeMap<LocalDate, Double> mappen = src.getData();
 		
 		assertEquals(7, mappen.size());

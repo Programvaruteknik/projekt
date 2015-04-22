@@ -100,6 +100,13 @@ public class DataSourceAPI {
 	}
 	
 	@GET
+	@Path("/resolutions")
+	public Response getResolutions()
+	{
+		return okRequest(new JsonParser().serialize(Resolution.values()));
+	}
+	
+	@GET
 	@Path("/list")
 	public Response getListOfDataSources()
 	{

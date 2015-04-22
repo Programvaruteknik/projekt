@@ -2,9 +2,9 @@ angular.module('services', [])
 .service('CorrelationChart', function($resource, $q) {
   
 	
-	var deferred = $q.defer();
 	
 	this.select = function (selectedDataSource){
+		var deferred = $q.defer();
 		
 		if(selectedDataSource.length ===2)
 		{
@@ -20,7 +20,6 @@ angular.module('services', [])
 			
 		}
 		deferred.promise.then(function(res){
-			console.log(res);
 		});
 		return deferred.promise;
 	};
@@ -41,9 +40,9 @@ angular.module('services', [])
 .service('DataSourceChart', function($resource, $q) {
 	
 	
-	var deferred = $q.defer();
 	
 	this.select = function (selectedDataSource){
+		var deferred = $q.defer();
 		
 		$resource("api/dataSource/:dataSource").get({dataSource:angular.toJson(selectedDataSource)}, function(data) {
 			chartData = [data.header];

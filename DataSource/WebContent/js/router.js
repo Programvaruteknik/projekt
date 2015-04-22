@@ -12,4 +12,8 @@ angular.module('dataSource', ['ngRoute', 'ngResource', 'controllers', 'localytic
             	templateUrl : './html/pages/correlationChart.html',
             	controller  : 'correlationChartController'
             })
+            .when('/outlineChart', {
+            	templateUrl : './html/pages/outlineChart.html',
+            	controller  : 'outlineChartController'
+            })
     });

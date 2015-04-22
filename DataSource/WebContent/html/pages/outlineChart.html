@@ -1,7 +1,7 @@
 <header>
 	<div class="row">
 		<div class="large-12 columns">
-			<h1>Correlation Chart</h1>
+			<h1>Outline Over Charts</h1>
 			<h4>You need to pick 2 and only 2 sources</h4>
 		</div>
 	</div>
@@ -17,6 +17,13 @@
 			ng-options="dataSource for dataSource in dataSources"
 			ng-change="select()">
 		</select>
-		<div google-chart chart="chart" style="{{chart.cssStyle}}"/></div>
 	</div>
+	<div class="medium-12 columns">
+		<div google-chart chart="dataSourceChart" style="{{chart.cssStyle}}"/></div>
+	</div>
+</div>
+<div class="row">
+		<div class="medium-12 columns">
+			<div google-chart chart="correlationChart" style="{{chart.cssStyle}}"/></div>
+		</div>
 </div>

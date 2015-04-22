@@ -75,13 +75,13 @@ public class DataSourceAPI {
 				{
 					DataSource tmpSource = new DataSourceFactory().getDataSource(input.get(i));
 					
-					tmpSource = new Interpolator().fillOutMissingDays(tmpSource);
+					tmpSource = new Interpolator().fillOutMissingDays(tmpSource, Resolution.DAY);
 					
 					data = new DataSourceFormatter(tmpSource).toMergeableFormat();
 				}
 				else
 				{
-					data = new DataSourceMerger(data, new DataSourceFormatter(new DataSourceFactory().getDataSource(input.get(i))).toMergeableFormat()).merge();
+					data = new DataSourceMerger(data, new DataSourceFormatter(new DataSourceFactory().getDataSource(input.get(i))).toMergeableFormat()).merge(Resolution.DAY);
 					
 				}
 			}

@@ -23,5 +23,16 @@ public class ResolutionTest
 		assertEquals("2015", Resolution.YEAR.getLabel(LocalDate.parse("2015-01-01")));
 
 	}
+	
+	@Test
+	public void testNext()
+	{
+		assertEquals(LocalDate.parse("2015-01-02"), Resolution.DAY.next(LocalDate.parse("2015-01-01")));
+		assertEquals(LocalDate.parse("2015-01-08"), Resolution.WEEK.next(LocalDate.parse("2015-01-01")));
+		assertEquals(LocalDate.parse("2015-02-01"), Resolution.MONTH.next(LocalDate.parse("2015-01-01")));
+		assertEquals(LocalDate.parse("2015-04-01"), Resolution.QUARTER.next(LocalDate.parse("2015-01-01")));
+		assertEquals(LocalDate.parse("2016-01-01"), Resolution.YEAR.next(LocalDate.parse("2015-01-01")));
+	}
+	
 
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
+import domain.matching.Resolution;
+
 public class DataSourceMerger
 {
 	TreeMap<LocalDate, ArrayList<Double>> dataSource1, dataSource2;
@@ -16,10 +18,10 @@ public class DataSourceMerger
 		this.dataSource2 = dataSource2;
 	}
 	
-	public TreeMap<LocalDate, ArrayList<Double>> merge()
+	public TreeMap<LocalDate, ArrayList<Double>> merge(Resolution resolution)
 	{
 		LocalDate currentdate = getFirst(dataSource1, dataSource2);
-		LocalDate lastdate = getLast(dataSource1, dataSource2).plusDays(1);
+		LocalDate lastdate = resolution.next(getLast(dataSource1, dataSource2));
 		
 		TreeMap<LocalDate, ArrayList<Double>> output = new TreeMap<LocalDate, ArrayList<Double>>();
 		
@@ -46,7 +48,7 @@ public class DataSourceMerger
 			
 			output.put(currentdate, tmpList);
 			
-			currentdate = currentdate.plusDays(1);
+			currentdate = resolution.next(currentdate);
 		}
 		
 		

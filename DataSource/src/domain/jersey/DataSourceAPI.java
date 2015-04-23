@@ -27,85 +27,88 @@ import domain.matching.ResultingData;
 
 /**
  * This is a single {@link Servlet} which is routing the paths specified above
- * each method. And each method will return a response {@link Response} depending on the the contents of the method.
+ * each method. And each method will return a response {@link Response}
+ * depending on the the contents of the method.
  * 
  * @author Rasmus, Rickard
  *
  */
 @Path("/dataSource")
-public class DataSourceAPI {
+public class DataSourceAPI
+{
 
-	public DataSourceAPI() {
+	public DataSourceAPI()
+	{
 		factory = new DataSourceFactory();
 	}
 
 	@GET
 	@Path("/correlationData")
-	public Response getCorrelationData(@QueryParam("dataSource1") String ds1,
-			@QueryParam("dataSource2") String ds2, @QueryParam("resolution") String res) {
-		
-		Resolution resolution = res != null ?Resolution.valueOf(res): Resolution.DAY;
-		
+	public Response getCorrelationData(@QueryParam("dataSource1") String ds1, @QueryParam("dataSource2") String ds2, @QueryParam("resolution") String res)
+	{
+
+		Resolution resolution = res != null ? Resolution.valueOf(res) : Resolution.DAY;
+
 		DataSource dataSource1 = new DataSourceFactory().getDataSource(ds1);
 		DataSource dataSource2 = new DataSourceFactory().getDataSource(ds2);
 
 		if (dataSource1 == null || dataSource2 == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		ResultingData resultingData = new DataMatcher(dataSource1, dataSource2,
-				resolution).match();
+		ResultingData resultingData = new DataMatcher(dataSource1, dataSource2, resolution).match();
 
-		return Response.status(200)
-				.entity(new JsonParser().serialize(resultingData)).build();
+		return Response.status(200).entity(new JsonParser().serialize(resultingData)).build();
 	}
 
 	DataSourceFactory factory;
 
-	protected void setFactory(DataSourceFactory factory) {
+	protected void setFactory(DataSourceFactory factory)
+	{
 		this.factory = factory;
 	}
 
 	@GET
 	@Path("/{dataSource}")
-	public Response getSources(@PathParam("dataSource") String ds) {
+	public Response getSources(@PathParam("dataSource") String ds)
+	{
 
-		ArrayList<String> input = new JsonParser().deserialize(ds, new TypeToken<ArrayList<String>>(){}.getType());
-		
+		ArrayList<String> input = new JsonParser().deserialize(ds, new TypeToken<ArrayList<String>>()
+		{
+		}.getType());
+
 		TreeMap<LocalDate, ArrayList<Double>> data = null;
 
-			for (int i = 0; i < input.size(); i++)
+		for (int i = 0; i < input.size(); i++)
+		{
+			if (i == 0)
 			{
-				if(i == 0)
-				{
-					DataSource tmpSource = new DataSourceFactory().getDataSource(input.get(i));
-					
-					tmpSource = new Interpolator().fillOutMissingDays(tmpSource, Resolution.DAY);
-					
-					data = new DataSourceFormatter(tmpSource).toMergeableFormat();
-				}
-				else
-				{
-					data = new DataSourceMerger(data, new DataSourceFormatter(new DataSourceFactory().getDataSource(input.get(i))).toMergeableFormat()).merge(Resolution.DAY);
-					
-				}
+				DataSource tmpSource = new DataSourceFactory().getDataSource(input.get(i));
+
+				tmpSource = new Interpolator().fillOutMissingDays(tmpSource, Resolution.DAY);
+
+				data = new DataSourceFormatter(tmpSource).toMergeableFormat();
+			} else
+			{
+				data = new DataSourceMerger(data, new DataSourceFormatter(new DataSourceFactory().getDataSource(input.get(i))).toMergeableFormat()).merge(Resolution.DAY);
+
 			}
-		
-		
+		}
+
 		input.add(0, "Date");
-		
-		DataSourcePackage sourcePackage = new DataSourcePackage(input,data);
+
+		DataSourcePackage sourcePackage = new DataSourcePackage(input, data);
 
 		String json = new JsonParser().serializeNulls(sourcePackage);
 		return okRequest(json);
 	}
-	
+
 	@GET
 	@Path("/resolutions")
 	public Response getResolutions()
 	{
 		return okRequest(new JsonParser().serialize(Resolution.values()));
 	}
-	
+
 	@GET
 	@Path("/list")
 	public Response getListOfDataSources()
@@ -120,7 +123,8 @@ public class DataSourceAPI {
 	 * 
 	 * @return Response The Response.
 	 */
-	protected Response badRequestResponse() {
+	protected Response badRequestResponse()
+	{
 		return Response.status(Response.Status.BAD_REQUEST).build();
 	}
 
@@ -131,7 +135,8 @@ public class DataSourceAPI {
 	 *            The source.
 	 * @return String The json.
 	 */
-	protected String getJson(DataSource source) {
+	protected String getJson(DataSource source)
+	{
 		return new JsonParser().serialize(source.getData());
 	}
 
@@ -142,7 +147,8 @@ public class DataSourceAPI {
 	 *            The given object.
 	 * @return Response The response.
 	 */
-	protected Response okRequest(Object obj) {
+	protected Response okRequest(Object obj)
+	{
 		return Response.status(Response.Status.OK).entity(obj).build();
 	}
 

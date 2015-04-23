@@ -26,7 +26,14 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 	$resource("api/dataSource/list").query(function(data) {
 		$scope.dataSources = data;
 	});
+	$resource("api/dataSource/resolutions").query(function(data) {
+		$scope.resolutions = data;
+	});
 	
+	$scope.setResolution = function(resolution)
+	{
+//		console.log(resolution);
+	}
 	
 	$scope.select = function (){
 		

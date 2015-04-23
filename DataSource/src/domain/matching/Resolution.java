@@ -51,12 +51,19 @@ public enum Resolution {
 		return String.format("%d K.%d", year, quater);
 	},
 	(date) ->{
-		return null;
-	}), YEAR((date) -> {
+		return date.plusMonths(3);
+	}), HALF((date) -> {
+		int half = date.getMonthValue() / 6 + 1;
+		int year = date.getYear();
+		return String.format("%d H.%d", year, half);
+	},
+	(date) ->{
+		return date.plusMonths(6);
+	}),YEAR((date) -> {
 		return String.valueOf(date.getYear());
 	},
 	(date) ->{
-		return null;
+		return date.plusYears(1);
 	});
 
 	private Label label;

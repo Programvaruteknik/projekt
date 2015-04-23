@@ -20,6 +20,8 @@ public class ResolutionTest
 		assertEquals("2016 V.53", Resolution.WEEK.getLabel(LocalDate.parse("2017-01-01")));
 		assertEquals("2015 JANUARY", Resolution.MONTH.getLabel(LocalDate.parse("2015-01-01")));
 		assertEquals("2015 K.1", Resolution.QUARTER.getLabel(LocalDate.parse("2015-01-01")));
+		assertEquals("2015 H.1", Resolution.HALF.getLabel(LocalDate.parse("2015-01-01")));
+		assertEquals("2015 H.2", Resolution.HALF.getLabel(LocalDate.parse("2015-06-01")));
 		assertEquals("2015", Resolution.YEAR.getLabel(LocalDate.parse("2015-01-01")));
 
 	}
@@ -31,6 +33,7 @@ public class ResolutionTest
 		assertEquals(LocalDate.parse("2015-01-08"), Resolution.WEEK.next(LocalDate.parse("2015-01-01")));
 		assertEquals(LocalDate.parse("2015-02-01"), Resolution.MONTH.next(LocalDate.parse("2015-01-01")));
 		assertEquals(LocalDate.parse("2015-04-01"), Resolution.QUARTER.next(LocalDate.parse("2015-01-01")));
+		assertEquals(LocalDate.parse("2015-07-01"), Resolution.HALF.next(LocalDate.parse("2015-01-01")));
 		assertEquals(LocalDate.parse("2016-01-01"), Resolution.YEAR.next(LocalDate.parse("2015-01-01")));
 	}
 	

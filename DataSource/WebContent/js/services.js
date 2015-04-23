@@ -3,12 +3,12 @@ angular.module('services', [])
   
 	
 	
-	this.select = function (selectedDataSource){
+	this.select = function (selectedDataSource, resolution){
 		var deferred = $q.defer();
 		
 		if(selectedDataSource.length ===2)
 		{
-			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=DAY").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1]}, function(data) {
+			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution}, function(data) {
 				
 				var chartData = [["test","test"]];
 				angular.forEach(data.resultData, function(apiData, key) {

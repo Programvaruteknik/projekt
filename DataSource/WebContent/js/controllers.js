@@ -30,19 +30,28 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 		$scope.resolutions = data;
 	});
 	
+	$scope.selectedResolution = "Resolution";
+	
 	$scope.setResolution = function(resolution)
 	{
-//		console.log(resolution);
+		$scope.selectedResolution = resolution;
+		updateChart($scope.selectedDataSource, resolution);
 	}
 	
 	$scope.select = function (){
 		
-		CorrelationChart.select($scope.selectedDataSource).then(function(data){
+		resolution = $scope.selectedResolution === "Resolution"?"DAY":$scope.selectedResolution;
+		
+		updateChart($scope.selectedDataSource, resolution);
+	};
+	
+	updateChart = function(selectedDataSource, resolution)
+	{
+		CorrelationChart.select(selectedDataSource, resolution).then(function(data){
 			
 			$scope.chart.data = data;
-		});
-		
-	};
+		});	
+	}
 	
 	$scope.chart = CorrelationChart.chart;
 })

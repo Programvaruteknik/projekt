@@ -2,26 +2,28 @@ angular.module('services', [])
 .service('CorrelationChart', function($resource, $q) {
   
 	
-	
+	var that = this;
 	this.select = function (selectedDataSource){
 		var deferred = $q.defer();
-		
 		if(selectedDataSource.length ===2)
 		{
 			$resource("api/dataSource/correlationData/:dataSource1/:dataSource2").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1]}, function(data) {
 				
-				var chartData = [["test","test"]];
+				var chartData = [["","x unit per y unit"]];
 				angular.forEach(data.resultData, function(apiData, key) {
 					chartData.push([apiData.x,apiData.y])
 				});
 				
+				that.chart.options.hAxis.title = data.metaData.xAxisLabel;
+				that.chart.options.vAxis.title = data.metaData.yAxisLabel;
 				deferred.resolve(chartData);
 			});
-			
 		}
-		deferred.promise.then(function(res){
-		});
+
+
 		return deferred.promise;
+		
+		
 	};
 	
 	this.chart = {
@@ -32,7 +34,9 @@ angular.module('services', [])
 			"options": {
 				title: 'Correlation Chart',
 				pointSize: 12,
-				legend: 'none'
+				legend: 'none',
+				hAxis:{},
+				vAxis:{}
 			}
 	}
 	

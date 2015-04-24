@@ -43,8 +43,8 @@ public class DataSourceAPI {
 	@Path("/correlationData/{dataSource1}/{dataSource2}")
 	public Response getCorrelationData(@PathParam("dataSource1") String ds1,
 			@PathParam("dataSource2") String ds2) {
-		DataSource dataSource1 = new DataSourceFactory().getDataSource(ds1);
-		DataSource dataSource2 = new DataSourceFactory().getDataSource(ds2);
+		DataSource dataSource1 = factory.getDataSource(ds1);
+		DataSource dataSource2 = factory.getDataSource(ds2);
 
 		if (dataSource1 == null || dataSource2 == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();

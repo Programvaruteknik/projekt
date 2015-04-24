@@ -29,10 +29,12 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 	
 	
 	$scope.select = function (){
-		
+		var x;
 		CorrelationChart.select($scope.selectedDataSource).then(function(data){
 			
 			$scope.chart.data = data;
+		
+			
 		});
 		
 	};

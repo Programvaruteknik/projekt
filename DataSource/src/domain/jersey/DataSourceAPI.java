@@ -33,59 +33,60 @@ import domain.matching.ResultingData;
  *
  */
 @Path("/dataSource")
-public class DataSourceAPI {
+public class DataSourceAPI
+{
 
-	public DataSourceAPI() {
+	public DataSourceAPI()
+	{
 		factory = new DataSourceFactory();
 	}
 
 	@GET
 	@Path("/correlationData/{dataSource1}/{dataSource2}")
-	public Response getCorrelationData(@PathParam("dataSource1") String ds1,
-			@PathParam("dataSource2") String ds2) {
+	public Response getCorrelationData(@PathParam("dataSource1") String ds1, @PathParam("dataSource2") String ds2)
+	{
 		DataSource dataSource1 = factory.getDataSource(ds1);
 		DataSource dataSource2 = factory.getDataSource(ds2);
 
 		if (dataSource1 == null || dataSource2 == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		ResultingData resultingData = new DataMatcher(dataSource1, dataSource2,
-				Resolution.DAY).match();
+		ResultingData resultingData = new DataMatcher(dataSource1, dataSource2, Resolution.DAY).match();
 		resultingData.setXAxis(dataSource1.getName());
 		resultingData.setYAxis(dataSource2.getName());
-		return Response.status(200)
-				.entity(new JsonParser().serialize(resultingData)).build();
+		return Response.status(200).entity(new JsonParser().serialize(resultingData)).build();
 	}
 
 	DataSourceFactory factory;
 
-	protected void setFactory(DataSourceFactory factory) {
+	protected void setFactory(DataSourceFactory factory)
+	{
 		this.factory = factory;
 	}
 
 	@GET
 	@Path("/{dataSource}")
-	public Response getSources(@PathParam("dataSource") String ds) {
+	public Response getSources(@PathParam("dataSource") String ds)
+	{
 
-		ArrayList<String> input = new JsonParser().deserialize(ds,
-				new TypeToken<ArrayList<String>>() {
-				}.getType());
+		ArrayList<String> input = new JsonParser().deserialize(ds, new TypeToken<ArrayList<String>>()
+		{
+		}.getType());
 
 		TreeMap<LocalDate, ArrayList<Double>> data = null;
 
-		for (int i = 0; i < input.size(); i++) {
-			if (i == 0) {
-				DataSource tmpSource = new DataSourceFactory()
-						.getDataSource(input.get(i));
+		for (int i = 0; i < input.size(); i++)
+		{
+			if (i == 0)
+			{
+				DataSource tmpSource = new DataSourceFactory().getDataSource(input.get(i));
 
 				tmpSource = new Interpolator().fillOutMissingDays(tmpSource);
 
 				data = new DataSourceFormatter(tmpSource).toMergeableFormat();
-			} else {
-				data = new DataSourceMerger(data,
-						new DataSourceFormatter(
-								new DataSourceFactory().getDataSource(input
-										.get(i))).toMergeableFormat()).merge();
+			} else
+			{
+				data = new DataSourceMerger(data, new DataSourceFormatter(new DataSourceFactory().getDataSource(input.get(i))).toMergeableFormat()).merge();
 
 			}
 		}
@@ -100,9 +101,9 @@ public class DataSourceAPI {
 
 	@GET
 	@Path("/list")
-	public Response getListOfDataSources() {
-		return okRequest(new JsonParser().serialize(new DataSourceFactory()
-				.getNameAllDataSources()));
+	public Response getListOfDataSources()
+	{
+		return okRequest(new JsonParser().serialize(new DataSourceFactory().getNameAllDataSources()));
 	}
 
 	/**
@@ -112,7 +113,8 @@ public class DataSourceAPI {
 	 * 
 	 * @return Response The Response.
 	 */
-	protected Response badRequestResponse() {
+	protected Response badRequestResponse()
+	{
 		return Response.status(Response.Status.BAD_REQUEST).build();
 	}
 
@@ -123,7 +125,8 @@ public class DataSourceAPI {
 	 *            The source.
 	 * @return String The json.
 	 */
-	protected String getJson(DataSource source) {
+	protected String getJson(DataSource source)
+	{
 		return new JsonParser().serialize(source.getData());
 	}
 
@@ -134,7 +137,8 @@ public class DataSourceAPI {
 	 *            The given object.
 	 * @return Response The response.
 	 */
-	protected Response okRequest(Object obj) {
+	protected Response okRequest(Object obj)
+	{
 		return Response.status(Response.Status.OK).entity(obj).build();
 	}
 

@@ -26,7 +26,8 @@ import domain.matching.ResultingData;
 
 /**
  * This is a single {@link Servlet} which is routing the paths specified above
- * each method. And each method will return a response {@link Response} depending on the the contents of the method.
+ * each method. And each method will return a response {@link Response}
+ * depending on the the contents of the method.
  * 
  * @author Rasmus, Rickard
  *
@@ -50,7 +51,8 @@ public class DataSourceAPI {
 
 		ResultingData resultingData = new DataMatcher(dataSource1, dataSource2,
 				Resolution.DAY).match();
-
+		resultingData.setXAxis(dataSource1.getName());
+		resultingData.setYAxis(dataSource2.getName());
 		return Response.status(200)
 				.entity(new JsonParser().serialize(resultingData)).build();
 	}
@@ -65,41 +67,42 @@ public class DataSourceAPI {
 	@Path("/{dataSource}")
 	public Response getSources(@PathParam("dataSource") String ds) {
 
-		ArrayList<String> input = new JsonParser().deserialize(ds, new TypeToken<ArrayList<String>>(){}.getType());
-		
+		ArrayList<String> input = new JsonParser().deserialize(ds,
+				new TypeToken<ArrayList<String>>() {
+				}.getType());
+
 		TreeMap<LocalDate, ArrayList<Double>> data = null;
 
-			for (int i = 0; i < input.size(); i++)
-			{
-				if(i == 0)
-				{
-					DataSource tmpSource = new DataSourceFactory().getDataSource(input.get(i));
-					
-					tmpSource = new Interpolator().fillOutMissingDays(tmpSource);
-					
-					data = new DataSourceFormatter(tmpSource).toMergeableFormat();
-				}
-				else
-				{
-					data = new DataSourceMerger(data, new DataSourceFormatter(new DataSourceFactory().getDataSource(input.get(i))).toMergeableFormat()).merge();
-					
-				}
+		for (int i = 0; i < input.size(); i++) {
+			if (i == 0) {
+				DataSource tmpSource = new DataSourceFactory()
+						.getDataSource(input.get(i));
+
+				tmpSource = new Interpolator().fillOutMissingDays(tmpSource);
+
+				data = new DataSourceFormatter(tmpSource).toMergeableFormat();
+			} else {
+				data = new DataSourceMerger(data,
+						new DataSourceFormatter(
+								new DataSourceFactory().getDataSource(input
+										.get(i))).toMergeableFormat()).merge();
+
 			}
-		
-		
+		}
+
 		input.add(0, "Date");
-		
-		DataSourcePackage sourcePackage = new DataSourcePackage(input,data);
+
+		DataSourcePackage sourcePackage = new DataSourcePackage(input, data);
 
 		String json = new JsonParser().serializeNulls(sourcePackage);
 		return okRequest(json);
 	}
-	
+
 	@GET
 	@Path("/list")
-	public Response getListOfDataSources()
-	{
-		return okRequest(new JsonParser().serialize(new DataSourceFactory().getNameAllDataSources()));
+	public Response getListOfDataSources() {
+		return okRequest(new JsonParser().serialize(new DataSourceFactory()
+				.getNameAllDataSources()));
 	}
 
 	/**

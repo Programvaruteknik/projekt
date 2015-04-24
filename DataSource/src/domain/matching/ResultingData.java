@@ -11,6 +11,7 @@ public class ResultingData
 {
 
 	private Map<String, DataPair> resultData;
+	private String xAxis,yAxis;
 /**
  * Creates result from the giving map.
  * 
@@ -28,4 +29,13 @@ public class ResultingData
 	{
 		return resultData;
 	}
+	
+	public void setXAxis(String axisName){
+		this.xAxis = axisName;
+	}
+	
+	public void setYAxis(String axisName){
+		this.yAxis = axisName;
+	}
+	
 }

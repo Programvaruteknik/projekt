@@ -50,6 +50,7 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 		CorrelationChart.select(selectedDataSource, resolution).then(function(data){
 			
 			$scope.chart.data = data;
+
 		});	
 	}
 	

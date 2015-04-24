@@ -1,11 +1,10 @@
 package domain.datasources;
 
-import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
-import domain.datasources.workers.InterpolatedMe;
 import domain.datasources.workers.SunAltitudeAtNoon;
 import domain.datasources.workers.TotalFotballGoals;
 

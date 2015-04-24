@@ -13,8 +13,11 @@ import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.gson.Gson;
+
 import domain.datasources.DataSource;
 import domain.datasources.DataSourceFactory;
+import domain.datasources.MetaData;
 
 public class TestSingleDataSource {
 	TreeMap<LocalDate, Double> data = new TreeMap<>();
@@ -38,8 +41,7 @@ public class TestSingleDataSource {
 		DataSourceAPI api = new DataSourceAPI();
 		api.setFactory(factory);
 		String expectedJson = "{\"2001-01-01\":1.0,\"2001-01-02\":2.0}";
-		assertEquals(expectedJson, api.getSources("mockSource")
-				.getEntity());
+		assertEquals(expectedJson, api.getSources("mockSource").getEntity());
 
 		assertEquals(Response.Status.OK.getStatusCode(),
 				api.getSources("mockSource").getStatus());
@@ -57,6 +59,32 @@ public class TestSingleDataSource {
 		assertEquals(expectedJson, resp.getEntity());
 		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
 				resp.getStatus());
+	}
+
+	@Test
+	public void testGetMetaData() {
+		DataSourceAPI api = new DataSourceAPI();
+		DataSource sc1 = mock(DataSource.class);
+		DataSource sc2 = mock(DataSource.class);
+
+		when(sc1.getName()).thenReturn("Label1");
+		when(sc2.getName()).thenReturn("Label2");
+
+		DataSourceFactory factory = mock(DataSourceFactory.class);
+
+		when(factory.getDataSource("sc1")).thenReturn(sc1);
+		when(factory.getDataSource("sc2")).thenReturn(sc2);
+
+		api.setFactory(factory);
+		
+		Response resp = api.getCorrelationData("sc1", "sc2", "DAY");
+		String s = (String) resp.getEntity();
+		Map<String,Object> jsonMap = new Gson().fromJson(s, Map.class);
+		Map<String,Object> metaData = (Map<String, Object>) jsonMap.get("metaData");
+		
+		assertEquals(metaData.get("xAxisLabel"),"Label1");
+		assertEquals(metaData.get("yAxisLabel"),"Label2");
+
 	}
 
 	@Test

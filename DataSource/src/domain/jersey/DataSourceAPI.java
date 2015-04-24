@@ -52,10 +52,13 @@ public class DataSourceAPI
 		DataSource dataSource1 = new DataSourceFactory().getDataSource(ds1);
 		DataSource dataSource2 = new DataSourceFactory().getDataSource(ds2);
 
+
 		if (dataSource1 == null || dataSource2 == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
 		ResultingData resultingData = new DataMatcher(dataSource1, dataSource2, resolution).match();
+		resultingData.setXAxis(dataSource1.getName());
+		resultingData.setYAxis(dataSource2.getName());
 
 		return Response.status(200).entity(new JsonParser().serialize(resultingData)).build();
 	}
@@ -84,12 +87,14 @@ public class DataSourceAPI
 			{
 				DataSource tmpSource = new DataSourceFactory().getDataSource(input.get(i));
 
+
 				tmpSource = new Interpolator().fillOutMissingDays(tmpSource, Resolution.DAY);
 
 				data = new DataSourceFormatter(tmpSource).toMergeableFormat();
 			} else
 			{
 				data = new DataSourceMerger(data, new DataSourceFormatter(new DataSourceFactory().getDataSource(input.get(i))).toMergeableFormat()).merge(Resolution.DAY);
+
 
 			}
 		}

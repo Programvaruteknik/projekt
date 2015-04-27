@@ -2,8 +2,12 @@ angular.module('services', [])
 .service('CorrelationChart', function($resource, $q) {
   
 	var that = this;
-	this.select = function (selectedDataSource, resolution){
-
+	this.select = function (selectedDataSource, resolution,regression){
+		var degree= 1;
+//		if(regression === undefined){
+//			regression ="exponential";
+//		}
+//		
 		var deferred = $q.defer();
 		if(selectedDataSource.length ===2)
 		{
@@ -11,15 +15,24 @@ angular.module('services', [])
 				
 				var chartData = [["","x unit per y unit"]];
 				angular.forEach(data.resultData, function(apiData, key) {
-					chartData.push([apiData.x,apiData.y])
+					chartData.push([apiData.x,apiData.y]);
 				});
 				
+				if(regression === "polynomial:2"){
+					that.chart.options.trendlines[0].type = 'polynomial';
+					that.chart.options.trendlines[0].degree = 2;
+				}else if(regression === "polynomial:3"){
+					that.chart.options.trendlines[0].type = 'polynomial';
+					that.chart.options.trendlines[0].degree = 3;
+				}else{
+					that.chart.options.trendlines[0].type = regression;
+				}
 				that.chart.options.hAxis.title = data.metaData.xAxisLabel;
 				that.chart.options.vAxis.title = data.metaData.yAxisLabel;
+				
 				deferred.resolve(chartData);
 			});
 		}
-
 
 		return deferred.promise;
 		
@@ -31,12 +44,21 @@ angular.module('services', [])
 			"cssStyle": "height:30em; width:100%;",
 			"displayed": true,
 			"data":[["",""],[0,0]],
+	          chartArea: {width:'50%'},
 			"options": {
 				title: 'Correlation Chart',
 				pointSize: 12,
 				legend: 'none',
 				hAxis:{},
-				vAxis:{}
+				vAxis:{},
+		          trendlines: {
+		              0: {
+		                type: 'linear',
+		                showR2: true,
+		                visibleInLegend: true
+		              }
+		            }
+
 			}
 	}
 	
@@ -69,8 +91,7 @@ angular.module('services', [])
 			  "options": {
 				  title: 'Data Sources',
 				  pointSize: 12,
-				  interpolateNulls: true
-
+				  interpolateNulls: true,
 			}
 	}
 	

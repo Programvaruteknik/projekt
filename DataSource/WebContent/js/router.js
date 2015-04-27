@@ -1,4 +1,4 @@
-angular.module('dataSource', ['ngRoute', 'ngResource', 'controllers', 'localytics.directives' ]).config(function($routeProvider) {
+angular.module('dataSource', ['ngRoute', 'ngResource', 'controllers', 'localytics.directives', 'directives' ]).config(function($routeProvider) {
         $routeProvider
             .when('/', {
                 templateUrl : './html/pages/dataSourceChart.html',

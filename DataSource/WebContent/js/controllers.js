@@ -19,6 +19,12 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 	};
 	
 	$scope.chart = DataSourceChart.chart;
+	
+	alert("test", "test");
+	alert("test", "test");
+	alert("test", "test");
+	alert("test", "test");
+	
 })
 
 .controller("correlationChartController", function($scope, $resource, CorrelationChart){

@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import domain.api.EverysportApi;
 import domain.api.models.everysport.Event;
 import domain.datasources.DataSource;
+import domain.datasources.model.SourceMetaData;
 
 public class TotalFotballGoals implements DataSource
 {
@@ -43,5 +44,14 @@ public class TotalFotballGoals implements DataSource
 			}
 		}
 		return output;
+	}
+
+	@Override
+	public SourceMetaData getMetaData() {
+		SourceMetaData meta =new SourceMetaData();
+		meta.setLicense("The license");
+		meta.setUrl("http://www.everysport.com/");
+		meta.setOwner("Everyport");
+		return meta;
 	}
 }

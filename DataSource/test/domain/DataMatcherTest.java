@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import domain.datasources.DataSource;
+import domain.datasources.model.SourceMetaData;
 import domain.matching.DataMatcher;
 import domain.matching.DataPair;
 import domain.matching.Resolution;
@@ -45,6 +46,12 @@ public class DataMatcherTest
 
 			return tmpMap;
 		}
+
+		@Override
+		public SourceMetaData getMetaData() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	};
 
 	private DataSource sourceY = new DataSource()
@@ -71,6 +78,12 @@ public class DataMatcherTest
 			tmpMap.put(LocalDate.parse("2015-01-07"), 272d);
 
 			return tmpMap;
+		}
+
+		@Override
+		public SourceMetaData getMetaData() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	};
 

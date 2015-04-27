@@ -3,6 +3,8 @@ package domain.datasources;
 import java.time.LocalDate;
 import java.util.TreeMap;
 
+import domain.datasources.model.SourceMetaData;
+
 /**
  * This is an interface which is used to create objects that can retrieve Data
  * from a specific source. E.g: The web, or why not a file on the computer.
@@ -31,6 +33,8 @@ public interface DataSource {
 	 * @return Map<LocalDate,Double> The map.
 	 */
 	public TreeMap<LocalDate, Double> getData();
+
+	public SourceMetaData getMetaData();
 
 
 }

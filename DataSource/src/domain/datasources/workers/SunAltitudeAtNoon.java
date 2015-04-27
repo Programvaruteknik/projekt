@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import domain.api.WeatherAPI;
 import domain.api.models.weatherapi.Time;
 import domain.datasources.DataSource;
+import domain.datasources.model.SourceMetaData;
 
 public class SunAltitudeAtNoon implements DataSource {
 
@@ -33,6 +34,15 @@ public class SunAltitudeAtNoon implements DataSource {
 			output.put(time.getDate(), time.getLocation().getSun().getNoon().getAltitude());
 		}
 		return output;
+	}
+
+	@Override
+	public SourceMetaData getMetaData() {
+		SourceMetaData meta =new SourceMetaData();
+		meta.setLicense("");
+		meta.setOwner("met.no");
+		meta.setUrl("http://met.no");
+		return meta;
 	}
 
 }

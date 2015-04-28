@@ -4,10 +4,7 @@ angular.module('services', [])
 	var that = this;
 	this.select = function (selectedDataSource, resolution,regression){
 		var degree= 1;
-//		if(regression === undefined){
-//			regression ="exponential";
-//		}
-//		
+
 		var deferred = $q.defer();
 		if(selectedDataSource.length ===2)
 		{
@@ -47,12 +44,14 @@ angular.module('services', [])
 	          chartArea: {width:'50%'},
 			"options": {
 				title: 'Correlation Chart',
-				pointSize: 12,
+//				pointSize: 12,
 				legend: 'none',
 				hAxis:{},
 				vAxis:{},
 		          trendlines: {
 		              0: {
+		            	  color: 'green',
+		            	  pointSize:2,
 		                type: 'linear',
 		                showR2: true,
 		                visibleInLegend: true

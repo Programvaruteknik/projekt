@@ -1,7 +1,7 @@
 package domain.datasources.model;
 
 public class SourceMetaData {
-	private String url, owner, license;
+	private String title, url, owner, license;
 
 	public void setUrl(String url) {
 		this.url = url;
@@ -16,18 +16,18 @@ public class SourceMetaData {
 	}
 
 	public String getUrl() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public Object getOwner() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public Object getLicense() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+	public void setTitle(String title){
+		this.title = title;
 	}
 
 }

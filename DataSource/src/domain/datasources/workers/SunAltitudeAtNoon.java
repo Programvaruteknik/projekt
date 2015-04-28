@@ -42,6 +42,7 @@ public class SunAltitudeAtNoon implements DataSource {
 		meta.setLicense("");
 		meta.setOwner("met.no");
 		meta.setUrl("http://met.no");
+		meta.setTitle(getName());
 		return meta;
 	}
 

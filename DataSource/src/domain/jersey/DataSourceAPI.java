@@ -148,7 +148,6 @@ public class DataSourceAPI {
 	}
 
 	protected SourceMetaData getMetaData(String string) {
-		System.out.println(string);
 		SourceMetaData meta = factory.getDataSource(string).getMetaData();
 		return meta;
 	}

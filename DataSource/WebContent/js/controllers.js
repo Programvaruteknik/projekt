@@ -12,6 +12,13 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 		
 		DataSourceChart.select($scope.selectedDataSource).then(function(data){
 			$scope.chart.data = data;
+			
+			var query = $scope.selectedDataSource;
+			
+			$resource("api/dataSource/metaData?list="+$scope.selectedDataSource).query(function(data){
+				$scope.metaData = data;
+			});
+		
 		});
 		
 	};
@@ -30,8 +37,8 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 	});
 	
 	$scope.availableRegressions = ['linear','exponential','polynomial:2','polynomial:3'];
-	$scope.selectedResolution = "Resolution";
-	$scope.selectedRegression = "Regression";
+	$scope.selectedResolution = "DAY";
+	$scope.selectedRegression = "linear";
 	$scope.selectedDataSource="";
 	
 	$scope.setResolution = function(resolution)
@@ -48,6 +55,14 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 	$scope.select = function (){
 		resolution = $scope.selectedResolution === "Resolution"?"DAY":$scope.selectedResolution;
 		updateChart($scope.selectedDataSource, resolution);
+		
+		var query = $scope.selectedDataSource;
+		console.log(query);
+		
+		$resource("api/dataSource/metaData?list="+$scope.selectedDataSource).query(function(data){
+			$scope.metaData = data;
+		});
+		
 	};
 	
 	updateChart = function(selectedDataSource, resolution, regression)
@@ -70,6 +85,8 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 		
 		DataSourceChart.select($scope.selectedDataSource).then(function(data){
 			$scope.dataSourceChart.data = data;
+		
+			
 		});
 		
 		CorrelationChart.select($scope.selectedDataSource).then(function(data){

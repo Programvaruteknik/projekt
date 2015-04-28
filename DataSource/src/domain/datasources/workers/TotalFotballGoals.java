@@ -12,17 +12,18 @@ import domain.datasources.model.SourceMetaData;
 
 public class TotalFotballGoals implements DataSource
 {
-
+private String name ="Totala mål per dag i Allsvenskan";
+private String unit="Mål";
 	@Override
 	public String getName()
 	{
-		return "Totala mål per dag i Allsvenskan";
+		return name;
 	}
 
 	@Override
 	public String getUnit()
 	{
-		return "Mål";
+		return unit;
 	}
 
 	@Override
@@ -30,7 +31,6 @@ public class TotalFotballGoals implements DataSource
 	{
 		TreeMap<LocalDate, Double> output = new TreeMap<LocalDate, Double>();
 		List<Event> events = new EverysportApi().getEvents();
-		
 		for (Event event : events)
 		{
 			Double totalScore = new Double(event.getHomeTeamScore() + event.getVisitingTeamScore());
@@ -48,10 +48,11 @@ public class TotalFotballGoals implements DataSource
 
 	@Override
 	public SourceMetaData getMetaData() {
-		SourceMetaData meta =new SourceMetaData();
-		meta.setLicense("The license");
+		SourceMetaData meta = new SourceMetaData();
+		meta.setLicense("");
 		meta.setUrl("http://www.everysport.com/");
 		meta.setOwner("Everyport");
+		meta.setTitle(getName());
 		return meta;
 	}
 }

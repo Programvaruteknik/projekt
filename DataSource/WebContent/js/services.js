@@ -24,8 +24,8 @@ angular.module('services', [])
 				}else{
 					that.chart.options.trendlines[0].type = regression;
 				}
-				that.chart.options.hAxis.title = data.metaData.xAxisLabel;
-				that.chart.options.vAxis.title = data.metaData.yAxisLabel;
+				that.chart.options.hAxis.title = data.xMeta.title;
+				that.chart.options.vAxis.title = data.yMeta.title;
 				
 				deferred.resolve(chartData);
 			});
@@ -44,17 +44,15 @@ angular.module('services', [])
 	          chartArea: {width:'50%'},
 			"options": {
 				title: 'Correlation Chart',
-//				pointSize: 12,
-				legend: 'none',
 				hAxis:{},
 				vAxis:{},
 		          trendlines: {
 		              0: {
 		            	  color: 'green',
 		            	  pointSize:2,
-		                type: 'linear',
-		                showR2: true,
-		                visibleInLegend: true
+		                  type: 'linear',
+		                  showR2: true,
+		                  visibleInLegend: true
 		              }
 		            }
 

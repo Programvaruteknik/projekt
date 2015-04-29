@@ -44,17 +44,15 @@ angular.module('services', [])
 	          chartArea: {width:'50%'},
 			"options": {
 				title: 'Correlation Chart',
-//				pointSize: 12,
-				legend: 'none',
 				hAxis:{},
 				vAxis:{},
 		          trendlines: {
 		              0: {
 		            	  color: 'green',
 		            	  pointSize:2,
-		                type: 'linear',
-		                showR2: true,
-		                visibleInLegend: true
+		                  type: 'linear',
+		                  showR2: true,
+		                  visibleInLegend: true
 		              }
 		            }
 

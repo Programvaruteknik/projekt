@@ -33,13 +33,6 @@ public class DateModelator implements ModelatingComand
 		{
 			
 			@Override
-			public String getUnit()
-			{
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
 			public TreeMap<LocalDate, Double> getData()
 			{
 				TreeMap<LocalDate, Double> output = new TreeMap<>();

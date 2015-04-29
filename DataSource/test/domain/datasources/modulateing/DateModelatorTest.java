@@ -33,13 +33,6 @@ public class DateModelatorTest
 			}
 
 			@Override
-			public String getUnit()
-			{
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
 			public MetaData getMetaData()
 			{
 				// TODO Auto-generated method stub

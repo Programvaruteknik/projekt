@@ -13,14 +13,6 @@ import domain.datasources.model.MetaData;
  *
  */
 public interface DataSource {
-
-	/**
-	 * Returns the type of unit which this soure is measured in.
-	 * 
-	 * @return String The unit.
-	 */
-	public String getUnit();
-
 	/**
 	 * Returns a map representation of the source.
 	 * 

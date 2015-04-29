@@ -17,12 +17,6 @@ private String unit="Mål";
 
 
 	@Override
-	public String getUnit()
-	{
-		return unit;
-	}
-
-	@Override
 	public TreeMap<LocalDate, Double> getData()
 	{
 		TreeMap<LocalDate, Double> output = new TreeMap<LocalDate, Double>();
@@ -49,6 +43,7 @@ private String unit="Mål";
 		meta.setUrl("http://www.everysport.com/");
 		meta.setOwner("Everyport");
 		meta.setTitle(name);
+		meta.setUnit("Mål");
 		return meta;
 	}
 }

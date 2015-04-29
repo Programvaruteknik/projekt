@@ -21,11 +21,6 @@ public class DataMatcherTest {
 	private DataSource sourceX = new DataSource() {
 
 		@Override
-		public String getUnit() {
-			return "mm";
-		}
-
-		@Override
 		public TreeMap<LocalDate, Double> getData() {
 
 			TreeMap<LocalDate, Double> tmpMap = new TreeMap<>();
@@ -43,16 +38,12 @@ public class DataMatcherTest {
 			MetaData meta = new MetaData();
 			
 			meta.setTitle("Nederbörd");
+			meta.setUnit("mm");
 			return meta;
 		}
 	};
 
 	private DataSource sourceY = new DataSource() {
-
-		@Override
-		public String getUnit() {
-			return "Kelvin";
-		}
 
 		@Override
 		public TreeMap<LocalDate, Double> getData() {
@@ -68,6 +59,7 @@ public class DataMatcherTest {
 		public MetaData getMetaData() {
 			MetaData meta = new MetaData();
 			meta.setTitle("Temperatur");
+			meta.setUnit("Kelvin");
 			return meta;
 		}
 	};

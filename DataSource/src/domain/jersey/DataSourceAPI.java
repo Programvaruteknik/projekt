@@ -20,7 +20,7 @@ import domain.datasources.DataSourceFactory;
 import domain.datasources.DataSourceFormatter;
 import domain.datasources.DataSourceMerger;
 import domain.datasources.Interpolator;
-import domain.datasources.model.SourceMetaData;
+import domain.datasources.model.MetaData;
 import domain.jersey.model.DataSourcePackage;
 import domain.matching.DataMatcher;
 import domain.matching.Resolution;
@@ -50,19 +50,22 @@ public class DataSourceAPI {
 		Resolution resolution = res != null ? Resolution.valueOf(res)
 				: Resolution.DAY;
 
-		DataSource dataSource1 = new DataSourceFactory().getDataSource(ds1);
-		DataSource dataSource2 = new DataSourceFactory().getDataSource(ds2);
+		DataSource dataSource1 = factory.getDataSource(ds1);
+		DataSource dataSource2 = factory.getDataSource(ds2);
 
-		if (dataSource1 == null || dataSource2 == null)
+		if (dataSource1 == null || dataSource2 == null) {
+			System.out.println("ÅHHNEJ");
 			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 
 		ResultingData resultingData = new DataMatcher(dataSource1, dataSource2,
 				resolution).match();
-		resultingData.setXAxis(dataSource1.getName());
-		resultingData.setYAxis(dataSource2.getName());
+
+		resultingData.setXMeta(dataSource1.getMetaData());
+		resultingData.setYMeta(dataSource2.getMetaData());
 
 		return Response.status(200)
-				.entity(new JsonParser().serialize(resultingData)).build();
+				.entity(new JsonParser().serializeNulls(resultingData)).build();
 	}
 
 	DataSourceFactory factory;
@@ -83,8 +86,7 @@ public class DataSourceAPI {
 
 		for (int i = 0; i < input.size(); i++) {
 			if (i == 0) {
-				DataSource tmpSource = new DataSourceFactory()
-						.getDataSource(input.get(i));
+				DataSource tmpSource = factory.getDataSource(input.get(i));
 
 				tmpSource = new Interpolator().fillOutMissingDays(tmpSource,
 						Resolution.DAY);
@@ -92,18 +94,20 @@ public class DataSourceAPI {
 				data = new DataSourceFormatter(tmpSource).toMergeableFormat();
 			} else {
 				data = new DataSourceMerger(data,
-						new DataSourceFormatter(
-								new DataSourceFactory().getDataSource(input
+						new DataSourceFormatter(factory.getDataSource(input
 										.get(i))).toMergeableFormat())
 						.merge(Resolution.DAY);
 
 			}
 		}
-
+		ArrayList<MetaData> metaList = new ArrayList<MetaData>();
+		for(String sourceName : input){
+			DataSource src = factory.getDataSource(sourceName);
+			metaList.add(src.getMetaData());
+		}
 		input.add(0, "Date");
 
-		DataSourcePackage sourcePackage = new DataSourcePackage(input, data);
-
+		DataSourcePackage sourcePackage = new DataSourcePackage(input, metaList,data);
 		String json = new JsonParser().serializeNulls(sourcePackage);
 		return okRequest(json);
 	}
@@ -128,17 +132,18 @@ public class DataSourceAPI {
 	}
 
 	/**
-	 * Returns an json list of each data source. The sources are separated
-	 * with ','.
+	 * Returns an json list of each data source. The sources are separated with
+	 * ','.
 	 * 
-	 * @param string The json list.
+	 * @param string
+	 *            The json list.
 	 * @return
 	 */
 	@GET
 	@Path("/metaData")
 	public Response getMeta(@QueryParam("list") String string) {
 		String[] list = string.split(",");
-		ArrayList<SourceMetaData> array = new ArrayList<>();
+		ArrayList<MetaData> array = new ArrayList<>();
 		for (String e : list) {
 			array.add(getMetaData(e));
 		}
@@ -147,8 +152,8 @@ public class DataSourceAPI {
 		return Response.status(200).entity(json).build();
 	}
 
-	protected SourceMetaData getMetaData(String string) {
-		SourceMetaData meta = factory.getDataSource(string).getMetaData();
+	protected MetaData getMetaData(String string) {
+		MetaData meta = factory.getDataSource(string).getMetaData();
 		return meta;
 	}
 

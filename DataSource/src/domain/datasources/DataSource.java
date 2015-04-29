@@ -3,7 +3,7 @@ package domain.datasources;
 import java.time.LocalDate;
 import java.util.TreeMap;
 
-import domain.datasources.model.SourceMetaData;
+import domain.datasources.model.MetaData;
 
 /**
  * This is an interface which is used to create objects that can retrieve Data
@@ -13,12 +13,6 @@ import domain.datasources.model.SourceMetaData;
  *
  */
 public interface DataSource {
-	/**
-	 * Returns the name of the Source.
-	 * 
-	 * @return String The name.
-	 */
-	public String getName();
 
 	/**
 	 * Returns the type of unit which this soure is measured in.
@@ -34,7 +28,7 @@ public interface DataSource {
 	 */
 	public TreeMap<LocalDate, Double> getData();
 
-	public SourceMetaData getMetaData();
+	public MetaData getMetaData();
 
 
 }

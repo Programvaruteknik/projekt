@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import domain.datasources.model.SourceMetaData;
+import domain.datasources.model.MetaData;
 import domain.matching.Resolution;
 
 /**
@@ -107,18 +107,12 @@ public class Interpolator {
 			}
 
 			@Override
-			public String getName() {
-				return sc.getName();
-			}
-
-			@Override
 			public TreeMap<LocalDate, Double> getData() {
 				return copyMap;
 			}
 
 			@Override
-			public SourceMetaData getMetaData() {
-				// TODO Auto-generated method stub
+			public MetaData getMetaData() {
 				return null;
 			}
 		};

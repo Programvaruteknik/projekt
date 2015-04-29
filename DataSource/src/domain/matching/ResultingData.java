@@ -2,7 +2,7 @@ package domain.matching;
 
 import java.util.Map;
 
-import domain.datasources.MetaData;
+import domain.datasources.model.MetaData;
 
 /**
  * Stores a map that consist of the resulting data from #DataMatcher.
@@ -13,7 +13,7 @@ import domain.datasources.MetaData;
 public class ResultingData {
 
 	private Map<String, DataPair> resultData;
-	private MetaData metaData;
+	private MetaData xMeta, yMeta;
 
 	/**
 	 * Creates result from the giving map.
@@ -22,7 +22,6 @@ public class ResultingData {
 	 *            The map.
 	 */
 	public ResultingData(Map<String, DataPair> resultData) {
-		metaData = new MetaData();
 		this.resultData = resultData;
 	}
 
@@ -35,17 +34,20 @@ public class ResultingData {
 		return resultData;
 	}
 
-	public MetaData getMetaData() {
-		return metaData;
+	public void setXMeta(MetaData meta) {
+		xMeta = meta;
 	}
 
-	public void setXAxis(String axisName) {
-		metaData.setXLabel(axisName);
+	public void setYMeta(MetaData meta) {
+		yMeta = meta;
 	}
 
-	public void setYAxis(String axisName) {
+	public MetaData getXMeta() {
+		return xMeta;
+	}
 
-		metaData.setYLabel(axisName);
+	public MetaData getYMeta() {
+		return yMeta;
 	}
 
 }

@@ -18,10 +18,17 @@ public class DataSourceFactory
 		prePopulateSourceMap();
 	}
 	
+	private void addToMap(DataSource dataSource)
+	{
+		sourceMap.put(dataSource.getMetaData().getName(), dataSource);
+		
+	}
+	
 	private void prePopulateSourceMap() 
 	{
-		sourceMap.put("Total Fotball Goals", new TotalFotballGoals());
-		sourceMap.put("Sun Altitude At Noon", new SunAltitudeAtNoon());
+		
+		addToMap(new TotalFotballGoals());
+		addToMap(new SunAltitudeAtNoon());
 	}
 	public DataSource getDataSource(String id)
 	{

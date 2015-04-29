@@ -13,11 +13,6 @@ import domain.datasources.model.MetaData;
 public class SunAltitudeAtNoon implements DataSource {
 
 
-	@Override
-	public String getUnit() {
-
-		return "Grader";
-	}
 
 	@Override
 	public TreeMap<LocalDate, Double> getData() {
@@ -38,6 +33,7 @@ public class SunAltitudeAtNoon implements DataSource {
 		meta.setOwner("met.no");
 		meta.setUrl("http://met.no");
 		meta.setTitle("Solens altitud vid 12");
+		meta.setUnit("Grader");
 		return meta;
 	}
 

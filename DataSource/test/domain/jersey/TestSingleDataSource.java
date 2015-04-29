@@ -71,16 +71,10 @@ public class TestSingleDataSource {
 	DataSource x = new DataSource() {
 
 		@Override
-		public String getUnit() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
 		public MetaData getMetaData() {
-			// TODO Auto-generated method stub
 			MetaData meta = new MetaData();
 			meta.setTitle("xSource");
+			meta.setUnit("xUnit");
 			return meta;
 		}
 
@@ -94,14 +88,10 @@ public class TestSingleDataSource {
 	DataSource y = new DataSource() {
 
 		@Override
-		public String getUnit() {
-			return null;
-		}
-
-		@Override
 		public MetaData getMetaData() {
 			MetaData meta = new MetaData();
 			meta.setTitle("ySource");
+			meta.setUnit("yUnit");
 			return meta;
 		}
 
@@ -109,6 +99,7 @@ public class TestSingleDataSource {
 		public TreeMap<LocalDate, Double> getData() {
 			TreeMap<LocalDate, Double> map = new TreeMap<LocalDate, Double>();
 			map.put(LocalDate.parse("2001-01-01"), 1d);
+	
 			return map;
 		}
 	};
@@ -139,6 +130,9 @@ public class TestSingleDataSource {
 
 		assertEquals(expectedName1, metaDataX.get("title"));
 		assertEquals(expectedName2, metaDataY.get("title"));
+		assertEquals("xUnit", metaDataX.get("unit"));
+		assertEquals("yUnit", metaDataY.get("unit"));
+		
 	}
 
 	@Test

@@ -54,7 +54,6 @@ public class DataSourceAPI {
 		DataSource dataSource2 = factory.getDataSource(ds2);
 
 		if (dataSource1 == null || dataSource2 == null) {
-			System.out.println("ÅHHNEJ");
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 

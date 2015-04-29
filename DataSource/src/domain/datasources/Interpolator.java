@@ -101,10 +101,6 @@ public class Interpolator {
 
 		DataSource copySource = new DataSource() {
 
-			@Override
-			public String getUnit() {
-				return sc.getUnit();
-			}
 
 			@Override
 			public TreeMap<LocalDate, Double> getData() {
@@ -113,7 +109,7 @@ public class Interpolator {
 
 			@Override
 			public MetaData getMetaData() {
-				return null;
+				return sc.getMetaData();
 			}
 		};
 		return copySource;

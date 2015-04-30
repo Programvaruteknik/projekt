@@ -9,78 +9,82 @@
 </header>
 
 <div class="row">
-	<div class="medium-12 columns" style="margin-bottom:4px">
-		<select chosen multiple 
-			data-placeholder="Choose two data sources"
+	<div class="medium-12 columns">
+		<select chosen multiple data-placeholder="Choose two data sources"
 			no-results-text="'Could not find any data source'"
-			max_selected_options= "2"
-			ng-model="selectedDataSource" 
+			max_selected_options="2" ng-model="selectedDataSource"
 			ng-options="dataSource for dataSource in dataSources"
 			ng-change="select()">
-		</select>
+		</select> <br> <br>
+
+		<div class="medium-12 columns">
+			<a class="button tiny dropdown" dropdown-toggle="#resolutionDropdown">Resolution:
+				{{selectedResolution}}</a>
+			<ul id="resolutionDropdown" class="f-dropdown">
+				<li ng-repeat="resolution in resolutions"><a
+					ng-click="setResolution(resolution)">{{resolution}}</a></li>
+			</ul>
+
+
+
+			<a class="button tiny dropdown" dropdown-toggle="#regressionDropdown">Regression:
+				{{ selectedRegression }}</a>
+			<ul id="regressionDropdown" class="f-dropdown">
+				<li ng-repeat="regression in availableRegressions"><a
+					ng-click="setRegression(regression)"> {{ regression }} </a></li>
+			</ul>
+		</div>
 	</div>
-	
+</div>
+
+<div class="row">
 	<div class="medium-12 columns">
-	  <a class="button tiny dropdown" dropdown-toggle="#resolutionDropdown">{{selectedResolution}}</a>
-	  <ul id="resolutionDropdown" class="f-dropdown">
-	    <li ng-repeat="resolution in resolutions">
-	      <a ng-click="setResolution(resolution)">{{resolution}}</a>
-	    </li>
-	  </ul>
-
-	  
-	
- 	  <a class="button tiny dropdown" dropdown-toggle="#regressionDropdown">{{ selectedRegression }}</a>
-	 <ul id="regressionDropdown" class="f-dropdown">
-		 <li ng-repeat="regression in availableRegressions">
-
-			  <a ng-click="setRegression(regression)"> {{ regression }} </a>
-		 </li>
-	 </ul>
-
-	 </div>
-	<div class="medium-12 columns">
-		<div google-chart chart="chart" style="{{chart.cssStyle}}"/></div>
+		<div google-chart chart="chart"/></div>
 	</div>
-	
-	
-	<button type="button" class="btn btn-default"
-			dropdown-toggle="#sourceInformation" style="margin-top:10px">More info</button>
+</div>
+
+<div class="row">
+	<div class="medium-12 columns">
+
+		<button type="button" class="tiny button primary radius"
+			dropdown-toggle="#sourceInformation" style="margin-top: 10px">More
+			info</button>
+
 
 		<div id="sourceInformation">
 
-			<div class="panel panel-primary">
+			<div class="panel radius">
 
-				<div class="panel-heading"><h4>The choosen datasources are listed
-					in the following table</h4></div>
+				<h6>Information about the selected data sources are listed in
+					the table below</h6>
 
-				<div class="panel-body">
-
-					<table class="table">
+				<table>
+					<thead>
 						<tr>
-							<td>DataSource</td>
-							<td>URL</td>
-							<td>Owner</td>
-							<td>License</td>
+							<th>Title</th>
+							<th>Url</th>
+							<th>Owner</th>
+							<th>License</th>
 						</tr>
+					</thead>
+
+					<tbody>
+
 
 						<tr ng-repeat="meta in metaData">
-							<td><h5>{{ meta.title }}</h5></td>
-							<td>Url:
-								 <a hreF="{{meta.url}}" target="_blank">
-									{{ meta.url }}
-								</a>
+							<td>{{ meta.title }}</td>
+							<td>Url: <a hreF="{{meta.url}}" target="_blank"> {{
+									meta.url }} </a>
 							</td>
 							<td>{{ meta.owner }}</td>
 							<td>{{ meta.license }}</td>
 						</tr>
 
-					</table>
-					
-				</div>
+					</tbody>
+				</table>
+
 			</div>
+
+		</div>
 	</div>
-	
-	
-	
-</div>	
+</div>

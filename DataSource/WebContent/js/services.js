@@ -24,10 +24,10 @@ angular.module('services', [])
 					chartData.push([apiData.x,apiData.y]);
 				});
 				
-				if(regression === "polynomial:2"){
+				if(regression === "polynomial (deg 2)"){
 					that.chart.options.trendlines[0].type = 'polynomial';
 					that.chart.options.trendlines[0].degree = 2;
-				}else if(regression === "polynomial:3"){
+				}else if(regression === "polynomial (deg 3)"){
 					that.chart.options.trendlines[0].type = 'polynomial';
 					that.chart.options.trendlines[0].degree = 3;
 				}else{
@@ -47,7 +47,7 @@ angular.module('services', [])
 	
 	this.chart = {
 			"type": "ScatterChart",
-			"cssStyle": "height:30em; width:100%;",
+			"cssStyle": "height:400px; width:100%;",
 			"displayed": true,
 			"data":[["",""],[0,0]],
 	          chartArea: {width:'50%'},
@@ -100,7 +100,7 @@ angular.module('services', [])
 	
 	this.chart = {
 			  "type": "LineChart",
-			  "cssStyle": "height:30em; width:100%;",
+			  "cssStyle": "height:400px; width:100%;",
 			  "displayed": true,
 			  "data":[["",""],[0,0]],
 			  "options": {

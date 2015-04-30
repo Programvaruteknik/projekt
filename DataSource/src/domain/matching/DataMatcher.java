@@ -8,9 +8,9 @@ import java.util.Map.Entry;
 import domain.datasources.DataSource;
 
 /**
- * This matcher is user do correlate different {@link DataSource}'s. The sources can be
- * correlated with different resolutions ({@link Resolution}'s). The resolutions is adjusted by a
- * parameter in the constructor.
+ * This matcher is user do correlate different {@link DataSource}'s. The sources
+ * can be correlated with different resolutions ({@link Resolution}'s). The
+ * resolutions is adjusted by a parameter in the constructor.
  * 
  * @author rasmus
  *
@@ -60,16 +60,21 @@ public class DataMatcher {
 						new DataPair(entry.getValue(), tmp));
 			}
 		}
+		ResultingData resultData = new ResultingData(resultMap);
+		resultData.setXMeta(dataSourceX.getMetaData());
+		resultData.setYMeta(dataSourceY.getMetaData());
 
-		return new ResultingData(resultMap);
+		return resultData;
 	}
-/**
- * Calculates the normalized value for all the entries in the map.
- * The normalized map is then returned.
- * 
- * @param input Map<LocalDate,Double> The map which is to be normalized.
- * @return Map<String,Double> The normalized map.
- */
+
+	/**
+	 * Calculates the normalized value for all the entries in the map. The
+	 * normalized map is then returned.
+	 * 
+	 * @param input
+	 *            Map<LocalDate,Double> The map which is to be normalized.
+	 * @return Map<String,Double> The normalized map.
+	 */
 	private Map<String, Double> normalizeMap(Map<LocalDate, Double> input) {
 		Map<String, Double> output = new HashMap<String, Double>();
 		Map<String, Map<LocalDate, Double>> tmp = new HashMap<String, Map<LocalDate, Double>>();

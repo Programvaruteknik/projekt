@@ -8,20 +8,11 @@ import java.util.TreeMap;
 import domain.api.WeatherAPI;
 import domain.api.models.weatherapi.Time;
 import domain.datasources.DataSource;
+import domain.datasources.model.MetaData;
 
 public class SunAltitudeAtNoon implements DataSource {
 
-	@Override
-	public String getName() {
 
-		return "Solens altitud vid 12";
-	}
-
-	@Override
-	public String getUnit() {
-
-		return "Grader";
-	}
 
 	@Override
 	public TreeMap<LocalDate, Double> getData() {
@@ -33,6 +24,17 @@ public class SunAltitudeAtNoon implements DataSource {
 			output.put(time.getDate(), time.getLocation().getSun().getNoon().getAltitude());
 		}
 		return output;
+	}
+
+	@Override
+	public MetaData getMetaData() {
+		MetaData meta =new MetaData();
+		meta.setLicense("");
+		meta.setOwner("met.no");
+		meta.setUrl("http://met.no");
+		meta.setTitle("Solens altitud vid 12");
+		meta.setUnit("Grader");
+		return meta;
 	}
 
 }

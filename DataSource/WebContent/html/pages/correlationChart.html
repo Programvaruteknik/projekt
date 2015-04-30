@@ -37,8 +37,50 @@
 			  <a ng-click="setRegression(regression)"> {{ regression }} </a>
 		 </li>
 	 </ul>
+
 	 </div>
 	<div class="medium-12 columns">
 		<div google-chart chart="chart" style="{{chart.cssStyle}}"/></div>
 	</div>
-</div>
+	
+	
+	<button type="button" class="btn btn-default"
+			dropdown-toggle="#sourceInformation" style="margin-top:10px">More info</button>
+
+		<div id="sourceInformation">
+
+			<div class="panel panel-primary">
+
+				<div class="panel-heading"><h4>The choosen datasources are listed
+					in the following table</h4></div>
+
+				<div class="panel-body">
+
+					<table class="table">
+						<tr>
+							<td>DataSource</td>
+							<td>URL</td>
+							<td>Owner</td>
+							<td>License</td>
+						</tr>
+
+						<tr ng-repeat="meta in metaData">
+							<td><h5>{{ meta.title }}</h5></td>
+							<td>Url:
+								 <a hreF="{{meta.url}}" target="_blank">
+									{{ meta.url }}
+								</a>
+							</td>
+							<td>{{ meta.owner }}</td>
+							<td>{{ meta.license }}</td>
+						</tr>
+
+					</table>
+					
+				</div>
+			</div>
+	</div>
+	
+	
+	
+</div>	

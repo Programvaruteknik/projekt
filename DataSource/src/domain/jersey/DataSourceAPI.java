@@ -20,6 +20,7 @@ import domain.datasources.DataSourceFactory;
 import domain.datasources.DataSourceFormatter;
 import domain.datasources.DataSourceMerger;
 import domain.datasources.Interpolator;
+import domain.datasources.model.MetaData;
 import domain.jersey.model.DataSourcePackage;
 import domain.matching.DataMatcher;
 import domain.matching.Resolution;
@@ -34,91 +35,125 @@ import domain.matching.ResultingData;
  *
  */
 @Path("/dataSource")
-public class DataSourceAPI
-{
+public class DataSourceAPI {
 
-	public DataSourceAPI()
-	{
+	public DataSourceAPI() {
 		factory = new DataSourceFactory();
 	}
 
 	@GET
 	@Path("/correlationData")
-	public Response getCorrelationData(@QueryParam("dataSource1") String ds1, @QueryParam("dataSource2") String ds2, @QueryParam("resolution") String res)
-	{
+	public Response getCorrelationData(@QueryParam("dataSource1") String ds1,
+			@QueryParam("dataSource2") String ds2,
+			@QueryParam("resolution") String res) {
 
-		Resolution resolution = res != null ? Resolution.valueOf(res) : Resolution.DAY;
+		Resolution resolution = res != null ? Resolution.valueOf(res)
+				: Resolution.DAY;
 
-		DataSource dataSource1 = new DataSourceFactory().getDataSource(ds1);
-		DataSource dataSource2 = new DataSourceFactory().getDataSource(ds2);
+		DataSource dataSource1 = factory.getDataSource(ds1);
+		DataSource dataSource2 = factory.getDataSource(ds2);
 
-
-		if (dataSource1 == null || dataSource2 == null)
+		if (dataSource1 == null || dataSource2 == null) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
 
-		ResultingData resultingData = new DataMatcher(dataSource1, dataSource2, resolution).match();
-		resultingData.setXAxis(dataSource1.getName());
-		resultingData.setYAxis(dataSource2.getName());
+		ResultingData resultingData = new DataMatcher(dataSource1, dataSource2,
+				resolution).match();
 
-		return Response.status(200).entity(new JsonParser().serialize(resultingData)).build();
+		resultingData.setXMeta(dataSource1.getMetaData());
+		resultingData.setYMeta(dataSource2.getMetaData());
+
+		return Response.status(200)
+				.entity(new JsonParser().serializeNulls(resultingData)).build();
 	}
 
 	DataSourceFactory factory;
 
-	protected void setFactory(DataSourceFactory factory)
-	{
+	protected void setFactory(DataSourceFactory factory) {
 		this.factory = factory;
 	}
 
 	@GET
 	@Path("/{dataSource}")
-	public Response getSources(@PathParam("dataSource") String ds)
-	{
+	public Response getSources(@PathParam("dataSource") String ds) {
 
-		ArrayList<String> input = new JsonParser().deserialize(ds, new TypeToken<ArrayList<String>>()
-		{
-		}.getType());
+		ArrayList<String> input = new JsonParser().deserialize(ds,
+				new TypeToken<ArrayList<String>>() {
+				}.getType());
 
 		TreeMap<LocalDate, ArrayList<Double>> data = null;
 
-		for (int i = 0; i < input.size(); i++)
-		{
-			if (i == 0)
-			{
-				DataSource tmpSource = new DataSourceFactory().getDataSource(input.get(i));
+		for (int i = 0; i < input.size(); i++) {
+			if (i == 0) {
+				DataSource tmpSource = factory.getDataSource(input.get(i));
 
-
-				tmpSource = new Interpolator().fillOutMissingDays(tmpSource, Resolution.DAY);
+				tmpSource = new Interpolator().fillOutMissingDays(tmpSource,
+						Resolution.DAY);
 
 				data = new DataSourceFormatter(tmpSource).toMergeableFormat();
-			} else
-			{
-				data = new DataSourceMerger(data, new DataSourceFormatter(new DataSourceFactory().getDataSource(input.get(i))).toMergeableFormat()).merge(Resolution.DAY);
-
+			} else {
+				data = new DataSourceMerger(data,
+						new DataSourceFormatter(factory.getDataSource(input
+										.get(i))).toMergeableFormat())
+						.merge(Resolution.DAY);
 
 			}
 		}
-
+		ArrayList<MetaData> metaList = new ArrayList<MetaData>();
+		for(String sourceName : input){
+			DataSource src = factory.getDataSource(sourceName);
+			metaList.add(src.getMetaData());
+		}
 		input.add(0, "Date");
 
-		DataSourcePackage sourcePackage = new DataSourcePackage(input, data);
-
+		DataSourcePackage sourcePackage = new DataSourcePackage(input, metaList,data);
 		String json = new JsonParser().serializeNulls(sourcePackage);
 		return okRequest(json);
 	}
 
 	@GET
 	@Path("/resolutions")
-	public Response getResolutions()
-	{
+	public Response getResolutions() {
 		return okRequest(new JsonParser().serialize(Resolution.values()));
 	}
 
 	@GET
 	@Path("/list")
-	public Response getListOfDataSources()
-	{
-		return okRequest(new JsonParser().serialize(new DataSourceFactory().getNameAllDataSources()));
+	public Response getListOfDataSources() {
+		return okRequest(new JsonParser().serialize(new DataSourceFactory()
+				.getNameAllDataSources()));
+	}
+
+	@GET
+	@Path("/foo/test")
+	public Response getFoo(@QueryParam("foo") String s) {
+		return Response.status(200).entity("Yaay" + s).build();
+	}
+
+	/**
+	 * Returns an json list of each data source. The sources are separated with
+	 * ','.
+	 * 
+	 * @param string
+	 *            The json list.
+	 * @return
+	 */
+	@GET
+	@Path("/metaData")
+	public Response getMeta(@QueryParam("list") String string) {
+		String[] list = string.split(",");
+		ArrayList<MetaData> array = new ArrayList<>();
+		for (String e : list) {
+			array.add(getMetaData(e));
+		}
+		String s = string;
+		String json = new JsonParser().serialize(array);
+		return Response.status(200).entity(json).build();
+	}
+
+	protected MetaData getMetaData(String string) {
+		MetaData meta = factory.getDataSource(string).getMetaData();
+		return meta;
 	}
 
 	/**
@@ -128,8 +163,7 @@ public class DataSourceAPI
 	 * 
 	 * @return Response The Response.
 	 */
-	protected Response badRequestResponse()
-	{
+	protected Response badRequestResponse() {
 		return Response.status(Response.Status.BAD_REQUEST).build();
 	}
 
@@ -140,8 +174,7 @@ public class DataSourceAPI
 	 *            The source.
 	 * @return String The json.
 	 */
-	protected String getJson(DataSource source)
-	{
+	protected String getJson(DataSource source) {
 		return new JsonParser().serialize(source.getData());
 	}
 
@@ -152,8 +185,7 @@ public class DataSourceAPI
 	 *            The given object.
 	 * @return Response The response.
 	 */
-	protected Response okRequest(Object obj)
-	{
+	protected Response okRequest(Object obj) {
 		return Response.status(Response.Status.OK).entity(obj).build();
 	}
 

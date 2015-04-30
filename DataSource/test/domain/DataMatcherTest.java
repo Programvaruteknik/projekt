@@ -10,31 +10,18 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import domain.datasources.DataSource;
+import domain.datasources.model.MetaData;
 import domain.matching.DataMatcher;
 import domain.matching.DataPair;
 import domain.matching.Resolution;
+import domain.matching.ResultingData;
 
-public class DataMatcherTest
-{
+public class DataMatcherTest {
 
-	private DataSource sourceX = new DataSource()
-	{
-
-		@Override
-		public String getUnit()
-		{
-			return "mm";
-		}
+	private DataSource sourceX = new DataSource() {
 
 		@Override
-		public String getName()
-		{
-			return "Nederbörd";
-		}
-
-		@Override
-		public TreeMap<LocalDate, Double> getData()
-		{
+		public TreeMap<LocalDate, Double> getData() {
 
 			TreeMap<LocalDate, Double> tmpMap = new TreeMap<>();
 			tmpMap.put(LocalDate.parse("2015-01-01"), 3d);
@@ -45,26 +32,21 @@ public class DataMatcherTest
 
 			return tmpMap;
 		}
+
+		@Override
+		public MetaData getMetaData() {
+			MetaData meta = new MetaData();
+			
+			meta.setTitle("Nederbörd");
+			meta.setUnit("mm");
+			return meta;
+		}
 	};
 
-	private DataSource sourceY = new DataSource()
-	{
+	private DataSource sourceY = new DataSource() {
 
 		@Override
-		public String getUnit()
-		{
-			return "Kelvin";
-		}
-
-		@Override
-		public String getName()
-		{
-			return "Temperatur";
-		}
-
-		@Override
-		public TreeMap<LocalDate, Double> getData()
-		{
+		public TreeMap<LocalDate, Double> getData() {
 			TreeMap<LocalDate, Double> tmpMap = new TreeMap<>();
 			tmpMap.put(LocalDate.parse("2015-01-01"), 255d);
 			tmpMap.put(LocalDate.parse("2015-01-04"), 10d);
@@ -72,25 +54,42 @@ public class DataMatcherTest
 
 			return tmpMap;
 		}
+
+		@Override
+		public MetaData getMetaData() {
+			MetaData meta = new MetaData();
+			meta.setTitle("Temperatur");
+			meta.setUnit("Kelvin");
+			return meta;
+		}
 	};
 
 	@Test
-	public void testMatch()
-	{
+	public void testMatch() {
+		ResultingData result = new DataMatcher(sourceX, sourceY, Resolution.DAY)
+				.match();
 
-		Map<String, DataPair> resoultingData = new DataMatcher(sourceX, sourceY, Resolution.DAY).match().getData();
+		Map<String, DataPair> resoultingData = result.getData();
 
 		assertEquals(2, resoultingData.size());
 		assertEquals(new Double(3d), resoultingData.get("2015-01-01").getX());
 		assertEquals(new Double(255d), resoultingData.get("2015-01-01").getY());
 
-		resoultingData = new DataMatcher(sourceX, sourceY, Resolution.WEEK).match().getData();
+		resoultingData = new DataMatcher(sourceX, sourceY, Resolution.WEEK)
+				.match().getData();
 
 		assertEquals(2, resoultingData.size());
 		assertEquals(new Double(6.5), resoultingData.get("2015 V.1").getX());
 		assertEquals(new Double(132.5), resoultingData.get("2015 V.1").getY());
 		assertEquals(new Double(2.1), resoultingData.get("2015 V.2").getX());
 		assertEquals(new Double(272d), resoultingData.get("2015 V.2").getY());
+		
+		String expectedSrc1Name = "Nederbörd";
+		String expectedSrc2Name = "Temperatur";
+		//
+		
+		assertEquals(expectedSrc1Name, result.getXMeta().getName());
+		assertEquals(expectedSrc2Name, result.getYMeta().getName());
 
 	}
 

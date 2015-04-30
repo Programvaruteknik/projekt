@@ -1,6 +1,6 @@
 angular.element(document).ready(function() {
 
-	window.alert = function(msg, header, type) {
+	window.alert = function(header,msg, type) {
 
 		if(type === undefined)
 		{

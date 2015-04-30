@@ -9,9 +9,15 @@ angular.module('services', [])
 		if(selectedDataSource.length ===2)
 		{
 			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution}, function(data) {
-				
-				console.log(data.xMeta);
-				console.log(data.yMeta);
+
+				if(!data.xMeta.hasData)
+				{
+					alert(data.xMeta.title + " missing data", "the selected interval contains no data", "warning");
+				}
+				if(!data.yMeta.hasData)
+				{
+					alert(data.yMeta.title + " missing data", "the selected interval contains no data", "warning");
+				}
 				
 				var chartData = [["","x unit per y unit"]];
 				angular.forEach(data.resultData, function(apiData, key) {
@@ -71,6 +77,15 @@ angular.module('services', [])
 		var deferred = $q.defer();
 		
 		$resource("api/dataSource/:dataSource").get({dataSource:angular.toJson(selectedDataSource)}, function(data) {
+			
+			angular.forEach(data.metaDataList, function(value, key) {
+					if(!value.hasData)
+					{
+						alert(value.title + " missing data", "the selected interval contains no data", "warning");
+					}
+				  
+				});
+			
 			chartData = [data.header];
 			angular.forEach(data.data, function(apiData, key) {
 				

@@ -10,6 +10,9 @@ angular.module('services', [])
 		{
 			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution}, function(data) {
 				
+				console.log(data.xMeta);
+				console.log(data.yMeta);
+				
 				var chartData = [["","x unit per y unit"]];
 				angular.forEach(data.resultData, function(apiData, key) {
 					chartData.push([apiData.x,apiData.y]);

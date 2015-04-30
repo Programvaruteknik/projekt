@@ -24,10 +24,10 @@ angular.module('services', [])
 					chartData.push([apiData.x,apiData.y]);
 				});
 				
-				if(regression === "polynomial (deg 2)"){
+				if(regression === "polynomial (degree 2)"){
 					that.chart.options.trendlines[0].type = 'polynomial';
 					that.chart.options.trendlines[0].degree = 2;
-				}else if(regression === "polynomial (deg 3)"){
+				}else if(regression === "polynomial (degree 3)"){
 					that.chart.options.trendlines[0].type = 'polynomial';
 					that.chart.options.trendlines[0].degree = 3;
 				}else{

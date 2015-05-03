@@ -35,8 +35,7 @@ public class DateModelatorTest
 			@Override
 			public MetaData getMetaData()
 			{
-				// TODO Auto-generated method stub
-				return null;
+				return new MetaData();
 			}
 		};
 	}
@@ -67,6 +66,19 @@ public class DateModelatorTest
 		expected.put(LocalDate.parse("2014-01-01"), 10d);
 
 		assertEquals(expected.keySet(), dateModelator.execute().getData().keySet());
+	}
+	
+	@Test
+	public void testMetaData()
+	{
+		assertNull(testDatasource.getMetaData().getModList());
+		DateModelator dateModelator = new DateModelator(testDatasource, 1, 1, 1);
+		testDatasource = dateModelator.execute();
+		assertEquals(1, testDatasource.getMetaData().getModList().size());
+		dateModelator = new DateModelator(testDatasource, 1, 1, 1);
+		testDatasource = dateModelator.execute();
+		assertEquals(2, testDatasource.getMetaData().getModList().size());
+		
 	}
 
 }

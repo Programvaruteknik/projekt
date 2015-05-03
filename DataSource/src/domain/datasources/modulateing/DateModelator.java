@@ -1,6 +1,8 @@
 package domain.datasources.modulateing;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
@@ -52,7 +54,21 @@ public class DateModelator implements ModelatingComand
 			@Override
 			public MetaData getMetaData()
 			{
-				return null;
+				MetaData output = dataSource.getMetaData();
+				
+				List<ModelatingComand> list = output.getModList();
+				
+				if(list == null)
+				{
+					list = new ArrayList<ModelatingComand>();
+				}
+				
+				list.add(DateModelator.this);
+				
+				output.setModList(list); 
+				
+				
+				return output;
 			}
 		};
 		

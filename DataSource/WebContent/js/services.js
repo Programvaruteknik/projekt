@@ -9,23 +9,32 @@ angular.module('services', [])
 		if(selectedDataSource.length ===2)
 		{
 			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution}, function(data) {
+
+				if(!data.xMeta.hasData)
+				{
+					alert(data.xMeta.title + " missing data", "the selected interval contains no data", "warning");
+				}
+				if(!data.yMeta.hasData)
+				{
+					alert(data.yMeta.title + " missing data", "the selected interval contains no data", "warning");
+				}
 				
 				var chartData = [["","x unit per y unit"]];
 				angular.forEach(data.resultData, function(apiData, key) {
 					chartData.push([apiData.x,apiData.y]);
 				});
 				
-				if(regression === "polynomial:2"){
+				if(regression === "polynomial (degree 2)"){
 					that.chart.options.trendlines[0].type = 'polynomial';
 					that.chart.options.trendlines[0].degree = 2;
-				}else if(regression === "polynomial:3"){
+				}else if(regression === "polynomial (degree 3)"){
 					that.chart.options.trendlines[0].type = 'polynomial';
 					that.chart.options.trendlines[0].degree = 3;
 				}else{
 					that.chart.options.trendlines[0].type = regression;
 				}
-				that.chart.options.hAxis.title = data.metaData.xAxisLabel;
-				that.chart.options.vAxis.title = data.metaData.yAxisLabel;
+				that.chart.options.hAxis.title = data.xMeta.title;
+				that.chart.options.vAxis.title = data.yMeta.title;
 				
 				deferred.resolve(chartData);
 			});
@@ -38,23 +47,21 @@ angular.module('services', [])
 	
 	this.chart = {
 			"type": "ScatterChart",
-			"cssStyle": "height:30em; width:100%;",
+			"cssStyle": "height:400px; width:100%;",
 			"displayed": true,
 			"data":[["",""],[0,0]],
 	          chartArea: {width:'50%'},
 			"options": {
 				title: 'Correlation Chart',
-//				pointSize: 12,
-				legend: 'none',
 				hAxis:{},
 				vAxis:{},
 		          trendlines: {
 		              0: {
 		            	  color: 'green',
 		            	  pointSize:2,
-		                type: 'linear',
-		                showR2: true,
-		                visibleInLegend: true
+		                  type: 'linear',
+		                  showR2: true,
+		                  visibleInLegend: true
 		              }
 		            }
 
@@ -70,6 +77,15 @@ angular.module('services', [])
 		var deferred = $q.defer();
 		
 		$resource("api/dataSource/:dataSource").get({dataSource:angular.toJson(selectedDataSource)}, function(data) {
+			
+			angular.forEach(data.metaDataList, function(value, key) {
+					if(!value.hasData)
+					{
+						alert(value.title + " missing data", "the selected interval contains no data", "warning");
+					}
+				  
+				});
+			
 			chartData = [data.header];
 			angular.forEach(data.data, function(apiData, key) {
 				
@@ -84,7 +100,7 @@ angular.module('services', [])
 	
 	this.chart = {
 			  "type": "LineChart",
-			  "cssStyle": "height:30em; width:100%;",
+			  "cssStyle": "height:400px; width:100%;",
 			  "displayed": true,
 			  "data":[["",""],[0,0]],
 			  "options": {

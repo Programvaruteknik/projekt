@@ -12,18 +12,24 @@ import domain.datasources.model.MetaData;
 
 public class SunAltitudeAtNoon implements DataSource {
 
+	private TreeMap<LocalDate, Double> data;
 
+	
+	
+	public SunAltitudeAtNoon()
+	{
+		data = new TreeMap<LocalDate, Double>();
+		List<Time> times = new WeatherAPI().getTimes();
+
+		for (Time time : times) {
+			data.put(time.getDate(), time.getLocation().getSun().getNoon().getAltitude());
+		}
+	}
 
 	@Override
 	public TreeMap<LocalDate, Double> getData() {
 
-		TreeMap<LocalDate, Double> output = new TreeMap<LocalDate, Double>();
-		List<Time> times = new WeatherAPI().getTimes();
-
-		for (Time time : times) {
-			output.put(time.getDate(), time.getLocation().getSun().getNoon().getAltitude());
-		}
-		return output;
+		return data;
 	}
 
 	@Override
@@ -34,6 +40,7 @@ public class SunAltitudeAtNoon implements DataSource {
 		meta.setUrl("http://met.no");
 		meta.setTitle("Solens altitud vid 12");
 		meta.setUnit("Grader");
+		meta.setHasData(!data.isEmpty());
 		return meta;
 	}
 

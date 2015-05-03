@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="css/foundation.min.css" />
 	<link rel="stylesheet" href="img/foundation-icons.css" />
 	<link rel="stylesheet" href="css/chosen.css" />
+	<link rel="stylesheet" href="css/style.css" />
 	<script src="js/lib/jquery.min.js"></script>
 	<script src="js/lib/angular.min.js"></script>
 	<script src="js/lib/angular-route.js"></script>
@@ -15,24 +16,39 @@
 	<script src="js/lib/foundation/mm-foundation-tpls.js"></script>
 	<script src="js/lib/chosen.jquery.min.js"></script>
 	<script src="js/lib/chosen.js"></script>
+	<script src="js/startUp.js"></script>
 	<script src="js/router.js"></script>
 	<script src="js/controllers.js"></script>
 	<script src="js/services.js"></script>
+	<script src="js/directives.js"></script>
+
 </head>
+
 <body>
+
+
 	<div class="contain-to-grid">
 		<nav class="top-bar" data-topbar role="navigation">
 			<section class="top-bar-section">
+
+
 				<ul class="left">
 					<li><a href="#/dataSourceChart">Data Source Chart</a></li>
 					<li><a href="#/correlationChart">Correlation Chart</a></li>
+
 					<li><a href="#/outlineChart">Outline Chart</a></li>
 				</ul>
+
 			</section>
 		</nav>
 	</div>
 
-	 
 	<div ng-view></div>
+	
+	<div class="fixed-bottom">
+		<div class="row">	
+			<div class="medium-12 columns" id="alertBar"></div>
+		</div>
+	</div>
 </body>
 </html>

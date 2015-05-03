@@ -24,6 +24,7 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 	};
 	
 	$scope.chart = DataSourceChart.chart;
+	
 })
 
 .controller("correlationChartController", function($scope, $resource, CorrelationChart){
@@ -36,7 +37,7 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 		$scope.resolutions = data;
 	});
 	
-	$scope.availableRegressions = ['linear','exponential','polynomial:2','polynomial:3'];
+	$scope.availableRegressions = ['linear','exponential','polynomial (degree 2)','polynomial (degree 3)'];
 	$scope.selectedResolution = "DAY";
 	$scope.selectedRegression = "linear";
 	$scope.selectedDataSource="";

@@ -16,44 +16,48 @@
 			ng-change="select()">
 		</select>
 
-		<div google-chart chart="chart"/></div>
+		<div google-chart class="chart" chart="chart" /></div>
 
 
-		<button type="button" class="btn btn-default"
-			dropdown-toggle="#sourceInformation" style="margin-top:10px">More info</button>
+		<button type="button" class="tiny button primary radius"
+			dropdown-toggle="#sourceInformation" style="margin-top: 10px">More
+			info</button>
 
 		<div id="sourceInformation">
 
-			<div class="panel panel-primary">
+			<div class="panel radius">
 
-				<div class="panel-heading"><h4>The choosen datasources are listed
-					in the following table</h4></div>
+				<h6>Information about the selected data sources are listed in
+					the table below</h6>
 
-				<div class="panel-body">
-
-					<table class="table">
+				<table>
+					<thead>
 						<tr>
-							<td>DataSource</td>
-							<td>URL</td>
-							<td>Owner</td>
-							<td>License</td>
+							<th>Title</th>
+							<th>Url</th>
+							<th>Owner</th>
+							<th>License</th>
 						</tr>
+					</thead>
+
+					<tbody>
+
 
 						<tr ng-repeat="meta in metaData">
-							<td><h5>{{ meta.title }}</h5></td>
-							<td>Url:
-								 <a hreF="{{meta.url}}" target="_blank">
-									{{ meta.url }}
-								</a>
+							<td>{{ meta.title }}</td>
+							<td>Url: <a hreF="{{meta.url}}" target="_blank"> {{
+									meta.url }} </a>
 							</td>
 							<td>{{ meta.owner }}</td>
 							<td>{{ meta.license }}</td>
 						</tr>
 
-					</table>
-					
-				</div>
+					</tbody>
+				</table>
+
 			</div>
 
 		</div>
 	</div>
+</div>
+

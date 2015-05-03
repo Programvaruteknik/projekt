@@ -1,0 +1,23 @@
+.fixed-bottom {
+  width: 100%;
+  left: 0;
+  position: fixed;
+  bottom: 0;
+  z-index: 99;
+}
+
+.button
+{
+	margin-top:7px;
+}
+
+header
+{
+padding: 22px 0;
+	
+}
+
+.chart
+{
+	height:600px;
+}

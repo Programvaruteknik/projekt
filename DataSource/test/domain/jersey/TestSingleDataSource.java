@@ -116,7 +116,7 @@ public class TestSingleDataSource {
 
 		api.setFactory(factory);
 
-		Response resp = api.getCorrelationData("sc1", "sc2", "DAY");
+		Response resp = api.getCorrelationData("sc1", "sc2", "DAY", null);
 		String entityContent = (String) resp.getEntity();
 
 		Map<String, Object> jsonMap = new Gson().fromJson(entityContent,

@@ -34,27 +34,15 @@
         <pathelement location="WebContent/WEB-INF/lib/persistence-api-1.0.jar"/>
         <pathelement location="WebContent/WEB-INF/lib/validation-api-1.1.0.Final.jar"/>
     </path>
-    <path id="EAR Libraries.libraryclasspath"/>
-    <path id="JUnit 4.libraryclasspath">
-        <pathelement location="${ECLIPSE_HOME}plugins/org.junit_4.11.0.v201303080030/junit.jar"/>
-        <pathelement location="${ECLIPSE_HOME}plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
-    </path>
+   
     <path id="DataSource.classpath">
         <pathelement location="build/classes"/>
-        <path refid="Apache Tomcat v7.0 [Apache Tomcat v7.0].libraryclasspath"/>
         <path refid="Web App Libraries.libraryclasspath"/>
-        <path refid="EAR Libraries.libraryclasspath"/>
-        <path refid="JUnit 4.libraryclasspath"/>
     </path>
-    <target name="init">
+    <target depends="clean" name="init">
         <mkdir dir="build/classes"/>
         <copy includeemptydirs="false" todir="build/classes">
             <fileset dir="src">
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
-        <copy includeemptydirs="false" todir="build/classes">
-            <fileset dir="test">
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
@@ -63,9 +51,8 @@
         <delete dir="build/classes"/>
     </target>
     <target depends="init" name="build">
-        <javac debug="true" debuglevel="${debuglevel}" destdir="build/classes" includeantruntime="false" source="${source}" target="${target}">
+        <javac destdir="build/classes" includeantruntime="false" source="${source}" target="${target}">
             <src path="src"/>
-            <src path="test"/>
             <classpath refid="DataSource.classpath"/>
         </javac>
     </target>

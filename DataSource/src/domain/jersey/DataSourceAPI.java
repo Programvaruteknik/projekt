@@ -86,7 +86,9 @@ public class DataSourceAPI {
 		for (int i = 0; i < input.size(); i++) {
 			if (i == 0) {
 				DataSource tmpSource = factory.getDataSource(input.get(i));
-
+if(tmpSource == null){
+	return Response.status(Response.Status.BAD_REQUEST).build();
+}
 				tmpSource = new Interpolator().fillOutMissingDays(tmpSource,
 						Resolution.DAY);
 

@@ -1,10 +1,11 @@
 package domain.jersey;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -29,12 +30,17 @@ public class TestSingleDataSource {
 	DataSourceFactory factory;
 	DataSourceAPI api;
 	Response resp;
+	Map<String, Object> jsonMap;
+	ArrayList<String> headerList;
+	String entity;
+	DataSource mockSource;
+	Map<String, ArrayList<Double>> list;
 
 	@Before
 	public void setup() {
 		api = new DataSourceAPI();
 		data = new TreeMap<>();
-		 factory = mock(DataSourceFactory.class);
+		factory = mock(DataSourceFactory.class);
 	}
 
 	@Test
@@ -42,19 +48,28 @@ public class TestSingleDataSource {
 
 		data.put(LocalDate.parse("2001-01-02"), 2.0);
 		data.put(LocalDate.parse("2001-01-01"), 1.0);
-
-		DataSource mockSource = mock(DataSource.class);
+		
+		mockSource = mock(DataSource.class);
 		when(mockSource.getData()).thenReturn(data);
-
 		when(factory.getDataSource("mockSource")).thenReturn(mockSource);
-
+		
 		api.setFactory(factory);
-		String expectedJson = "{\"2001-01-01\":1.0,\"2001-01-02\":2.0}";
-		System.out.println(api.getSources("mockSource").getEntity());
-		assertEquals(expectedJson, api.getSources("mockSource").getEntity());
+		entity = (String) api.getSources("['mockSource']").getEntity();
+		
+		Map<String, Object> map = new JsonParser().deserialize(entity,
+				Map.class);
 
-		assertEquals(Response.Status.OK.getStatusCode(),
-				api.getSources("mockSource").getStatus());
+		headerList = (ArrayList<String>) map.get("header");
+		list = (Map<String, ArrayList<Double>>) map.get("data");
+
+		assertEquals(2, headerList.size());
+
+		assertEquals(1, list.get("2001-01-01").size());
+		assertEquals(1, list.get("2001-01-02").size());
+
+		assertEquals(1d, list.get("2001-01-01").get(0), 0.01);
+		assertEquals(2d, list.get("2001-01-02").get(0), 0.01);
+
 	}
 
 	@Test
@@ -62,7 +77,8 @@ public class TestSingleDataSource {
 
 		api.setFactory(factory);
 		String expectedJson = null;
-		resp = api.getSources("iDontExists");
+		resp = api.getSources("['iDontExists']");
+
 		assertEquals(expectedJson, resp.getEntity());
 		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
 				resp.getStatus());
@@ -85,6 +101,7 @@ public class TestSingleDataSource {
 			return map;
 		}
 	};
+
 	DataSource y = new DataSource() {
 
 		@Override
@@ -99,28 +116,23 @@ public class TestSingleDataSource {
 		public TreeMap<LocalDate, Double> getData() {
 			TreeMap<LocalDate, Double> map = new TreeMap<LocalDate, Double>();
 			map.put(LocalDate.parse("2001-01-01"), 1d);
-	
 			return map;
 		}
 	};
 
 	@Test
 	public void testGetMetaData() {
-		DataSource sc1 = x;
-		DataSource sc2 = y;
 		String expectedName1 = "xSource";
 		String expectedName2 = "ySource";
 
 		when(factory.getDataSource("sc1")).thenReturn(x);
 		when(factory.getDataSource("sc2")).thenReturn(y);
-
 		api.setFactory(factory);
 
-		Response resp = api.getCorrelationData("sc1", "sc2", "DAY");
+		resp = api.getCorrelationData("sc1", "sc2", "DAY");
 		String entityContent = (String) resp.getEntity();
 
-		Map<String, Object> jsonMap = new Gson().fromJson(entityContent,
-				Map.class);
+		jsonMap = new Gson().fromJson(entityContent, Map.class);
 
 		Map<String, Object> metaDataX = (Map<String, Object>) jsonMap
 				.get("xMeta");
@@ -132,26 +144,37 @@ public class TestSingleDataSource {
 		assertEquals(expectedName2, metaDataY.get("title"));
 		assertEquals("xUnit", metaDataX.get("unit"));
 		assertEquals("yUnit", metaDataY.get("unit"));
-		
+
 	}
 
 	@Test
 	public void testGetMissingDates() {
-		TreeMap<LocalDate, Double> data = new TreeMap<>();
-
 		data.put(LocalDate.parse("2001-01-04"), 4.0);
-
 		data.put(LocalDate.parse("2001-01-02"), 2.0);
 		data.put(LocalDate.parse("2001-01-01"), 1.0);
 
-		DataSource mockSource = mock(DataSource.class);
+		mockSource = mock(DataSource.class);
 		when(mockSource.getData()).thenReturn(data);
-		
 		when(factory.getDataSource("mockSource")).thenReturn(mockSource);
-
 		api.setFactory(factory);
-		resp = api.getSources("mockSource");
-		String expectedResp = "{\"2001-01-01\":1.0,\"2001-01-02\":2.0,\"2001-01-03\":null,\"2001-01-04\":4.0}";
-		assertEquals(expectedResp, resp.getEntity());
+		
+		
+		resp = api.getSources("['mockSource']");
+		entity = (String) resp.getEntity();
+		
+		jsonMap = new Gson().fromJson(entity, Map.class);
+
+		headerList = (ArrayList<String>) jsonMap.get("header");
+		list = (Map<String, ArrayList<Double>>) jsonMap.get("data");
+
+		assertEquals(1, list.get("2001-01-01").size());
+		assertEquals(1, list.get("2001-01-02").size());
+		assertEquals(1, list.get("2001-01-03").size());
+
+		assertEquals(1d, list.get("2001-01-01").get(0), 0.01);
+		assertEquals(2d, list.get("2001-01-02").get(0), 0.01);
+		assertNull(list.get("2001-01-03").get(0));
+		assertEquals(4d, list.get("2001-01-04").get(0), 0.01);
+
 	}
 }

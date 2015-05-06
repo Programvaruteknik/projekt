@@ -2,6 +2,7 @@ package domain.jersey;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
 import javax.servlet.Servlet;
@@ -21,7 +22,10 @@ import domain.datasources.DataSourceFormatter;
 import domain.datasources.DataSourceMerger;
 import domain.datasources.Interpolator;
 import domain.datasources.model.MetaData;
+import domain.datasources.modulateing.DateModelator;
+import domain.datasources.modulateing.ModelatingComand;
 import domain.jersey.model.DataSourcePackage;
+import domain.jersey.model.Modification;
 import domain.matching.DataMatcher;
 import domain.matching.Resolution;
 import domain.matching.ResultingData;
@@ -45,13 +49,31 @@ public class DataSourceAPI {
 	@Path("/correlationData")
 	public Response getCorrelationData(@QueryParam("dataSource1") String ds1,
 			@QueryParam("dataSource2") String ds2,
-			@QueryParam("resolution") String res) {
+			@QueryParam("resolution") String res,
+			@QueryParam("modification") String mod) {
 
 		Resolution resolution = res != null ? Resolution.valueOf(res)
 				: Resolution.DAY;
 
 		DataSource dataSource1 = factory.getDataSource(ds1);
 		DataSource dataSource2 = factory.getDataSource(ds2);
+		
+		if(mod != null)
+		{
+			List<Modification> modList = new JsonParser().deserialize(mod, new TypeToken<List<Modification>>(){}.getType());
+			
+			for (Modification modification : modList)
+			{
+				if(dataSource1.getMetaData().getName().equals(modification.getDataSourceName()))
+				{
+					dataSource1 = modulateDataSource(dataSource1, modification);
+				}
+				else if(dataSource2.getMetaData().getName().equals(modification.getDataSourceName()))
+				{
+					dataSource2 = modulateDataSource(dataSource2, modification);
+				}
+			}
+		}
 
 		if (dataSource1 == null || dataSource2 == null) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
@@ -149,6 +171,11 @@ public class DataSourceAPI {
 		String s = string;
 		String json = new JsonParser().serialize(array);
 		return Response.status(200).entity(json).build();
+	}
+	
+	private DataSource modulateDataSource(DataSource dataSource , Modification modification)
+	{
+		return new DateModelator(dataSource, modification.getYear(), modification.getMonth(), modification.getDays()).execute();
 	}
 
 	protected MetaData getMetaData(String string) {

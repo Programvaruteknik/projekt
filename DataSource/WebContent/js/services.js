@@ -33,8 +33,9 @@ angular.module('services', [])
 				}else{
 					that.chart.options.trendlines[0].type = regression;
 				}
-				that.chart.options.hAxis.title = data.xMeta.title;
-				that.chart.options.vAxis.title = data.yMeta.title;
+				
+				that.chart.options.hAxis.title = data.xMeta.title + " (" + data.xMeta.unit + ")";
+				that.chart.options.vAxis.title = data.yMeta.title + " (" + data.yMeta.unit + ")";
 				
 				deferred.resolve(chartData);
 			});

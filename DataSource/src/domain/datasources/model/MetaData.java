@@ -2,14 +2,14 @@ package domain.datasources.model;
 
 import java.util.List;
 
-import domain.datasources.modulateing.ModelatingComand;
+import domain.jersey.model.Modification;
 
 public class MetaData
 {
 	private String title, url, owner, license, unit;
 	private boolean hasData;
 	
-	private List<ModelatingComand> modList;
+	private List<Modification> modList;
 
 	public String getTitle()
 	{
@@ -76,12 +76,12 @@ public class MetaData
 		return unit;
 	}
 
-	public List<ModelatingComand> getModList()
+	public List<Modification> getModList()
 	{
 		return modList;
 	}
 
-	public void setModList(List<ModelatingComand> modList)
+	public void setModList(List<Modification> modList)
 	{
 		this.modList = modList;
 	}

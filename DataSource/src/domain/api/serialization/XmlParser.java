@@ -15,8 +15,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * This is a tool which is used to deserialze Xml files. The data that can be found
  * in each XML file can then be collected as a specific given type.
  * 
- * @author rasmus
- * @deprecated
+ * @author Rickard
  */
 public class XmlParser implements SerializationTool {
 
@@ -42,7 +41,6 @@ public class XmlParser implements SerializationTool {
 	}
 
 	@Override
-	@Deprecated
 	public String serialize(Object o) {
 		throw new NotImplementedException();
 	}

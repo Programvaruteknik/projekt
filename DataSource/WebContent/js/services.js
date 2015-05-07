@@ -2,13 +2,17 @@ angular.module('services', [])
 .service('CorrelationChart', function($resource, $q) {
   
 	var that = this;
-	this.select = function (selectedDataSource, resolution,regression){
+	this.select = function (selectedDataSource, resolution,regression, modList){
 		var degree= 1;
 
 		var deferred = $q.defer();
+		
+		modification = angular.toJson(modList);
+		
 		if(selectedDataSource.length ===2)
 		{
-			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution}, function(data) {
+			
+			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution&modification=:modification").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution, modification:modification}, function(data) {
 
 				if(!data.xMeta.hasData)
 				{
@@ -24,19 +28,26 @@ angular.module('services', [])
 					chartData.push([apiData.x,apiData.y]);
 				});
 				
-				if(regression === "polynomial (degree 2)"){
+				if(regression === "polynomial (degree 2)")
+				{
 					that.chart.options.trendlines[0].type = 'polynomial';
 					that.chart.options.trendlines[0].degree = 2;
-				}else if(regression === "polynomial (degree 3)"){
+				}
+				else if(regression === "polynomial (degree 3)")
+				{
 					that.chart.options.trendlines[0].type = 'polynomial';
 					that.chart.options.trendlines[0].degree = 3;
-				}else{
+				}
+				else
+				{
 					that.chart.options.trendlines[0].type = regression;
 				}
 				that.chart.options.hAxis.title = data.xMeta.title;
 				that.chart.options.vAxis.title = data.yMeta.title;
 				
-				deferred.resolve(chartData);
+				var output = {chartData:chartData, metaData:[data.xMeta,data.yMeta]}
+				
+				deferred.resolve(output);
 			});
 		}
 

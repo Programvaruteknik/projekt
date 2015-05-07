@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 import domain.datasources.DataSource;
 import domain.datasources.model.MetaData;
+import domain.jersey.model.Modification;
 
 public class DateModelator implements ModelatingComand
 {
@@ -56,14 +57,16 @@ public class DateModelator implements ModelatingComand
 			{
 				MetaData output = dataSource.getMetaData();
 				
-				List<ModelatingComand> list = output.getModList();
+				List<Modification> list = output.getModList();
 				
 				if(list == null)
 				{
-					list = new ArrayList<ModelatingComand>();
+					list = new ArrayList<Modification>();
 				}
 				
-				list.add(DateModelator.this);
+				Modification modification = new Modification(DateModelator.this.dataSource.getMetaData().getTitle(), DateModelator.this.years, DateModelator.this.months, DateModelator.this.days);
+				
+				list.add(modification);
 				
 				output.setModList(list); 
 				

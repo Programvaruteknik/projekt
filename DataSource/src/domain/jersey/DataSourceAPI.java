@@ -58,8 +58,9 @@ public class DataSourceAPI {
 		DataSource dataSource1 = factory.getDataSource(ds1);
 		DataSource dataSource2 = factory.getDataSource(ds2);
 		
-		if(mod != null)
+		if(mod != null && !mod.equals(""))
 		{
+			
 			List<Modification> modList = new JsonParser().deserialize(mod, new TypeToken<List<Modification>>(){}.getType());
 			
 			for (Modification modification : modList)
@@ -82,6 +83,7 @@ public class DataSourceAPI {
 		ResultingData resultingData = new DataMatcher(dataSource1, dataSource2,
 				resolution).match();
 
+		
 		resultingData.setXMeta(dataSource1.getMetaData());
 		resultingData.setYMeta(dataSource2.getMetaData());
 
@@ -144,12 +146,6 @@ public class DataSourceAPI {
 	public Response getListOfDataSources() {
 		return okRequest(new JsonParser().serialize(new DataSourceFactory()
 				.getNameAllDataSources()));
-	}
-
-	@GET
-	@Path("/foo/test")
-	public Response getFoo(@QueryParam("foo") String s) {
-		return Response.status(200).entity("Yaay" + s).build();
 	}
 
 	/**

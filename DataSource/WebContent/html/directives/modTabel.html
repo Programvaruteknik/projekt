@@ -1,0 +1,23 @@
+<table>
+	<thead>
+		<tr>
+			<th>Data Source</th>
+			<th>Years</th>
+			<th>Months</th>
+			<th>Days</th>
+		</tr>
+	</thead>
+
+	<tbody>
+
+		<tbody ng-repeat="meta in metaData">
+			<tr ng-repeat="mod in meta.modList">
+				<td>{{ mod.dataSourceName }}</td>
+				<td>{{ mod.year }}</td>
+				<td>{{ mod.month }}</td>
+				<td>{{ mod.days }}</td>
+			</tr>
+		</tbody>
+
+	</tbody>
+</table>

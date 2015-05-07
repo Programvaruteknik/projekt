@@ -45,33 +45,41 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 	$scope.setResolution = function(resolution)
 	{
 		$scope.selectedResolution = resolution;
-		updateChart($scope.selectedDataSource, resolution,$scope.selectedRegression);
+		updateChart();
 	}
 	
 	$scope.setRegression = function(regression){	
 		$scope.selectedRegression = regression;
-		updateChart($scope.selectedDataSource, $scope.selectedResolution, regression);
+		updateChart();
 	}
 	
 	$scope.select = function (){
-		resolution = $scope.selectedResolution === "Resolution"?"DAY":$scope.selectedResolution;
-		updateChart($scope.selectedDataSource, resolution);
-		
-		var query = $scope.selectedDataSource;
-		console.log(query);
-		
-		$resource("api/dataSource/metaData?list="+$scope.selectedDataSource).query(function(data){
-			$scope.metaData = data;
-		});
-		
+
+		updateChart();		
 	};
 	
-	updateChart = function(selectedDataSource, resolution, regression)
+	
+	updateChart = function()
 	{
-		CorrelationChart.select(selectedDataSource, resolution, regression).then(function(data){
-			$scope.chart.data = data;
+		var selectedDataSource = $scope.selectedDataSource;
+		var resolution = $scope.selectedResolution;
+		var regression = $scope.selectedRegression;
+		var modList = $scope.modList;
+		
+		CorrelationChart.select(selectedDataSource, resolution, regression, modList).then(function(data){
+			$scope.chart.data = data.chartData;
+			$scope.metaData = data.metaData;
 		});	
+		
+		console.log($scope.metaData);
 	}
+	
+	$scope.modList = [{
+		dataSourceName:"Totala mål per dag i Allsvenskan",
+		year:0,
+		month:0,
+		days:1
+			}];
 	
 	$scope.chart = CorrelationChart.chart;
 })
@@ -80,7 +88,7 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 	$resource("api/dataSource/list").query(function(data) {
 		$scope.dataSources = data;
 	});
-	
+		
 	
 	$scope.select = function (){
 		

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import domain.datasources.workers.BitCoin;
 import domain.datasources.workers.SunAltitudeAtNoon;
 import domain.datasources.workers.TotalFotballGoals;
 
@@ -29,6 +30,7 @@ public class DataSourceFactory
 		
 		addToMap(new TotalFotballGoals());
 		addToMap(new SunAltitudeAtNoon());
+		addToMap(new BitCoin());
 	}
 	public DataSource getDataSource(String id)
 	{

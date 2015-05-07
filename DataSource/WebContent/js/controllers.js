@@ -45,21 +45,21 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 	$scope.setResolution = function(resolution)
 	{
 		$scope.selectedResolution = resolution;
-		updateChart();
+		$scope.updateChart();
 	}
 	
 	$scope.setRegression = function(regression){	
 		$scope.selectedRegression = regression;
-		updateChart();
+		$scope.updateChart();
 	}
 	
 	$scope.select = function (){
 
-		updateChart();		
+		$scope.updateChart();		
 	};
 	
 	
-	updateChart = function()
+	$scope.updateChart = function()
 	{
 		var selectedDataSource = $scope.selectedDataSource;
 		var resolution = $scope.selectedResolution;
@@ -74,12 +74,14 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 		console.log($scope.metaData);
 	}
 	
-	$scope.modList = [{
-		dataSourceName:"Totala mål per dag i Allsvenskan",
-		year:0,
-		month:0,
-		days:1
-			}];
+//	$scope.modList = [{
+//		dataSourceName:"Totala mål per dag i Allsvenskan",
+//		year:0,
+//		month:0,
+//		days:1
+//			}];
+	
+	$scope.modList = [];
 	
 	$scope.chart = CorrelationChart.chart;
 })

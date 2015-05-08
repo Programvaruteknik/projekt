@@ -5,7 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import domain.datasources.workers.BitCoin;
+import domain.datasources.workers.BitCoinChangeSource;
+import domain.datasources.workers.BitCoinOpenSource;
 import domain.datasources.workers.SunAltitudeAtNoon;
 import domain.datasources.workers.TotalFotballGoals;
 import domain.datasources.workers.TvSourceCommunity;
@@ -32,7 +33,8 @@ public class DataSourceFactory
 		
 		addToMap(new TotalFotballGoals());
 		addToMap(new SunAltitudeAtNoon());
-		addToMap(new BitCoin());
+		addToMap(new BitCoinOpenSource());
+		addToMap(new BitCoinChangeSource());
 		addToMap(new TvSourceCommunity());
 		addToMap(new TvSourceDoctorWho());
 	}

@@ -33,17 +33,17 @@ public class MetaData
 
 	public String getUrl()
 	{
-		return null;
+		return url;
 	}
 
 	public Object getOwner()
 	{
-		return null;
+		return owner;
 	}
 
 	public Object getLicense()
 	{
-		return null;
+		return license;
 	}
 
 	public void setTitle(String title)

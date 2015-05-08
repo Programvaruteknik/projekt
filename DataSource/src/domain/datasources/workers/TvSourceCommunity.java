@@ -12,26 +12,33 @@ import domain.datasources.DataSource;
 import domain.datasources.model.MetaData;
 
 public class TvSourceCommunity implements DataSource {
-	TreeMap<LocalDate,Double> data = new TreeMap<>();
-	
+	private TreeMap<LocalDate, Double> data = new TreeMap<>();
+	private ApiHandler handler;
+
+	public TvSourceCommunity() {
+		handler = (new ApiHandler(new UrlFetcher(), new JsonParser()));
+	}
+
+	protected TvSourceCommunity(ApiHandler handlerParam) {
+		handler = handlerParam;
+	}
+
 	@Override
 	public TreeMap<LocalDate, Double> getData() {
-		ApiHandler handler = new ApiHandler(new UrlFetcher(), new JsonParser());
 		TvApiCommunity api = new TvApiCommunity(handler);
-
 		
-		for(SendingDay day : api.getAirDates()){
+		for (SendingDay day : api.getAirDates()) {
 			double d = day.getDayOfMonth();
-			data.put(day.getAirDate(),d);
+			data.put(day.getAirDate(), d);
 		}
-		
+
 		return data;
 	}
 
 	@Override
 	public MetaData getMetaData() {
 		MetaData meta = new MetaData();
-		meta.setLicense("(CC BY-SA 4.0");
+		meta.setLicense("CC BY-SA 4.0");
 		meta.setOwner("TvMaze");
 		meta.setUrl("http://www.tvmaze.com");
 		meta.setTitle("Airdate for Community");

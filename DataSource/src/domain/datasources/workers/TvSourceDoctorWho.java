@@ -12,13 +12,20 @@ import domain.datasources.DataSource;
 import domain.datasources.model.MetaData;
 
 public class TvSourceDoctorWho implements DataSource{
-private TreeMap<LocalDate,Double> data = new TreeMap<>();
+	private TreeMap<LocalDate,Double> data = new TreeMap<>();
+	private ApiHandler handler;
 	
+	public TvSourceDoctorWho(){
+		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
+	}
+	
+	protected TvSourceDoctorWho(ApiHandler handlerParam) {
+		handler = handlerParam;
+	}
+
 	@Override
 	public TreeMap<LocalDate, Double> getData() {
-		ApiHandler handler = new ApiHandler(new UrlFetcher(), new JsonParser());
 		TvApiDoctorWho api = new TvApiDoctorWho(handler);
-
 		
 		for(SendingDay day : api.getAirDates()){
 			double d = day.getDayOfMonth();
@@ -31,7 +38,7 @@ private TreeMap<LocalDate,Double> data = new TreeMap<>();
 	@Override
 	public MetaData getMetaData() {
 		MetaData meta = new MetaData();
-		meta.setLicense("(CC BY-SA 4.0");
+		meta.setLicense("CC BY-SA 4.0");
 		meta.setOwner("TvMaze");
 		meta.setUrl("http://www.tvmaze.com");
 		meta.setTitle("Airdate for Doctor Who");

@@ -5,20 +5,28 @@ import java.util.List;
 import java.util.TreeMap;
 
 import domain.api.ApiHandler;
-import domain.api.BitCoinApi;
+import domain.api.BitCoinChangeApi;
 import domain.api.models.bitcoin.Change;
 import domain.api.serialization.JsonParser;
 import domain.api.url.UrlFetcher;
 import domain.datasources.DataSource;
 import domain.datasources.model.MetaData;
 
-public class BitCoin implements DataSource {
+public class BitCoinChangeSource implements DataSource {
 	private TreeMap<LocalDate, Double> data;
+	ApiHandler handler;
 
-	public BitCoin() {
+	public BitCoinChangeSource() {
 		data = new TreeMap<LocalDate, Double>();
-		ApiHandler handler = new ApiHandler(new UrlFetcher(),new JsonParser());
-		List<Change> list = new BitCoinApi(handler).getChanges();
+		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
+		List<Change> list = new BitCoinChangeApi(handler).getChanges();
+		insertInMap(list);
+	}
+
+	protected BitCoinChangeSource(ApiHandler handlerParam) {
+		data = new TreeMap<LocalDate, Double>();
+		handler = handlerParam;
+		List<Change> list = new BitCoinChangeApi(handler).getChanges();
 		insertInMap(list);
 	}
 
@@ -40,7 +48,7 @@ public class BitCoin implements DataSource {
 		metaData.setLicense("");
 		metaData.setOwner("cbix.ca");
 		metaData.setUrl("https://www.cbix.ca");
-		metaData.setTitle("Change In Canadian BitCoin Index");
+		metaData.setTitle("Change In Canadian Bitcoin Index");
 		metaData.setUnit("BTC");
 		metaData.setHasData(!data.isEmpty());
 		return metaData;

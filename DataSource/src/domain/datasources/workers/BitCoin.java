@@ -4,8 +4,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.TreeMap;
 
+import domain.api.ApiHandler;
 import domain.api.BitCoinApi;
 import domain.api.models.bitcoin.Change;
+import domain.api.serialization.JsonParser;
+import domain.api.url.UrlFetcher;
 import domain.datasources.DataSource;
 import domain.datasources.model.MetaData;
 
@@ -14,7 +17,8 @@ public class BitCoin implements DataSource {
 
 	public BitCoin() {
 		data = new TreeMap<LocalDate, Double>();
-		List<Change> list = new BitCoinApi().getChanges();
+		ApiHandler handler = new ApiHandler(new UrlFetcher(),new JsonParser());
+		List<Change> list = new BitCoinApi(handler).getChanges();
 		insertInMap(list);
 	}
 

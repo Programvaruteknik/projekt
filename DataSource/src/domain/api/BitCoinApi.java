@@ -4,14 +4,12 @@ import java.util.List;
 
 import domain.api.models.bitcoin.Change;
 import domain.api.models.bitcoin.ChangeList;
-import domain.api.serialization.JsonParser;
-import domain.api.url.UrlFetcher;
 
 public class BitCoinApi {
-	ApiHandler handler;
+	private ApiHandler handler;
 
-	public BitCoinApi() {
-		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
+	public BitCoinApi(ApiHandler handlerParam) {
+		handler = handlerParam;
 	}
 
 	public List<Change> getChanges() {
@@ -20,13 +18,4 @@ public class BitCoinApi {
 		return changes.getChanges();
 	}
 
-
-
-	public static void main(String[] args) {
-		List<Change> list = new BitCoinApi().getChanges();
-		for (Change c : list) {
-			System.out.print(c.getDate() + "\t");
-			System.out.println(c.getChange());
-		}
-	}
 }

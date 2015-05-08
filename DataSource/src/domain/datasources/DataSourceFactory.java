@@ -8,6 +8,8 @@ import java.util.Map;
 import domain.datasources.workers.BitCoin;
 import domain.datasources.workers.SunAltitudeAtNoon;
 import domain.datasources.workers.TotalFotballGoals;
+import domain.datasources.workers.TvSourceCommunity;
+import domain.datasources.workers.TvSourceDoctorWho;
 
 public class DataSourceFactory
 {
@@ -31,6 +33,8 @@ public class DataSourceFactory
 		addToMap(new TotalFotballGoals());
 		addToMap(new SunAltitudeAtNoon());
 		addToMap(new BitCoin());
+		addToMap(new TvSourceCommunity());
+		addToMap(new TvSourceDoctorWho());
 	}
 	public DataSource getDataSource(String id)
 	{

@@ -14,15 +14,16 @@ public class SunAltitudeAtNoon implements DataSource {
 
 	private TreeMap<LocalDate, Double> data;
 
-	
-	
-	public SunAltitudeAtNoon()
-	{
+	public SunAltitudeAtNoon() {
 		data = new TreeMap<LocalDate, Double>();
 		List<Time> times = new WeatherAPI().getTimes();
+		insertInMap(times);
+	}
 
+	private void insertInMap(List<Time> times) {
 		for (Time time : times) {
-			data.put(time.getDate(), time.getLocation().getSun().getNoon().getAltitude());
+			data.put(time.getDate(), time.getLocation().getSun().getNoon()
+					.getAltitude());
 		}
 	}
 
@@ -34,7 +35,7 @@ public class SunAltitudeAtNoon implements DataSource {
 
 	@Override
 	public MetaData getMetaData() {
-		MetaData meta =new MetaData();
+		MetaData meta = new MetaData();
 		meta.setLicense("");
 		meta.setOwner("met.no");
 		meta.setUrl("http://met.no");

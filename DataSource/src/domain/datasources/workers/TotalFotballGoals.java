@@ -10,32 +10,36 @@ import domain.api.models.everysport.Event;
 import domain.datasources.DataSource;
 import domain.datasources.model.MetaData;
 
-public class TotalFotballGoals implements DataSource
-{
+public class TotalFotballGoals implements DataSource {
 	private TreeMap<LocalDate, Double> data;
-	
-	public TotalFotballGoals()
-	{
+
+	public TotalFotballGoals() {
 		data = new TreeMap<LocalDate, Double>();
 		List<Event> events = new EverysportApi().getEvents();
-		for (Event event : events)
-		{
-			Double totalScore = new Double(event.getHomeTeamScore() + event.getVisitingTeamScore());
-			if(data.get(event.getStartDate()) != null)
-			{
-				data.put(event.getStartDate(), data.get(event.getStartDate()) + totalScore);
-			}
-			else
-			{
-				data.put(event.getStartDate(), totalScore);				
-			}
-		}
+		insertInMap(events);
+	}
 
+	private void insertInMap(List<Event> events) {
+		for (Event event : events) {
+			
+			Double totalScore = new Double(event.getHomeTeamScore()
+					+ event.getVisitingTeamScore());
+			
+			LocalDate startDate = event.getStartDate();
+			
+			
+			if (data.get(startDate) != null) {
+				data.put(startDate, data.get(startDate)
+						+ totalScore);
+			} else {
+				data.put(startDate, totalScore);
+			}
+			
+		}
 	}
 
 	@Override
-	public TreeMap<LocalDate, Double> getData()
-	{
+	public TreeMap<LocalDate, Double> getData() {
 		return data;
 	}
 
@@ -48,8 +52,7 @@ public class TotalFotballGoals implements DataSource
 		meta.setTitle("Totala mål per dag i Allsvenskan");
 		meta.setUnit("Mål");
 		meta.setHasData(!data.isEmpty());
-		
-		
+
 		return meta;
 	}
 }

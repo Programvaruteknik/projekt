@@ -17,20 +17,26 @@ public class TvSourceCommunity implements DataSource {
 
 	public TvSourceCommunity() {
 		handler = (new ApiHandler(new UrlFetcher(), new JsonParser()));
+		loadData();		
 	}
 
 	protected TvSourceCommunity(ApiHandler handlerParam) {
 		handler = handlerParam;
+		loadData();
 	}
 
-	@Override
-	public TreeMap<LocalDate, Double> getData() {
+	private void loadData() {
 		TvApiCommunity api = new TvApiCommunity(handler);
-		
+
 		for (SendingDay day : api.getAirDates()) {
 			double d = day.getDayOfMonth();
 			data.put(day.getAirDate(), d);
 		}
+		
+	}
+
+	@Override
+	public TreeMap<LocalDate, Double> getData() {
 
 		return data;
 	}

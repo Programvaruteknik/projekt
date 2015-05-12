@@ -7,6 +7,8 @@ import java.util.Map;
 
 import domain.datasources.workers.BitCoinChangeSource;
 import domain.datasources.workers.BitCoinOpenSource;
+import domain.datasources.workers.DifferenceInFootballScore;
+import domain.datasources.workers.FootballSpectatorSource;
 import domain.datasources.workers.SunAltitudeAtNoon;
 import domain.datasources.workers.TotalFotballGoals;
 import domain.datasources.workers.TvSourceCommunity;
@@ -37,7 +39,10 @@ public class DataSourceFactory
 		addToMap(new BitCoinChangeSource());
 		addToMap(new TvSourceCommunity());
 		addToMap(new TvSourceDoctorWho());
+		addToMap(new FootballSpectatorSource());
+		addToMap(new DifferenceInFootballScore());
 	}
+	
 	public DataSource getDataSource(String id)
 	{
 		if(sourceMap.containsKey(id))

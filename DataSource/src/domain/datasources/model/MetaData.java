@@ -61,7 +61,7 @@ public class MetaData
 		this.unit = unit;
 	}
 
-	public boolean isHasData()
+	public boolean containsData()
 	{
 		return hasData;
 	}

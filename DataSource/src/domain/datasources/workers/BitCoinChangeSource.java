@@ -19,18 +19,18 @@ public class BitCoinChangeSource implements DataSource {
 	public BitCoinChangeSource() {
 		data = new TreeMap<LocalDate, Double>();
 		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		List<Change> list = new BitCoinChangeApi(handler).getChanges();
-		insertInMap(list);
+		loadData();
 	}
 
 	protected BitCoinChangeSource(ApiHandler handlerParam) {
 		data = new TreeMap<LocalDate, Double>();
 		handler = handlerParam;
-		List<Change> list = new BitCoinChangeApi(handler).getChanges();
-		insertInMap(list);
+		loadData();
 	}
 
-	private void insertInMap(List<Change> list) {
+	private void loadData() {
+		List<Change> list = new BitCoinChangeApi(handler).getChanges();
+		
 		for (Change change : list) {
 			data.put(LocalDate.parse(change.getDate()), change.getChange());
 		}

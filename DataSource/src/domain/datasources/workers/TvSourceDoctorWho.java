@@ -11,27 +11,32 @@ import domain.api.url.UrlFetcher;
 import domain.datasources.DataSource;
 import domain.datasources.model.MetaData;
 
-public class TvSourceDoctorWho implements DataSource{
-	private TreeMap<LocalDate,Double> data = new TreeMap<>();
+public class TvSourceDoctorWho implements DataSource {
+	private TreeMap<LocalDate, Double> data = new TreeMap<>();
 	private ApiHandler handler;
-	
-	public TvSourceDoctorWho(){
+
+	public TvSourceDoctorWho() {
 		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
+		loadData();
 	}
-	
+
 	protected TvSourceDoctorWho(ApiHandler handlerParam) {
 		handler = handlerParam;
+		loadData();
+		
+	}
+
+	private void loadData() {
+		TvApiDoctorWho api = new TvApiDoctorWho(handler);
+
+		for (SendingDay day : api.getAirDates()) {
+			double d = day.getDayOfMonth();
+			data.put(day.getAirDate(), d);
+		}
 	}
 
 	@Override
 	public TreeMap<LocalDate, Double> getData() {
-		TvApiDoctorWho api = new TvApiDoctorWho(handler);
-		
-		for(SendingDay day : api.getAirDates()){
-			double d = day.getDayOfMonth();
-			data.put(day.getAirDate(),d);
-		}
-		
 		return data;
 	}
 

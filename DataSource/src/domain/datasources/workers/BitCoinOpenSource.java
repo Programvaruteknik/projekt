@@ -20,26 +20,26 @@ public class BitCoinOpenSource implements DataSource {
 	public BitCoinOpenSource() {
 		data = new TreeMap<LocalDate, Double>();
 		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		List<Open> list = new BitCoinOpenApi(handler).getChanges();
-		insertInMap(list);
+		loadData();
 	}
 
 	protected BitCoinOpenSource(ApiHandler handler) {
 		data = new TreeMap<LocalDate, Double>();
 		this.handler = handler;
 		List<Open> list = new BitCoinOpenApi(handler).getChanges();
-		insertInMap(list);
+		loadData();
 	}
 
-	@Override
-	public TreeMap<LocalDate, Double> getData() {
-		return data;
-	}
-
-	private void insertInMap(List<Open> list) {
+	private void loadData() {
+		List<Open> list = new BitCoinOpenApi(handler).getChanges();
 		for (Open change : list) {
 			data.put(LocalDate.parse(change.getDate()), change.getOpenValue());
 		}
+	}
+	
+	@Override
+	public TreeMap<LocalDate, Double> getData() {
+		return data;
 	}
 
 	@Override

@@ -15,11 +15,12 @@ public class TotalFotballGoals implements DataSource {
 
 	public TotalFotballGoals() {
 		data = new TreeMap<LocalDate, Double>();
-		List<Event> events = new EverysportApi().getEvents();
-		insertInMap(events);
+	
+		loadData();
 	}
 
-	private void insertInMap(List<Event> events) {
+	private void loadData() {
+		List<Event> events = new EverysportApi().getEvents();
 		for (Event event : events) {
 			
 			Double totalScore = new Double(event.getHomeTeamScore()

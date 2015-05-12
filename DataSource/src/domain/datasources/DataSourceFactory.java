@@ -13,6 +13,7 @@ import domain.datasources.workers.BowlingSource;
 import domain.datasources.workers.DifferenceInFootballScore;
 import domain.datasources.workers.FootballSpectatorSource;
 import domain.datasources.workers.SunAltitudeAtNoon;
+import domain.datasources.workers.TvFriendsSource;
 import domain.datasources.workers.TvSourceCommunity;
 import domain.datasources.workers.TvSourceDoctorWho;
 import domain.datasources.workers.general.TotalGoalDataSource;
@@ -42,11 +43,17 @@ public class DataSourceFactory
 		addToMap(new TotalGoalDataSource("Totala mål per dag i Divition1 Södra för Bandy 2014", new EverysportApi().getBandyDivition1Södra2014()));
 		addToMap(new TotalGoalDataSource("Totala mål per dag i Allsvenskan 2014", new EverysportApi().getAllsvenskan2014()));
 		addToMap(new TotalGoalDataSource("Totala mål per dag i SHL 2014", new EverysportApi().getSHL2014()));
+		
 		addToMap(new SunAltitudeAtNoon());
+		
 		addToMap(new BitCoinOpenSource());
 		addToMap(new BitCoinChangeSource());
+		addToMap(new BitCoinVolume());
+		
 		addToMap(new TvSourceCommunity());
 		addToMap(new TvSourceDoctorWho());
+		addToMap(new TvFriendsSource());
+		
 		addToMap(new FootballSpectatorSource());
 		addToMap(new DifferenceInFootballScore());
 		addToMap(new BowlingSource());

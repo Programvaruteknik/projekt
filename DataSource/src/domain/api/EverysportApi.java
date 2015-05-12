@@ -39,4 +39,10 @@ public class EverysportApi
 		EverysportEvents events = handler.get("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=71250", EverysportEvents.class);
 		return events.getEvents();
 	}
+	
+	public List<Event> getBasketliganGrundserien()
+	{
+		EverysportEvents events = handler.get("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=67844", EverysportEvents.class);
+		return events.getEvents();
+	}
 }

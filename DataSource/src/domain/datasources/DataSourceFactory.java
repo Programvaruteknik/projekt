@@ -36,6 +36,7 @@ public class DataSourceFactory
 	private void prePopulateSourceMap() 
 	{
 		
+		addToMap(new TotalGoalDataSource("Totala mål per dag i Basketligan Grundserien", new EverysportApi().getBasketliganGrundserien()));
 		addToMap(new TotalGoalDataSource("Totala mål per dag i Superserien Amrekansk fotboll", new EverysportApi().getSuperSerienAmrekanskFotboll()));
 		addToMap(new TotalGoalDataSource("Totala mål per dag i Divition1 Södra för Bandy 2014", new EverysportApi().getBandyDivition1Södra2014()));
 		addToMap(new TotalGoalDataSource("Totala mål per dag i Divition1 Södra för Bandy 2014", new EverysportApi().getBandyDivition1Södra2014()));

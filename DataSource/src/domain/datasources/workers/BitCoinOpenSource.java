@@ -47,7 +47,7 @@ public class BitCoinOpenSource implements DataSource {
 		MetaData metaData;
 		metaData = new MetaData();
 		metaData.setLicense("");
-		metaData.setOwner("cbix.ca");
+		metaData.setOwner("cbix");
 		metaData.setUrl("https://www.cbix.ca");
 		metaData.setTitle("Open values In Canadian Bitcoin Index");
 		metaData.setUnit("BTC");

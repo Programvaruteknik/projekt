@@ -14,7 +14,7 @@ import domain.datasources.model.MetaData;
 
 public class BitCoinChangeSource implements DataSource {
 	private TreeMap<LocalDate, Double> data;
-	ApiHandler handler;
+	private ApiHandler handler;
 
 	public BitCoinChangeSource() {
 		data = new TreeMap<LocalDate, Double>();
@@ -46,7 +46,7 @@ public class BitCoinChangeSource implements DataSource {
 		MetaData metaData;
 		metaData = new MetaData();
 		metaData.setLicense("");
-		metaData.setOwner("cbix.ca");
+		metaData.setOwner("cbix");
 		metaData.setUrl("https://www.cbix.ca");
 		metaData.setTitle("Change In Canadian Bitcoin Index");
 		metaData.setUnit("BTC");

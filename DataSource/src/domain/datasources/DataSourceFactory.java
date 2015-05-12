@@ -7,6 +7,7 @@ import java.util.Map;
 
 import domain.datasources.workers.BitCoinChangeSource;
 import domain.datasources.workers.BitCoinOpenSource;
+import domain.datasources.workers.BitCoinVolume;
 import domain.datasources.workers.BowlingSource;
 import domain.datasources.workers.DifferenceInFootballScore;
 import domain.datasources.workers.FootballSpectatorSource;

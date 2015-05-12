@@ -23,7 +23,6 @@ import domain.datasources.DataSource;
 import domain.datasources.DataSourceFactory;
 import domain.datasources.model.MetaData;
 import domain.datasources.workers.SunAltitudeAtNoon;
-import domain.datasources.workers.TotalFotballGoals;
 
 public class TestSingleDataSource {
 	TreeMap<LocalDate, Double> data = new TreeMap<>();

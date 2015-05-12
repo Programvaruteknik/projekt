@@ -27,6 +27,7 @@ public class Interpolator {
 	 */
 	protected LocalDate getFirst(DataSource sc) {
 		Map<LocalDate, Double> map = sc.getData();
+		System.out.println(map.toString());
 		int counter = 0;
 		for (LocalDate date : map.keySet()) {
 			if (counter == 0) {
@@ -83,8 +84,8 @@ public class Interpolator {
 	 * @param sc
 	 *            The map which will be filled with the missing dates.
 	 */
-	public DataSource fillOutMissingDays(DataSource sc, Resolution resolution) {
-		TreeMap<LocalDate, Double> map = sc.getData();
+	public DataSource fillOutMissingDays(DataSource sc, Resolution resolution, String fDate, String tDate) {
+		TreeMap<LocalDate, Double> map = sc.getData(fDate, tDate);
 		TreeMap<LocalDate, Double> copyMap = new TreeMap<>();
 		LocalDate first = getFirst(sc);
 		LocalDate current = first;
@@ -110,6 +111,12 @@ public class Interpolator {
 			@Override
 			public MetaData getMetaData() {
 				return sc.getMetaData();
+			}
+
+			@Override
+			public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
+				// TODO Auto-generated method stub
+				return copyMap;
 			}
 		};
 		return copySource;

@@ -22,21 +22,21 @@ public class DataSourceFactory
 		prePopulateSourceMap();
 	}
 	
-	private void addToMap(DataSource dataSource)
+	private void addToMap(DataSource dataSource, String name)
 	{
-		sourceMap.put(dataSource.getMetaData().getName(), dataSource);
+		sourceMap.put(name, dataSource);
 		
 	}
 	
 	private void prePopulateSourceMap() 
 	{
 		
-		addToMap(new TotalFotballGoals());
-		addToMap(new SunAltitudeAtNoon());
-		addToMap(new BitCoinOpenSource());
-		addToMap(new BitCoinChangeSource());
-		addToMap(new TvSourceCommunity());
-		addToMap(new TvSourceDoctorWho());
+		addToMap(new TotalFotballGoals(), "FootBall");
+		addToMap(new SunAltitudeAtNoon(), "SunAltitude");
+		addToMap(new BitCoinOpenSource(), "BitCoinOpenValue");
+		addToMap(new BitCoinChangeSource(), "BitCoinChange");
+		addToMap(new TvSourceCommunity(), "TvCommunity");
+		addToMap(new TvSourceDoctorWho(), "TvDoctorWho");
 	}
 	public DataSource getDataSource(String id)
 	{

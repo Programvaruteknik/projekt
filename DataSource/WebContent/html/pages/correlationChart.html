@@ -25,7 +25,14 @@
 					ng-click="setResolution(resolution)">{{resolution}}</a></li>
 			</ul>
 
-
+			  <datepicker date-format="yyyy-MM-dd"  date-max-limit="{{toDay}}" style="width: 300px; padding-rigth:15px">
+  			<input ng-model="startDate" type="text" style="width: 275px; heigth : 50px;" placeholder="Start Date"/>
+  			
+		</datepicker> 	
+		<datepicker  date-format="yyyy-MM-dd" date-min-limit="{{datepick.startDate}}" date-max-limit="{{toDay}}" style="width: 300px; padding-left:15px">
+  			<input ng-model="endDate" type="text" style="width: 275px; heigth : 50px;" placeholder="End Date"/>
+  			
+		</datepicker> 
 
 			<a class="button tiny dropdown" dropdown-toggle="#regressionDropdown">Regression:
 				{{ selectedRegression }}</a>

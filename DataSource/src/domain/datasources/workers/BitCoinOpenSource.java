@@ -2,11 +2,12 @@ package domain.datasources.workers;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import domain.api.ApiHandler;
 import domain.api.BitCoinOpenApi;
-import domain.api.models.bitcoin.Change;
 import domain.api.models.bitcoin.Open;
 import domain.api.serialization.JsonParser;
 import domain.api.url.UrlFetcher;
@@ -53,6 +54,25 @@ public class BitCoinOpenSource implements DataSource {
 		metaData.setUnit("BTC");
 		metaData.setHasData(!data.isEmpty());
 		return metaData;
+	}
+
+	@Override
+	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate)
+	{
+		filterOnDates(fromDate, toDate);
+		return data;
+	}
+
+	private void filterOnDates(String fromDate, String toDate) 
+	{
+		SortedMap<LocalDate, Double> subMap = data.subMap(LocalDate.parse(fromDate),true, LocalDate.parse(toDate), true);
+		
+		System.out.println(subMap.size());
+		data = new TreeMap<>();
+		for(Map.Entry<LocalDate, Double> entry : subMap.entrySet())
+		{
+			data.put(entry.getKey(), entry.getValue());
+		}
 	}
 
 }

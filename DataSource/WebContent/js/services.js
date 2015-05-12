@@ -2,13 +2,16 @@ angular.module('services', [])
 .service('CorrelationChart', function($resource, $q) {
   
 	var that = this;
-	this.select = function (selectedDataSource, resolution,regression){
+	this.select = function (selectedDataSource, resolution,regression, dateObject){
 		var degree= 1;
 
 		var deferred = $q.defer();
 		if(selectedDataSource.length ===2)
-		{
-			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution}, function(data) {
+		{/**/
+			
+			var fDate = dateObject.startDate || "2014-01-01";
+			var tDate = dateObject.endDate || "2014-12-01";
+			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution, startDate:fDate, endDate: tDate}, function(data) {
 
 				if(!data.xMeta.hasData)
 				{
@@ -73,11 +76,12 @@ angular.module('services', [])
 .service('DataSourceChart', function($resource, $q) {
 	
 	
-	
-	this.select = function (selectedDataSource){
+	/* */
+	this.select = function (selectedDataSource, dateObject){
 		var deferred = $q.defer();
-		
-		$resource("api/dataSource/:dataSource").get({dataSource:angular.toJson(selectedDataSource)}, function(data) {
+		var fDate = dateObject.startDate || "2014-01-01";
+		var tDate = dateObject.endDate || "2014-11-01";
+		$resource("api/dataSource/:dataSource").get({dataSource:angular.toJson(selectedDataSource), fromDate:fDate, toDate : tDate}, function(data) {
 			
 			angular.forEach(data.metaDataList, function(value, key) {
 					if(!value.hasData)

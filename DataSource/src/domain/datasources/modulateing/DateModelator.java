@@ -70,6 +70,12 @@ public class DateModelator implements ModelatingComand
 				
 				return output;
 			}
+
+			@Override
+			public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
+				// TODO Auto-generated method stub
+				return null;
+			}
 		};
 		
 		return output;

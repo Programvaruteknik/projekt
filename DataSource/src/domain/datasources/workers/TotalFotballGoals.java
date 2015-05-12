@@ -10,37 +10,34 @@ import domain.api.models.everysport.Event;
 import domain.datasources.DataSource;
 import domain.datasources.model.MetaData;
 
-public class TotalFotballGoals implements DataSource {
-	private TreeMap<LocalDate, Double> data;
+public class TotalFotballGoals implements DataSource
+{
+private String name ="Totala mål per dag i Allsvenskan";
+private String unit="Mål";
+private TreeMap<LocalDate, Double> data = null;
 
-	public TotalFotballGoals() {
-		data = new TreeMap<LocalDate, Double>();
-		List<Event> events = new EverysportApi().getEvents();
-		insertInMap(events);
-	}
-
-	private void insertInMap(List<Event> events) {
-		for (Event event : events) {
-			
-			Double totalScore = new Double(event.getHomeTeamScore()
-					+ event.getVisitingTeamScore());
-			
-			LocalDate startDate = event.getStartDate();
-			
-			
-			if (data.get(startDate) != null) {
-				data.put(startDate, data.get(startDate)
-						+ totalScore);
-			} else {
-				data.put(startDate, totalScore);
-			}
-			
-		}
-	}
 
 	@Override
-	public TreeMap<LocalDate, Double> getData() {
-		return data;
+	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate)
+	{
+		TreeMap<LocalDate, Double> output = new TreeMap<LocalDate, Double>();
+		
+		List<Event> events = new EverysportApi().getEvents(fromDate, toDate);
+		
+		for (Event event : events)
+		{
+			Double totalScore = new Double(event.getHomeTeamScore() + event.getVisitingTeamScore());
+			if(output.get(event.getStartDate()) != null)
+			{
+				output.put(event.getStartDate(), output.get(event.getStartDate()) + totalScore);
+			}
+			else
+			{
+				output.put(event.getStartDate(), totalScore);				
+			}
+		}
+		data = output;
+		return output;
 	}
 
 	@Override
@@ -49,10 +46,26 @@ public class TotalFotballGoals implements DataSource {
 		meta.setLicense("");
 		meta.setUrl("http://www.everysport.com/");
 		meta.setOwner("Everyport");
-		meta.setTitle("Totala mål per dag i Allsvenskan");
+		meta.setTitle(name);
 		meta.setUnit("Mål");
 		meta.setHasData(!data.isEmpty());
-
+		
 		return meta;
+	}
+
+	@Override
+	public TreeMap<LocalDate, Double> getData() {
+		// TODO Auto-generated method stub
+		return data;
+	}
+	
+	public double getMedel()
+	{
+		double sum = 0;
+		for(Double d : data.values())
+		{
+			sum += d;
+		}
+		return sum/data.values().size();
 	}
 }

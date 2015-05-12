@@ -12,7 +12,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import domain.api.serialization.JsonParser;
@@ -23,7 +22,6 @@ import domain.datasources.DataSourceMerger;
 import domain.datasources.Interpolator;
 import domain.datasources.model.MetaData;
 import domain.datasources.modulateing.DateModelator;
-import domain.datasources.modulateing.ModelatingComand;
 import domain.jersey.model.DataSourcePackage;
 import domain.jersey.model.Modification;
 import domain.matching.DataMatcher;
@@ -50,7 +48,7 @@ public class DataSourceAPI {
 	public Response getCorrelationData(@QueryParam("dataSource1") String ds1,
 			@QueryParam("dataSource2") String ds2,
 			@QueryParam("resolution") String res,
-			@QueryParam("modification") String mod) {
+			@QueryParam("modification") String mod, @QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate) {
 
 		Resolution resolution = res != null ? Resolution.valueOf(res)
 				: Resolution.DAY;
@@ -80,7 +78,7 @@ public class DataSourceAPI {
 		}
 
 		ResultingData resultingData = new DataMatcher(dataSource1, dataSource2,
-				resolution).match();
+				resolution, startDate, endDate).match();
 
 		resultingData.setXMeta(dataSource1.getMetaData());
 		resultingData.setYMeta(dataSource2.getMetaData());
@@ -97,7 +95,7 @@ public class DataSourceAPI {
 
 	@GET
 	@Path("/{dataSource}")
-	public Response getSources(@PathParam("dataSource") String ds) {
+	public Response getSources(@PathParam("dataSource") String ds , @QueryParam("fromDate") String fDate ,@QueryParam("toDate") String tDate) {
 
 		ArrayList<String> input = new JsonParser().deserialize(ds,
 				new TypeToken<ArrayList<String>>() {
@@ -112,13 +110,13 @@ if(tmpSource == null){
 	return Response.status(Response.Status.BAD_REQUEST).build();
 }
 				tmpSource = new Interpolator().fillOutMissingDays(tmpSource,
-						Resolution.DAY);
+						Resolution.DAY, fDate, tDate);
 
-				data = new DataSourceFormatter(tmpSource).toMergeableFormat();
+				data = new DataSourceFormatter(tmpSource, fDate, tDate).toMergeableFormat();
 			} else {
 				data = new DataSourceMerger(data,
 						new DataSourceFormatter(factory.getDataSource(input
-										.get(i))).toMergeableFormat())
+										.get(i)), fDate, tDate).toMergeableFormat())
 						.merge(Resolution.DAY);
 
 			}

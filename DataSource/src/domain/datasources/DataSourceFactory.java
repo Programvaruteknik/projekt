@@ -7,6 +7,7 @@ import java.util.Map;
 
 import domain.datasources.workers.BitCoinChangeSource;
 import domain.datasources.workers.BitCoinOpenSource;
+import domain.datasources.workers.BowlingSource;
 import domain.datasources.workers.DifferenceInFootballScore;
 import domain.datasources.workers.FootballSpectatorSource;
 import domain.datasources.workers.SunAltitudeAtNoon;
@@ -41,6 +42,8 @@ public class DataSourceFactory
 		addToMap(new TvSourceDoctorWho());
 		addToMap(new FootballSpectatorSource());
 		addToMap(new DifferenceInFootballScore());
+		addToMap(new BowlingSource());
+
 	}
 	
 	public DataSource getDataSource(String id)

@@ -12,7 +12,21 @@ import domain.datasources.model.MetaData;
 
 public class SunAltitudeAtNoon implements DataSource {
 
-private TreeMap<LocalDate, Double> data = null;
+	private TreeMap<LocalDate, Double> data;
+
+	public SunAltitudeAtNoon() {
+		data = new TreeMap<LocalDate, Double>();
+		loadData();
+	}
+
+	private void loadData() {
+		List<Time> times = new WeatherAPI().getTimes("2001-01-01","2010-01-01");
+		for (Time time : times) {
+			data.put(time.getDate(), time.getLocation().getSun().getNoon()
+					.getAltitude());
+		}
+	}
+
 
 	@Override
 	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {

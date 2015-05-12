@@ -5,12 +5,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import domain.api.EverysportApi;
 import domain.datasources.workers.BitCoinChangeSource;
 import domain.datasources.workers.BitCoinOpenSource;
+import domain.datasources.workers.BitCoinVolume;
+import domain.datasources.workers.BowlingSource;
+import domain.datasources.workers.DifferenceInFootballScore;
+import domain.datasources.workers.FootballSpectatorSource;
 import domain.datasources.workers.SunAltitudeAtNoon;
-import domain.datasources.workers.TotalFotballGoals;
+import domain.datasources.workers.TvFriendsSource;
 import domain.datasources.workers.TvSourceCommunity;
 import domain.datasources.workers.TvSourceDoctorWho;
+import domain.datasources.workers.general.TotalGoalDataSource;
 
 public class DataSourceFactory
 {
@@ -30,14 +36,29 @@ public class DataSourceFactory
 	
 	private void prePopulateSourceMap() 
 	{
+	
+		addToMap(new TotalGoalDataSource("Totala mål per dag i Basketligan Grundserien", new EverysportApi().getBasketliganGrundserien()),"Basket Grundserie");
+		addToMap(new TotalGoalDataSource("Totala mål per dag i Superserien Amrekansk fotboll", new EverysportApi().getSuperSerienAmrekanskFotboll()),"Amerikans fotbll superserie");
+		addToMap(new TotalGoalDataSource("Totala mål per dag i Divition1 Södra för Bandy 2014", new EverysportApi().getBandyDivition1Södra2014()),"Bandy 2014 Södra");
+		addToMap(new TotalGoalDataSource("Totala mål per dag i Allsvenskan 2014", new EverysportApi().getAllsvenskan2014("2001-01-01", "2010-02-02")),"Allsvenskan");
+		addToMap(new TotalGoalDataSource("Totala mål per dag i SHL 2014", new EverysportApi().getSHL2014()),"SHL 2014");
 		
-		addToMap(new TotalFotballGoals(), "FootBall");
-		addToMap(new SunAltitudeAtNoon(), "SunAltitude");
-		addToMap(new BitCoinOpenSource(), "BitCoinOpenValue");
-		addToMap(new BitCoinChangeSource(), "BitCoinChange");
-		addToMap(new TvSourceCommunity(), "TvCommunity");
-		addToMap(new TvSourceDoctorWho(), "TvDoctorWho");
+		addToMap(new SunAltitudeAtNoon(),"Solens altitude");
+		
+		addToMap(new BitCoinOpenSource(),"Bitcoin Open Values");
+		addToMap(new BitCoinChangeSource(),"Bitcoin Change values");
+		addToMap(new BitCoinVolume(),"Bitcoin Volume values");
+		
+		addToMap(new TvSourceCommunity(),"Tv Community");
+		addToMap(new TvSourceDoctorWho(),"Tv DoctorWho ");
+		addToMap(new TvFriendsSource(),"Tv Friends");
+		
+		addToMap(new FootballSpectatorSource(),"Football specator");
+		addToMap(new DifferenceInFootballScore(),"Football difference in score");
+		addToMap(new BowlingSource(),"Bowling");
+
 	}
+	
 	public DataSource getDataSource(String id)
 	{
 		if(sourceMap.containsKey(id))

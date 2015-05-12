@@ -22,7 +22,7 @@ private TreeMap<LocalDate, Double> data = null;
 	{
 		TreeMap<LocalDate, Double> output = new TreeMap<LocalDate, Double>();
 		
-		List<Event> events = new EverysportApi().getEvents(fromDate, toDate);
+		List<Event> events = new EverysportApi().getAllsvenskan2014(fromDate, toDate);
 		
 		for (Event event : events)
 		{

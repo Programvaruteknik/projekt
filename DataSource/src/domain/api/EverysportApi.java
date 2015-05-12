@@ -44,8 +44,8 @@ public class EverysportApi
 		leagueYear.put("2000" ,2752);
 		
 	}
+	public List<Event> getAllsvenskan2014(String fromDate,String toDate)
 
-	public List<Event> getEvents(String fromDate, String toDate)
 	{
 		
 		String leagueRange = getYear(fromDate, toDate);
@@ -59,6 +59,7 @@ public class EverysportApi
 		return events.getEvents();
 	}
 	
+//<<<<<<< HEAD
 	private String getYear(String fromDate, String toDate) 
 	{
 		LocalDate fDate = LocalDate.parse(fromDate);
@@ -83,5 +84,28 @@ public class EverysportApi
 		}
 		
 		return league;
+	}
+//=======
+	public List<Event> getSHL2014()
+	{
+		EverysportEvents events = handler.get("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=66817", EverysportEvents.class);
+		return events.getEvents();
+	}
+	public List<Event> getBandyDivition1Södra2014()
+	{
+		EverysportEvents events = handler.get("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=67536", EverysportEvents.class);
+		return events.getEvents();
+	}
+	public List<Event> getSuperSerienAmrekanskFotboll()
+	{
+		EverysportEvents events = handler.get("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=71250", EverysportEvents.class);
+		return events.getEvents();
+	}
+	
+	public List<Event> getBasketliganGrundserien()
+	{
+		EverysportEvents events = handler.get("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=67844", EverysportEvents.class);
+		return events.getEvents();
+//>>>>>>> refs/heads/feat_moreDataSource
 	}
 }

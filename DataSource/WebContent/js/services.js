@@ -110,7 +110,7 @@ angular.module('services', [])
 			  "data":[["",""],[0,0]],
 			  "options": {
 				  title: 'Data Sources',
-				  pointSize: 12,
+				  pointSize: 4,
 				  interpolateNulls: true,
 			}
 	}

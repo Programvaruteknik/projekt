@@ -1,3 +1,4 @@
+
 package domain.datasources.workers;
 
 import java.time.LocalDate;
@@ -14,23 +15,23 @@ import domain.datasources.model.MetaData;
 
 public class BitCoinChangeSource implements DataSource {
 	private TreeMap<LocalDate, Double> data;
-	ApiHandler handler;
+	private ApiHandler handler;
 
 	public BitCoinChangeSource() {
 		data = new TreeMap<LocalDate, Double>();
 		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		List<Change> list = new BitCoinChangeApi(handler).getChanges();
-		insertInMap(list);
+		loadData();
 	}
 
 	protected BitCoinChangeSource(ApiHandler handlerParam) {
 		data = new TreeMap<LocalDate, Double>();
 		handler = handlerParam;
-		List<Change> list = new BitCoinChangeApi(handler).getChanges();
-		insertInMap(list);
+		loadData();
 	}
 
-	private void insertInMap(List<Change> list) {
+	private void loadData() {
+		List<Change> list = new BitCoinChangeApi(handler).getChanges();
+		
 		for (Change change : list) {
 			data.put(LocalDate.parse(change.getDate()), change.getChange());
 		}
@@ -46,7 +47,7 @@ public class BitCoinChangeSource implements DataSource {
 		MetaData metaData;
 		metaData = new MetaData();
 		metaData.setLicense("");
-		metaData.setOwner("cbix.ca");
+		metaData.setOwner("cbix");
 		metaData.setUrl("https://www.cbix.ca");
 		metaData.setTitle("Change In Canadian Bitcoin Index");
 		metaData.setUnit("BTC");

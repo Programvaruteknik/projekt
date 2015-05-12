@@ -1,7 +1,9 @@
 package domain.datasources.workers;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -39,6 +41,7 @@ public class TestTvSources {
 		assertEquals(new Double(1), map.get(LocalDate.parse("2001-01-01")));
 
 		meta = source.getMetaData();
+		assertEquals("Airdate for Community", meta.getTitle());
 		testMetaData(meta);
 	}
 
@@ -52,14 +55,27 @@ public class TestTvSources {
 		map = source.getData();
 
 		assertEquals(new Double(1), map.get(LocalDate.parse("2001-01-01")));
-
+		
 		meta = source.getMetaData();
+		assertEquals("Airdate for Doctor Who", meta.getTitle());
 		testMetaData(meta);
-
+	}
+	
+	@Test
+	public void testFriends(){
+		when(fetcher.getContent("http://api.tvmaze.com/shows/431/episodes")).thenReturn(json);
+		TvFriendsSource source = new TvFriendsSource(handler);
+		map = source.getData();
+		assertEquals(new Double(1), map.get(LocalDate.parse("2001-01-01")));
+		meta = source.getMetaData();
+		
+		assertEquals("Airdate for Friends", meta.getTitle());
+		testMetaData(meta);
 	}
 
 	public void testMetaData(MetaData meta) {
 		assertNotNull(meta);
+		assertEquals(true, meta.containsData());
 		assertEquals("TvMaze", meta.getOwner());
 		assertEquals("http://www.tvmaze.com", meta.getUrl());
 		assertEquals("CC BY-SA 4.0", meta.getLicense());
@@ -67,3 +83,4 @@ public class TestTvSources {
 	}
 
 }
+

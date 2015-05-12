@@ -1,14 +1,14 @@
 package domain.api.models.bitcoin;
 
-public class Change {
+public class Volume {
 	private String date;
-	private double change;
+	private double volume;
 
 	public String getDate() {
 		return date;
 	}
 
-	public double getChange() {
-		return change;
+	public double getVolume() {
+		return volume;
 	}
 }

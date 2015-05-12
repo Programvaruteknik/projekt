@@ -20,7 +20,7 @@ public class TotalFotballGoals implements DataSource {
 	}
 
 	private void loadData() {
-		List<Event> events = new EverysportApi().getEvents();
+		List<Event> events = new EverysportApi().getAllsvenskan2014();
 		for (Event event : events) {
 			
 			Double totalScore = new Double(event.getHomeTeamScore()

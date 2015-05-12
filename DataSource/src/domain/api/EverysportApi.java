@@ -18,9 +18,15 @@ public class EverysportApi
 		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
 	}
 
-	public List<Event> getEvents()
+	public List<Event> getAllsvenskan2014()
 	{
 		EverysportEvents events = handler.get("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=63925", EverysportEvents.class);
+		return events.getEvents();
+	}
+	
+	public List<Event> getSHL2014()
+	{
+		EverysportEvents events = handler.get("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=66817", EverysportEvents.class);
 		return events.getEvents();
 	}
 }

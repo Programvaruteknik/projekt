@@ -41,6 +41,12 @@ public class DataMatcherTest {
 			meta.setUnit("mm");
 			return meta;
 		}
+
+		@Override
+		public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	};
 
 	private DataSource sourceY = new DataSource() {
@@ -62,11 +68,17 @@ public class DataMatcherTest {
 			meta.setUnit("Kelvin");
 			return meta;
 		}
+
+		@Override
+		public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	};
 
 	@Test
 	public void testMatch() {
-		ResultingData result = new DataMatcher(sourceX, sourceY, Resolution.DAY)
+		ResultingData result = new DataMatcher(sourceX, sourceY, Resolution.DAY, "fromDate", "toDate")
 				.match();
 
 		Map<String, DataPair> resoultingData = result.getData();
@@ -75,7 +87,7 @@ public class DataMatcherTest {
 		assertEquals(new Double(3d), resoultingData.get("2015-01-01").getX());
 		assertEquals(new Double(255d), resoultingData.get("2015-01-01").getY());
 
-		resoultingData = new DataMatcher(sourceX, sourceY, Resolution.WEEK)
+		resoultingData = new DataMatcher(sourceX, sourceY, Resolution.WEEK, "fromDate" , "toDate")
 				.match().getData();
 
 		assertEquals(2, resoultingData.size());

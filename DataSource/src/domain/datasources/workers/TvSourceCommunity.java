@@ -47,4 +47,10 @@ public class TvSourceCommunity implements DataSource {
 		return meta;
 	}
 
+	@Override
+	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

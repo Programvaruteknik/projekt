@@ -54,4 +54,10 @@ public class BitCoinChangeSource implements DataSource {
 		return metaData;
 	}
 
+	@Override
+	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

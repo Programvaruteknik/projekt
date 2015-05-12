@@ -43,7 +43,7 @@ public class DataSourceFormatterTest
 		expected.put(LocalDate.parse("2001-02-01"), a1);
 		expected.put(LocalDate.parse("2001-02-03"), a2);
 		
-		assertEquals(expected, new DataSourceFormatter(dataSource).toMergeableFormat());
+		assertEquals(expected, new DataSourceFormatter(dataSource, "fromDate" , "toDate").toMergeableFormat());
 	}
 
 }

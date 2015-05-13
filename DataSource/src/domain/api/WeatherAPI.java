@@ -62,7 +62,7 @@ public class WeatherAPI
 			dates.add(new Pair(startDate, foo));
 		}
 		
-		System.out.println("DATES-------------------------------------" + dates );
+	
 		return dates;
 	}
 	

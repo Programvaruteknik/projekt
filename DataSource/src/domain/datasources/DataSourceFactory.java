@@ -16,6 +16,7 @@ import domain.datasources.workers.SunAltitudeAtNoon;
 import domain.datasources.workers.TvFriendsSource;
 import domain.datasources.workers.TvSourceCommunity;
 import domain.datasources.workers.TvSourceDoctorWho;
+import domain.datasources.workers.downLoadURL;
 import domain.datasources.workers.general.TotalGoalDataSource;
 
 public class DataSourceFactory
@@ -28,10 +29,9 @@ public class DataSourceFactory
 		prePopulateSourceMap();
 	}
 	
-	private void addToMap(DataSource dataSource, String name)
+	private void addToMap(DataSource loader, String name)
 	{
-		sourceMap.put(name, dataSource);
-		
+		sourceMap.put(name, loader);
 	}
 	
 	private void prePopulateSourceMap() 
@@ -39,23 +39,23 @@ public class DataSourceFactory
 	
 		addToMap(new TotalGoalDataSource("Totala mål per dag i Basketligan Grundserien", new EverysportApi().getBasketliganGrundserien()),"Basket Grundserie");
 		addToMap(new TotalGoalDataSource("Totala mål per dag i Superserien Amrekansk fotboll", new EverysportApi().getSuperSerienAmrekanskFotboll()),"Amerikans fotbll superserie");
-		addToMap(new TotalGoalDataSource("Totala mål per dag i Divition1 Södra för Bandy 2014", new EverysportApi().getBandyDivition1Södra2014()),"Bandy 2014 Södra");
-		addToMap(new TotalGoalDataSource("Totala mål per dag i Allsvenskan 2014", new EverysportApi().getAllsvenskan2014("2001-01-01", "2010-02-02")),"Allsvenskan");
-		addToMap(new TotalGoalDataSource("Totala mål per dag i SHL 2014", new EverysportApi().getSHL2014()),"SHL 2014");
+		addToMap(new TotalGoalDataSource("Totala mål per dag i Divition1 Södra för Bandy 2014", new EverysportApi().getBandyDivition1Södra()),"Bandy 2014 Södra");
+		addToMap(new TotalGoalDataSource("Totala mål per dag i Allsvenskan 2014", new EverysportApi().getAllsvenskan()),"Allsvenskan");
+		addToMap(new TotalGoalDataSource("Totala mål per dag i SHL 2014", new EverysportApi().getSHL()),"SHL 2014");
 		
-		addToMap(new SunAltitudeAtNoon(),"Solens altitude");
-		
-		addToMap(new BitCoinOpenSource(),"Bitcoin Open Values");
-		addToMap(new BitCoinChangeSource(),"Bitcoin Change values");
-		addToMap(new BitCoinVolume(),"Bitcoin Volume values");
-		
-		addToMap(new TvSourceCommunity(),"Tv Community");
-		addToMap(new TvSourceDoctorWho(),"Tv DoctorWho ");
-		addToMap(new TvFriendsSource(),"Tv Friends");
-		
-		addToMap(new FootballSpectatorSource(),"Football specator");
-		addToMap(new DifferenceInFootballScore(),"Football difference in score");
-		addToMap(new BowlingSource(),"Bowling");
+//		addToMap(new SunAltitudeAtNoon(),"Solens altitude");
+//		
+//		addToMap(new BitCoinOpenSource(),"Bitcoin Open Values");
+//		addToMap(new BitCoinChangeSource(),"Bitcoin Change values");
+//		addToMap(new BitCoinVolume(),"Bitcoin Volume values");
+//		
+//		addToMap(new TvSourceCommunity(),"Tv Community");
+//		addToMap(new TvSourceDoctorWho(),"Tv DoctorWho ");
+//		addToMap(new TvFriendsSource(),"Tv Friends");
+//		
+//		addToMap(new FootballSpectatorSource(),"Football specator");
+//		addToMap(new DifferenceInFootballScore(),"Football difference in score");
+//		addToMap(new BowlingSource(),"Bowling");
 
 	}
 	

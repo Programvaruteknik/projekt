@@ -21,8 +21,8 @@ private TreeMap<LocalDate, Double> data = null;
 	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate)
 	{
 		TreeMap<LocalDate, Double> output = new TreeMap<LocalDate, Double>();
-		
-		List<Event> events = new EverysportApi().getAllsvenskan2014(fromDate, toDate);
+
+		List<Event> events = new EverysportApi().getAllsvenskan().downLoad(fromDate, toDate);
 		
 		for (Event event : events)
 		{
@@ -49,23 +49,32 @@ private TreeMap<LocalDate, Double> data = null;
 		meta.setTitle(name);
 		meta.setUnit("Mål");
 		meta.setHasData(!data.isEmpty());
-		
+		meta.setFirstDate("2000");
+		meta.setLastDate("2015");
+		if(!meta.containsData()){
+			meta.setSum(getSum());
+			meta.setMeanValue(getMedel());
+		}
 		return meta;
 	}
 
 	@Override
 	public TreeMap<LocalDate, Double> getData() {
-		// TODO Auto-generated method stub
 		return data;
 	}
 	
-	public double getMedel()
+	private double getMedel()
 	{
+		double sum = getSum();
+		return sum/data.values().size();
+	}
+
+	private double getSum() {
 		double sum = 0;
 		for(Double d : data.values())
 		{
 			sum += d;
 		}
-		return sum/data.values().size();
+		return sum;
 	}
 }

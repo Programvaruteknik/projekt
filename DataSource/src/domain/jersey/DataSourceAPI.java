@@ -48,26 +48,28 @@ public class DataSourceAPI {
 	public Response getCorrelationData(@QueryParam("dataSource1") String ds1,
 			@QueryParam("dataSource2") String ds2,
 			@QueryParam("resolution") String res,
-			@QueryParam("modification") String mod, @QueryParam("startDate") String startDate, @QueryParam("endDate") String endDate) {
+			@QueryParam("modification") String mod,
+			@QueryParam("startDate") String startDate,
+			@QueryParam("endDate") String endDate) {
 
 		Resolution resolution = res != null ? Resolution.valueOf(res)
 				: Resolution.DAY;
-
+		
 		DataSource dataSource1 = factory.getDataSource(ds1);
 		DataSource dataSource2 = factory.getDataSource(ds2);
+	
 		
-		if(mod != null)
-		{
-			List<Modification> modList = new JsonParser().deserialize(mod, new TypeToken<List<Modification>>(){}.getType());
-			
-			for (Modification modification : modList)
-			{
-				if(dataSource1.getMetaData().getName().equals(modification.getDataSourceName()))
-				{
+		if (mod != null) {
+			List<Modification> modList = new JsonParser().deserialize(mod,
+					new TypeToken<List<Modification>>() {
+					}.getType());
+
+			for (Modification modification : modList) {
+				if (dataSource1.getMetaData().getName()
+						.equals(modification.getDataSourceName())) {
 					dataSource1 = modulateDataSource(dataSource1, modification);
-				}
-				else if(dataSource2.getMetaData().getName().equals(modification.getDataSourceName()))
-				{
+				} else if (dataSource2.getMetaData().getName()
+						.equals(modification.getDataSourceName())) {
 					dataSource2 = modulateDataSource(dataSource2, modification);
 				}
 			}
@@ -95,40 +97,46 @@ public class DataSourceAPI {
 
 	@GET
 	@Path("/{dataSource}")
-	public Response getSources(@PathParam("dataSource") String ds , @QueryParam("fromDate") String fDate ,@QueryParam("toDate") String tDate) {
+	public Response getSources(@PathParam("dataSource") String ds,
+			@QueryParam("fromDate") String fDate,
+			@QueryParam("toDate") String tDate) {
 
 		ArrayList<String> input = new JsonParser().deserialize(ds,
 				new TypeToken<ArrayList<String>>() {
 				}.getType());
 
 		TreeMap<LocalDate, ArrayList<Double>> data = null;
-
+		System.out.println("DataSource  -----> " + ds);
+		
 		for (int i = 0; i < input.size(); i++) {
 			if (i == 0) {
 				DataSource tmpSource = factory.getDataSource(input.get(i));
-if(tmpSource == null){
-	return Response.status(Response.Status.BAD_REQUEST).build();
-}
+				System.out.println("DataSourceName -----> " + tmpSource.getMetaData().getName());
+				if (tmpSource == null) {
+					return Response.status(Response.Status.BAD_REQUEST).build();
+				}
 				tmpSource = new Interpolator().fillOutMissingDays(tmpSource,
 						Resolution.DAY, fDate, tDate);
 
-				data = new DataSourceFormatter(tmpSource, fDate, tDate).toMergeableFormat();
+				data = new DataSourceFormatter(tmpSource, fDate, tDate)
+						.toMergeableFormat();
 			} else {
 				data = new DataSourceMerger(data,
 						new DataSourceFormatter(factory.getDataSource(input
-										.get(i)), fDate, tDate).toMergeableFormat())
+								.get(i)), fDate, tDate).toMergeableFormat())
 						.merge(Resolution.DAY);
 
 			}
 		}
 		ArrayList<MetaData> metaList = new ArrayList<MetaData>();
-		for(String sourceName : input){
+		for (String sourceName : input) {
 			DataSource src = factory.getDataSource(sourceName);
 			metaList.add(src.getMetaData());
 		}
 		input.add(0, "Date");
 
-		DataSourcePackage sourcePackage = new DataSourcePackage(input, metaList,data);
+		DataSourcePackage sourcePackage = new DataSourcePackage(input,
+				metaList, data);
 		String json = new JsonParser().serializeNulls(sourcePackage);
 		return okRequest(json);
 	}
@@ -172,10 +180,11 @@ if(tmpSource == null){
 		String json = new JsonParser().serialize(array);
 		return Response.status(200).entity(json).build();
 	}
-	
-	private DataSource modulateDataSource(DataSource dataSource , Modification modification)
-	{
-		return new DateModelator(dataSource, modification.getYear(), modification.getMonth(), modification.getDays()).execute();
+
+	private DataSource modulateDataSource(DataSource dataSource,
+			Modification modification) {
+		return new DateModelator(dataSource, modification.getYear(),
+				modification.getMonth(), modification.getDays()).execute();
 	}
 
 	protected MetaData getMetaData(String string) {

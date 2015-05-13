@@ -3,6 +3,8 @@ package domain.datasources.workers;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import domain.api.ApiHandler;
@@ -16,6 +18,7 @@ import domain.datasources.model.MetaData;
 public class BitCoinChangeSource implements DataSource {
 	private TreeMap<LocalDate, Double> data;
 	private ApiHandler handler;
+	private boolean isFilterd = false;
 
 	public BitCoinChangeSource() {
 		data = new TreeMap<LocalDate, Double>();
@@ -54,11 +57,27 @@ public class BitCoinChangeSource implements DataSource {
 		metaData.setHasData(!data.isEmpty());
 		return metaData;
 	}
-
+	
+	private void filterOnDates(String fromDate, String toDate) 
+	{
+		SortedMap<LocalDate, Double> subMap = data.subMap(LocalDate.parse(fromDate),true, LocalDate.parse(toDate), true);
+		
+		System.out.println(subMap.size());
+		data = new TreeMap<>();
+		for(Map.Entry<LocalDate, Double> entry : subMap.entrySet())
+		{
+			data.put(entry.getKey(), entry.getValue());
+		}
+	}
+	
 	@Override
 	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
-		// TODO Auto-generated method stub
-		return null;
+		if(!isFilterd)
+		{
+			filterOnDates(fromDate, toDate);
+			isFilterd = !isFilterd;
+		}
+		return data;
 	}
 
 }

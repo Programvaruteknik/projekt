@@ -6,10 +6,45 @@ import domain.datasources.modulateing.ModelatingComand;
 
 public class MetaData
 {
-	private String title, url, owner, license, unit;
+	private String title, url, owner, license, unit,firstDate,lastDate;
+	private double meanValue,sum;
 	private boolean hasData;
 	
 	private List<ModelatingComand> modList;
+
+
+
+	public double getMeanValue() {
+		return meanValue;
+	}
+
+	public void setMeanValue(double meanValue) {
+		this.meanValue = meanValue;
+	}
+
+	public double getSum() {
+		return sum;
+	}
+
+	public void setSum(double sum) {
+		this.sum = sum;
+	}
+
+	public String getFirstDate() {
+		return firstDate;
+	}
+
+	public void setFirstDate(String firstDate) {
+		this.firstDate = firstDate;
+	}
+
+	public String getLastDate() {
+		return lastDate;
+	}
+
+	public void setLastDate(String lastDate) {
+		this.lastDate = lastDate;
+	}
 
 	public String getTitle()
 	{

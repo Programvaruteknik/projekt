@@ -9,7 +9,7 @@ angular.module('services', [])
 		if(selectedDataSource.length ===2)
 		{/**/
 			
-			var fDate = dateObject.startDate || "2014-01-01";
+			var fDate = dateObject.startDate || "2004-01-01";
 			var tDate = dateObject.endDate || "2014-12-01";
 			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution, startDate:fDate, endDate: tDate}, function(data) {
 

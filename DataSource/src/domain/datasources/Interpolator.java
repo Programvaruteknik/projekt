@@ -86,6 +86,7 @@ public class Interpolator {
 	 */
 	public DataSource fillOutMissingDays(DataSource sc, Resolution resolution, String fDate, String tDate) {
 		TreeMap<LocalDate, Double> map = sc.getData(fDate, tDate);
+		System.out.println(map.isEmpty() + "  >----- is Map empty");
 		TreeMap<LocalDate, Double> copyMap = new TreeMap<>();
 		LocalDate first = getFirst(sc);
 		LocalDate current = first;

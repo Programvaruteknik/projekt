@@ -145,27 +145,7 @@ public class DataSourceAPI {
 				
 		}
 		
-//		for (int i = 0; i < input.size(); i++) {
-//			if (i == 0) {
-//				DataSource tmpSource = factory.getDataSource(input.get(i));
-//				if (tmpSource == null) {
-//					return Response.status(Response.Status.BAD_REQUEST).build();
-//				}
-//				tmpSource.downLoadDataSource(fDate, tDate);
-//				tmpSource = new Interpolator().fillOutMissingDays(tmpSource,
-//						Resolution.DAY);
-//
-//				data = new DataSourceFormatter(tmpSource)
-//						.toMergeableFormat();
-//			} else {
-//				DataSource dataS = factory.getDataSource(input.get(i));
-//				dataS.downLoadDataSource(fDate, tDate);
-//				data = new DataSourceMerger(data,
-//						new DataSourceFormatter(dataS).toMergeableFormat())
-//						.merge(Resolution.DAY);
-//
-//			}
-//		}
+
 		ArrayList<MetaData> metaList = new ArrayList<MetaData>();
 		for (DataSource source : allDataSources) {
 			metaList.add(source.getMetaData());			

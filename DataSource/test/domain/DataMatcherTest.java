@@ -43,9 +43,9 @@ public class DataMatcherTest {
 		}
 
 		@Override
-		public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
+		public void downLoadDataSource(String fromDate, String toDate) {
 			// TODO Auto-generated method stub
-			return null;
+			
 		}
 	};
 
@@ -70,15 +70,15 @@ public class DataMatcherTest {
 		}
 
 		@Override
-		public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
+		public void downLoadDataSource(String fromDate, String toDate) {
 			// TODO Auto-generated method stub
-			return null;
+			
 		}
 	};
 
 	@Test
 	public void testMatch() {
-		ResultingData result = new DataMatcher(sourceX, sourceY, Resolution.DAY, "fromDate", "toDate")
+		ResultingData result = new DataMatcher(sourceX, sourceY, Resolution.DAY)
 				.match();
 
 		Map<String, DataPair> resoultingData = result.getData();
@@ -87,7 +87,7 @@ public class DataMatcherTest {
 		assertEquals(new Double(3d), resoultingData.get("2015-01-01").getX());
 		assertEquals(new Double(255d), resoultingData.get("2015-01-01").getY());
 
-		resoultingData = new DataMatcher(sourceX, sourceY, Resolution.WEEK, "fromDate" , "toDate")
+		resoultingData = new DataMatcher(sourceX, sourceY, Resolution.WEEK)
 				.match().getData();
 
 		assertEquals(2, resoultingData.size());

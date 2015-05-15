@@ -37,6 +37,7 @@ public class TestTvSources {
 		
 		TvSourceCommunity source = new TvSourceCommunity(handler);
 		map = source.getData();
+		source.downLoadDataSource("", "");
 		
 		assertEquals(new Double(1), map.get(LocalDate.parse("2001-01-01")));
 
@@ -53,7 +54,7 @@ public class TestTvSources {
 
 		TvSourceDoctorWho source = new TvSourceDoctorWho(handler);
 		map = source.getData();
-
+		source.downLoadDataSource("", "");
 		assertEquals(new Double(1), map.get(LocalDate.parse("2001-01-01")));
 		
 		meta = source.getMetaData();
@@ -65,6 +66,7 @@ public class TestTvSources {
 	public void testFriends(){
 		when(fetcher.getContent("http://api.tvmaze.com/shows/431/episodes")).thenReturn(json);
 		TvFriendsSource source = new TvFriendsSource(handler);
+		source.downLoadDataSource("", "");
 		map = source.getData();
 		assertEquals(new Double(1), map.get(LocalDate.parse("2001-01-01")));
 		meta = source.getMetaData();

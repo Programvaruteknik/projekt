@@ -36,7 +36,6 @@ public class DifferenceInFootballScore implements DataSource {
 	protected DifferenceInFootballScore(ApiHandler handler) {
 		map = new TreeMap<LocalDate, Double>();
 		this.handler = handler;
-		loadData("fromDate", "toDate");
 	}
 
 	private void loadData(String fromDate, String toDate) {

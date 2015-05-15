@@ -47,14 +47,14 @@ public class TestSingleDataSource {
 
 		data.put(LocalDate.parse("2001-01-02"), 2.0);
 		data.put(LocalDate.parse("2001-01-01"), 1.0);
-		
+
 		mockSource = mock(DataSource.class);
 		when(mockSource.getData()).thenReturn(data);
 		when(factory.getDataSource("mockSource")).thenReturn(mockSource);
-		
+
 		api.setFactory(factory);
-		entity = (String) api.getSources("['mockSource']").getEntity();
-		
+		entity = (String) api.getSources("['mockSource']", "", "").getEntity();
+
 		Map<String, Object> map = new JsonParser().deserialize(entity,
 				Map.class);
 
@@ -76,7 +76,7 @@ public class TestSingleDataSource {
 
 		api.setFactory(factory);
 		String expectedJson = null;
-		resp = api.getSources("['iDontExists']");
+		resp = api.getSources("['iDontExists']", "1999-01-01", "2010-01-01");
 
 		assertEquals(expectedJson, resp.getEntity());
 		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
@@ -84,6 +84,7 @@ public class TestSingleDataSource {
 	}
 
 	DataSource x = new DataSource() {
+		TreeMap<LocalDate, Double> map = new TreeMap<LocalDate, Double>();
 
 		@Override
 		public MetaData getMetaData() {
@@ -95,13 +96,17 @@ public class TestSingleDataSource {
 
 		@Override
 		public TreeMap<LocalDate, Double> getData() {
-			TreeMap<LocalDate, Double> map = new TreeMap<LocalDate, Double>();
-			map.put(LocalDate.parse("2001-01-01"), 1d);
 			return map;
+		}
+
+		@Override
+		public void downLoadDataSource(String fromDate, String toDate) {
+			map.put(LocalDate.parse("2001-01-01"), 1d);
 		}
 	};
 
 	DataSource y = new DataSource() {
+		TreeMap<LocalDate, Double> map = new TreeMap<LocalDate, Double>();
 
 		@Override
 		public MetaData getMetaData() {
@@ -113,9 +118,12 @@ public class TestSingleDataSource {
 
 		@Override
 		public TreeMap<LocalDate, Double> getData() {
-			TreeMap<LocalDate, Double> map = new TreeMap<LocalDate, Double>();
-			map.put(LocalDate.parse("2001-01-01"), 1d);
 			return map;
+		}
+
+		@Override
+		public void downLoadDataSource(String fromDate, String toDate) {
+			map.put(LocalDate.parse("2001-01-01"), 1d);
 		}
 	};
 
@@ -123,12 +131,16 @@ public class TestSingleDataSource {
 	public void testGetMetaData() {
 		String expectedName1 = "xSource";
 		String expectedName2 = "ySource";
+		x.downLoadDataSource("", "");
+		y.downLoadDataSource("", "");
 
 		when(factory.getDataSource("sc1")).thenReturn(x);
 		when(factory.getDataSource("sc2")).thenReturn(y);
 		api.setFactory(factory);
+		String modification = "[{\"dataSourceName\":\"name\",\"year\":1,\"month\":1,\"days\":1}]";
 
-		resp = api.getCorrelationData("sc1", "sc2", "DAY",null);
+		resp = api
+				.getCorrelationData("sc1", "sc2", "DAY", modification, "", "");
 
 		String entityContent = (String) resp.getEntity();
 
@@ -144,7 +156,6 @@ public class TestSingleDataSource {
 		assertEquals(expectedName2, metaDataY.get("title"));
 		assertEquals("xUnit", metaDataX.get("unit"));
 		assertEquals("yUnit", metaDataY.get("unit"));
-
 	}
 
 	@Test
@@ -157,11 +168,13 @@ public class TestSingleDataSource {
 		when(mockSource.getData()).thenReturn(data);
 		when(factory.getDataSource("mockSource")).thenReturn(mockSource);
 		api.setFactory(factory);
-		
-		
-		resp = api.getSources("['mockSource']");
+
+		String fromDate = "2001-01-01";
+		String toDate = "2003-03-03";
+
+		resp = api.getSources("['mockSource']", fromDate, toDate);
 		entity = (String) resp.getEntity();
-		
+
 		jsonMap = new Gson().fromJson(entity, Map.class);
 
 		headerList = (ArrayList<String>) jsonMap.get("header");

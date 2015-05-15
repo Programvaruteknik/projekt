@@ -24,7 +24,6 @@ public class BowlingSource implements DataSource {
 	public BowlingSource() {
 		map = new TreeMap<LocalDate, Double>();
 		this.handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		
 	}
 
 	private void loadData(String fromDate, String toDate) {
@@ -34,6 +33,7 @@ public class BowlingSource implements DataSource {
 		if(events != null)
 		{
 			for (Event e : events.getEvents()) {
+				System.out.println(e.getStartDate() +"  : "+ e.getHomeTeamScore());
 				Double totalScore = (double) (e.getHomeTeamScore() + e
 						.getVisitingTeamScore());
 				map.put(e.getStartDate(), totalScore);

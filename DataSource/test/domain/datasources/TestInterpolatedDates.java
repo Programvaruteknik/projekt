@@ -62,7 +62,7 @@ public class TestInterpolatedDates {
 		map.put(LocalDate.parse("2014-03-31"), 7.0);
 		map.put(LocalDate.parse("2014-04-04"), 4.0);
 		map.put(LocalDate.parse("2014-04-05"), 1.0);
-		DataSource src = interpolator.fillOutMissingDays(sc, Resolution.DAY, "startDate" , "endDate");
+		DataSource src = interpolator.fillOutMissingDays(sc, Resolution.DAY);
 		TreeMap<LocalDate, Double> mappen = src.getData();
 		
 		assertEquals(7, mappen.size());

@@ -37,6 +37,12 @@ public class DateModelatorTest
 			{
 				return new MetaData();
 			}
+
+			@Override
+			public void downLoadDataSource(String fromDate, String toDate) {
+				// TODO Auto-generated method stub
+				
+			}
 		};
 	}
 

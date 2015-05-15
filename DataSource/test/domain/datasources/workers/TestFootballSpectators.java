@@ -32,7 +32,7 @@ public class TestFootballSpectators {
 	public void getData() {
 		UrlFetcher fetcher = mock(UrlFetcher.class);
 		String json = "{\"events\":[{\"startDate\":2001-01-01,\"facts\":{\"spectators\":123}}]}";
-		when(fetcher.getContent("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=63925")).thenReturn(json);
+		when(fetcher.getContent("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=null&fromDate=startDate&toDate=endDate&limit=1000")).thenReturn(json);
 		ApiHandler handler = new ApiHandler(fetcher,new JsonParser());
 		FootballSpectatorSource source = new FootballSpectatorSource(handler);
 				

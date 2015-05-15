@@ -37,18 +37,20 @@ public class LeagueRegister {
 
 	public Map<String, Integer> getBandy() {
 		Map<String, Integer> leagueYear = new TreeMap<>();
-		leagueYear.put("2014-2015", 67536);
-		leagueYear.put("2013-2014", 62038);
-		leagueYear.put("2012-2013", 54745);
-		leagueYear.put("2011-2012", 49260);
-		leagueYear.put("2010-2011", 41720);
-		leagueYear.put("2009-2010", 37135);
-		leagueYear.put("2006-2007", 19315);
-		leagueYear.put("2005-2006", 9925);
-		leagueYear.put("2004-2005", 8673);
-		leagueYear.put("2003-2004", 7466);
-		leagueYear.put("2001-2002", 4719);
-		leagueYear.put("2000-2001", 3754);
+		leagueYear.put("2014-2015", 67533);
+		leagueYear.put("2013-2014", 62035);
+		leagueYear.put("2012-2013", 54740);
+		leagueYear.put("2011-2012", 49259);
+		leagueYear.put("2010-2011", 41719);
+		leagueYear.put("2009-2010", 37128);
+		leagueYear.put("2008-2009", 31250);
+		leagueYear.put("2007-2008", 25931);
+		leagueYear.put("2006-2007", 18393);
+		leagueYear.put("2005-2006", 9923);
+		leagueYear.put("2004-2005", 8670);
+		leagueYear.put("2003-2004", 7464);
+		leagueYear.put("2001-2002", 4717);
+		leagueYear.put("2000-2001", 3398);
 		return leagueYear;
 	}
 

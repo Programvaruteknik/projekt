@@ -1,9 +1,11 @@
 package domain.datasources.workers;
 
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.TreeMap;
 
 import domain.api.ApiHandler;
+import domain.api.LeagueRegister;
 import domain.api.models.everysport.Event;
 import domain.api.models.everysport.EverysportEvents;
 import domain.api.models.everysport.Facts;
@@ -15,21 +17,25 @@ import domain.datasources.model.MetaData;
 public class FootballSpectatorSource implements DataSource {
 	private TreeMap<LocalDate, Double> map;
 	private ApiHandler handler;
+	private String leagueIDS;
+	private String baseURL = "http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=";
 
 	public FootballSpectatorSource() {
 		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		
+		LeagueRegister league = new LeagueRegister();
+		Map<String, Integer> leagueid = league.getFootballLeagues();
+		leagueIDS = league.getIds(leagueid);
 	}
 
 	protected FootballSpectatorSource(ApiHandler handler2) {
 		handler = handler2;
-		loadData();
+		loadData("startDate" , "endDate");
 	}
 
-	protected void loadData() {
+	protected void loadData(String fromDate, String toDate) {
 		map = new TreeMap<LocalDate, Double>();
 		EverysportEvents events = handler
-				.get("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=63925",
+				.get(baseURL + leagueIDS + "&fromDate=" + fromDate + "&toDate=" +toDate+ "&limit=5000",
 						EverysportEvents.class);
 		for (Event e : events.getEvents()) {
 			Facts f = e.getFacts();
@@ -60,6 +66,6 @@ public class FootballSpectatorSource implements DataSource {
 	@Override
 	public void downLoadDataSource(String fromDate,
 			String toDate) {
-		loadData();
+		loadData(fromDate, toDate);
 	}
 }

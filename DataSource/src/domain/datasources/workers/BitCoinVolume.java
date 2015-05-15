@@ -25,12 +25,6 @@ public class BitCoinVolume implements DataSource {
 		loadData();
 	}
 	
-	private void loadData(){
-		VolumeList list = handler.get("http://api.cbix.ca/v1/history?limit=100", VolumeList.class);
-		for(Volume v : list.getChanges()){
-			map.put(LocalDate.parse(v.getDate()), v.getVolume());
-		}
-	}
 	
 	@Override
 	public TreeMap<LocalDate, Double> getData() {
@@ -55,4 +49,15 @@ public class BitCoinVolume implements DataSource {
 		
 	}
 
+	private void loadData(){
+		VolumeList list = handler.get("http://api.cbix.ca/v1/history?limit=5000", VolumeList.class);
+		if(list != null)
+		{
+			for(Volume v : list.getChanges()){
+				map.put(LocalDate.parse(v.getDate()), v.getVolume());
+			}
+		}
+	}
+	
+	
 }

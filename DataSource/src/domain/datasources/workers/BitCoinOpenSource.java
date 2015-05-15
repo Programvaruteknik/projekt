@@ -72,8 +72,11 @@ public class BitCoinOpenSource implements DataSource {
 	@Override
 	public void downLoadDataSource(String fromDate, String toDate) {
 		List<Open> list = new BitCoinOpenApi(handler).getChanges();
-		insertInMap(list);
-		filterOnDates(fromDate, toDate);
+		if(list != null)
+		{
+			insertInMap(list);
+			filterOnDates(fromDate, toDate);
+		}
 	}
 
 }

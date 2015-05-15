@@ -18,7 +18,6 @@ import domain.datasources.model.MetaData;
 public class BitCoinChangeSource implements DataSource {
 	private TreeMap<LocalDate, Double> data;
 	private ApiHandler handler;
-	private boolean isFilterd = false;
 
 	public BitCoinChangeSource() {
 		data = new TreeMap<LocalDate, Double>();
@@ -35,8 +34,11 @@ public class BitCoinChangeSource implements DataSource {
 	private void loadData() {
 		List<Change> list = new BitCoinChangeApi(handler).getChanges();
 		
-		for (Change change : list) {
-			data.put(LocalDate.parse(change.getDate()), change.getChange());
+		if(list != null)
+		{
+			for (Change change : list) {
+				data.put(LocalDate.parse(change.getDate()), change.getChange());
+			}
 		}
 	}
 

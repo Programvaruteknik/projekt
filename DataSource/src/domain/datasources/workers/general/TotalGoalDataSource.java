@@ -36,8 +36,8 @@ public class TotalGoalDataSource implements DataSource
 	}
 
 	@Override
-	public TreeMap<LocalDate, Double> getData() {
-		System.out.println(data.toString());
+	public TreeMap<LocalDate, Double> getData() 
+	{
 		return data;
 	}
 

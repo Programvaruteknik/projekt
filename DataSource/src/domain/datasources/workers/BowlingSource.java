@@ -30,7 +30,6 @@ public class BowlingSource implements DataSource {
 		EverysportEvents events = handler
 				.get(baseURL + "fromDate=" + fromDate + "&toDate=" + toDate +"&limit=1000",
 						EverysportEvents.class);
-		System.out.println(baseURL + "fromDate=" + fromDate + "&toDate=" + toDate +"&limit=1000");
 		if(events != null)
 		{
 			for (Event e : events.getEvents()) {

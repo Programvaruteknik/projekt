@@ -23,17 +23,18 @@ private TreeMap<LocalDate, Double> data = null;
 		data = new TreeMap<LocalDate, Double>();
 
 		List<Event> events = new EverysportApi().getAllsvenskan().downLoad(fromDate, toDate);
-		
-		for (Event event : events)
-		{
-			Double totalScore = new Double(event.getHomeTeamScore() + event.getVisitingTeamScore());
-			if(data.get(event.getStartDate()) != null)
+		if(events != null){			
+			for (Event event : events)
 			{
-				data.put(event.getStartDate(), data.get(event.getStartDate()) + totalScore);
-			}
-			else
-			{
-				data.put(event.getStartDate(), totalScore);				
+				Double totalScore = new Double(event.getHomeTeamScore() + event.getVisitingTeamScore());
+				if(data.get(event.getStartDate()) != null)
+				{
+					data.put(event.getStartDate(), data.get(event.getStartDate()) + totalScore);
+				}
+				else
+				{
+					data.put(event.getStartDate(), totalScore);				
+				}
 			}
 		}
 		

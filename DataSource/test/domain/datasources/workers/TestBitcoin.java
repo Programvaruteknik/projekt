@@ -68,7 +68,7 @@ public class TestBitcoin {
 	@Test
 	public void testBitcoinVolume() {
 		json = "{\"data\":[{\"date\":\"2001-01-01\",\"volume\":123}]}";
-		when(fetcher.getContent("http://api.cbix.ca/v1/history?limit=100"))
+		when(fetcher.getContent("http://api.cbix.ca/v1/history?limit=5000"))
 				.thenReturn(json);
 
 		BitCoinVolume source = new BitCoinVolume(handler);

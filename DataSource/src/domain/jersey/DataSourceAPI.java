@@ -54,13 +54,12 @@ public class DataSourceAPI {
 
 		Resolution resolution = res != null ? Resolution.valueOf(res)
 				: Resolution.DAY;
-		
+
 		DataSource dataSource1 = factory.getDataSource(ds1);
 		dataSource1.downLoadDataSource(startDate, endDate);
 		DataSource dataSource2 = factory.getDataSource(ds2);
 		dataSource2.downLoadDataSource(startDate, endDate);
-	
-		
+
 		if (mod != null) {
 			List<Modification> modList = new JsonParser().deserialize(mod,
 					new TypeToken<List<Modification>>() {
@@ -108,33 +107,43 @@ public class DataSourceAPI {
 				}.getType());
 
 		TreeMap<LocalDate, ArrayList<Double>> data = null;
-		System.out.println("DataSource  -----> " + ds);
-		
-		for (int i = 0; i < input.size(); i++) {
-			if (i == 0) {
-				DataSource tmpSource = factory.getDataSource(input.get(i));
-				if (tmpSource == null) {
-					return Response.status(Response.Status.BAD_REQUEST).build();
-				}
-				tmpSource.downLoadDataSource(fDate, tDate);
-				tmpSource = new Interpolator().fillOutMissingDays(tmpSource,
-						Resolution.DAY);
 
-				data = new DataSourceFormatter(tmpSource)
-						.toMergeableFormat();
-			} else {
-				DataSource dataS = factory.getDataSource(input.get(i));
-				dataS.downLoadDataSource(fDate, tDate);
-				data = new DataSourceMerger(data,
-						new DataSourceFormatter(dataS).toMergeableFormat())
-						.merge(Resolution.DAY);
+		List<DataSource> hasData = new ArrayList<DataSource>();
+		List<DataSource> noneData = new ArrayList<DataSource>();
+		List<DataSource> allDataSources = new ArrayList<DataSource>();
 
-			}
+		for (String dSource : input) {
+			allDataSources.add(factory.getDataSource(dSource));
 		}
+
+		for (DataSource dataSource : allDataSources) {
+			if (dataSource == null) {
+				return badRequestResponse();
+			}
+			dataSource.downLoadDataSource(fDate, tDate);
+			if (dataSource.getData().isEmpty())
+				noneData.add(dataSource);
+			else
+				hasData.add(dataSource);
+		}
+
+		DataSource tmp = null;
+		for (int i = 0; i < hasData.size(); i++) {
+			if (i == 0) {
+				tmp = new Interpolator().fillOutMissingDays(hasData.get(i),
+						Resolution.DAY);
+				data = new DataSourceFormatter(tmp).toMergeableFormat();
+			} else {
+				data = new DataSourceMerger(data, new DataSourceFormatter(
+						hasData.get(i)).toMergeableFormat())
+						.merge(Resolution.DAY);
+			}
+
+		}
+
 		ArrayList<MetaData> metaList = new ArrayList<MetaData>();
-		for (String sourceName : input) {
-			DataSource src = factory.getDataSource(sourceName);
-			metaList.add(src.getMetaData());
+		for (DataSource source : allDataSources) {
+			metaList.add(source.getMetaData());
 		}
 		input.add(0, "Date");
 
@@ -155,12 +164,6 @@ public class DataSourceAPI {
 	public Response getListOfDataSources() {
 		return okRequest(new JsonParser().serialize(new DataSourceFactory()
 				.getNameAllDataSources()));
-	}
-
-	@GET
-	@Path("/foo/test")
-	public Response getFoo(@QueryParam("foo") String s) {
-		return Response.status(200).entity("Yaay" + s).build();
 	}
 
 	/**

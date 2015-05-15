@@ -24,9 +24,11 @@ public class SunAltitudeAtNoon implements DataSource {
 
 		data = new TreeMap<LocalDate, Double>();
 		List<Time> times = new WeatherAPI().getTimes(fromDate, toDate);
-
-		for (Time time : times) {
-			data.put(time.getDate(), time.getLocation().getSun().getNoon().getAltitude());
+		if(times != null)
+		{
+			for (Time time : times) {
+				data.put(time.getDate(), time.getLocation().getSun().getNoon().getAltitude());
+			}			
 		}
 		
 		

@@ -21,10 +21,11 @@ public class TestDifferenceInFootballScore {
 		
 		UrlFetcher fetcher = mock(UrlFetcher.class);
 		String json = "{\"events\":[{\"startDate\":\"2001-01-01\",\"visitingTeamScore\":0,\"homeTeamScore\":2}]}";
-		when(fetcher.getContent("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=63925")).thenReturn(json);
+		when(fetcher.getContent("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=nullfromDate=1999-01-01&toDate=2002-01-01&limit=5000")).thenReturn(json);
 		ApiHandler handler = new ApiHandler(fetcher, new JsonParser());
-		DifferenceInFootballScore source = new DifferenceInFootballScore(handler);
 		
+		DifferenceInFootballScore source = new DifferenceInFootballScore(handler);
+		source.downLoadDataSource("1999-01-01", "2002-01-01");
 		TreeMap<LocalDate,Double> map = source.getData();
 		double expectedDifference = 2;
 		assertEquals(expectedDifference, map.get(LocalDate.parse("2001-01-01")).doubleValue(),0.01);

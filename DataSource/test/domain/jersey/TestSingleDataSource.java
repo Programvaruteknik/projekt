@@ -76,7 +76,7 @@ public class TestSingleDataSource {
 
 		api.setFactory(factory);
 		String expectedJson = null;
-		resp = api.getSources("['iDontExists']", "", "");
+		resp = api.getSources("['iDontExists']", "1999-01-01", "2010-01-01");
 
 		assertEquals(expectedJson, resp.getEntity());
 		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),

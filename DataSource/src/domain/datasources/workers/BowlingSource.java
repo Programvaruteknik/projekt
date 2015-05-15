@@ -1,7 +1,6 @@
 package domain.datasources.workers;
 
 import java.time.LocalDate;
-import java.util.Map;
 import java.util.TreeMap;
 
 import domain.api.ApiHandler;
@@ -15,6 +14,7 @@ import domain.datasources.model.MetaData;
 public class BowlingSource implements DataSource {
 	private ApiHandler handler;
 	private TreeMap<LocalDate, Double> map;
+	private String baseURL = "http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=66975,60851,55579,48764,42317,35714,30972,25623,19080,9929,8619&";
 
 	protected BowlingSource(ApiHandler handler) {
 		map = new TreeMap<LocalDate, Double>();
@@ -24,17 +24,21 @@ public class BowlingSource implements DataSource {
 	public BowlingSource() {
 		map = new TreeMap<LocalDate, Double>();
 		this.handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		loadData();
 	}
 
-	private void loadData() {
+	private void loadData(String fromDate, String toDate) {
 		EverysportEvents events = handler
-				.get("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=66975",
+				.get(baseURL + "fromDate=" + fromDate + "&toDate=" + toDate +"&limit=1000",
 						EverysportEvents.class);
-		for (Event e : events.getEvents()) {
-			Double totalScore = (double) (e.getHomeTeamScore() + e
-					.getVisitingTeamScore());
-			map.put(e.getStartDate(), totalScore);
+		System.out.println(baseURL + "fromDate=" + fromDate + "&toDate=" + toDate +"&limit=1000");
+		if(events != null)
+		{
+			for (Event e : events.getEvents()) {
+				System.out.println(e.getStartDate() +"  : "+ e.getHomeTeamScore());
+				Double totalScore = (double) (e.getHomeTeamScore() + e
+						.getVisitingTeamScore());
+				map.put(e.getStartDate(), totalScore);
+			}
 		}
 	}
 
@@ -57,7 +61,7 @@ public class BowlingSource implements DataSource {
 
 	@Override
 	public void downLoadDataSource(String fromDate, String toDate) {
-		loadData();
+		loadData(fromDate, toDate);
 		
 	}
 

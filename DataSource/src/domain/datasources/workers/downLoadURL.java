@@ -29,7 +29,10 @@ public class downLoadURL
 		System.out.println("Hela URL för bandy VM -----> " +URL+ "&fromDate=" + fromDate + "&toDate=" + toDate + "&limit=5000");
 //		List<Event> events = downloader.get(URL+ "&fromDate=" + fromDate + "&toDate=" + toDate + "&limit=1000", EverysportEvents.class);
 		EverysportEvents events = downloader.get(URL+ "&fromDate=" + fromDate + "&toDate=" + toDate + "&limit=1000", T);
-		return events.getEvents();
+		if(events != null)
+			return events.getEvents();
+		else
+			return null;
 	}
 	
 }

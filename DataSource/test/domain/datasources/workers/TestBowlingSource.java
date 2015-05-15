@@ -22,13 +22,14 @@ public class TestBowlingSource {
 		UrlFetcher fetcher = mock(UrlFetcher.class);
 		String json ="{\"events\":[{\"startDate\":\"2001-01-01\",\"homeTeamScore\":5,\"visitingTeamScore\":5}]}";
 		
-		when(fetcher.getContent("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=66975")).thenReturn(json);
+		when(fetcher.getContent("http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=66975,60851,55579,48764,42317,35714,30972,25623,19080,9929,8619&fromDate=2000-01-01&toDate=2002-01-01&limit=1000")).thenReturn(json);
 		ApiHandler handler = new ApiHandler(fetcher, new JsonParser());
 		BowlingSource source = new BowlingSource(handler);
 		source.downLoadDataSource("2000-01-01","2002-01-01");
 		
 		TreeMap<LocalDate,Double> map = source.getData();
 		double expectedScore = 10d;
+		System.out.println(map);
 		assertEquals(expectedScore, map.get(LocalDate.parse("2001-01-01")),0.01);
 		MetaData meta = source.getMetaData();
 		

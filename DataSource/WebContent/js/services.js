@@ -79,7 +79,7 @@ angular.module('services', [])
 	/* */
 	this.select = function (selectedDataSource, dateObject){
 		var deferred = $q.defer();
-		var fDate = dateObject.startDate || "2014-01-01";
+		var fDate = dateObject.startDate || "2013-01-01";
 		var tDate = dateObject.endDate || "2014-11-01";
 		$resource("api/dataSource/:dataSource").get({dataSource:angular.toJson(selectedDataSource), fromDate:fDate, toDate : tDate}, function(data) {
 			

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import domain.api.models.everysport.Event;
+import domain.api.models.everysport.EverysportEvents;
 import domain.datasources.DataSource;
 import domain.datasources.model.MetaData;
 import domain.datasources.workers.downLoadURL;
@@ -36,26 +37,30 @@ public class TotalGoalDataSource implements DataSource
 	}
 
 	@Override
-	public TreeMap<LocalDate, Double> getData() {
-		System.out.println(data.toString());
+	public TreeMap<LocalDate, Double> getData() 
+	{
 		return data;
 	}
 
 	private void loadData(List<Event> ev) {
 		data = new TreeMap<LocalDate, Double>();
-		for (Event event : ev) {
-			
-			Double totalScore = new Double(event.getHomeTeamScore()
-					+ event.getVisitingTeamScore());
-			
-			LocalDate startDate = event.getStartDate();
-			
-			
-			if (data.get(startDate) != null) {
-				data.put(startDate, data.get(startDate)
-						+ totalScore);
-			} else {
-				data.put(startDate, totalScore);
+		if(ev != null)
+		{
+			for (Event event : ev) {
+				
+				Double totalScore = new Double(event.getHomeTeamScore()
+						+ event.getVisitingTeamScore());
+				
+				LocalDate startDate = event.getStartDate();
+				
+				
+				if (data.get(startDate) != null) {
+					data.put(startDate, data.get(startDate)
+							+ totalScore);
+				} else {
+					data.put(startDate, totalScore);
+				}
+				
 			}
 			
 		}

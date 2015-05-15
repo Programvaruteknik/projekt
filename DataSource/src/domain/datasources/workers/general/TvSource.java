@@ -1,6 +1,7 @@
 package domain.datasources.workers.general;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.TreeMap;
 
 import domain.api.ApiHandler;
@@ -35,11 +36,14 @@ public class TvSource implements DataSource {
 	protected void loadData() {
 		TvApi api = new TvApi(handler);
 		api.setId(id);
-		for (SendingDay day : api.getAirDates()) {
-			double d = day.getDayOfMonth();
-			data.put(day.getAirDate(), d);
+		List<SendingDay> sending = api.getAirDates();
+		if(sending != null)
+		{
+			for (SendingDay day : sending) {
+				double d = day.getDayOfMonth();
+				data.put(day.getAirDate(), d);
+			}			
 		}
-
 	}
 
 	@Override

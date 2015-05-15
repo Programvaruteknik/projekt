@@ -20,17 +20,15 @@ public class BitCoinVolume extends GenericBitCoinSource {
 		setTitle("Bitcoin volume");
 	}
 
-	@Override
 	protected void loadData(){
-		VolumeList list = handler.get(url, VolumeList.class);
-		for(Volume v : list.getChanges()){
-			data.put(LocalDate.parse(v.getDate()), v.getVolume());
+		VolumeList list = handler.get("http://api.cbix.ca/v1/history?limit=5000", VolumeList.class);
+		if(list != null)
+		{
+			for(Volume v : list.getChanges()){
+				data.put(LocalDate.parse(v.getDate()), v.getVolume());
+			}
 		}
 	}
 	
-	@Override
-	public TreeMap<LocalDate, Double> getData() {
-		return data;
-	}
-
+	
 }

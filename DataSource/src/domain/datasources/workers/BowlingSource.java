@@ -19,7 +19,6 @@ public class BowlingSource implements DataSource {
 	protected BowlingSource(ApiHandler handler) {
 		map = new TreeMap<LocalDate, Double>();
 		this.handler = handler;
-		loadData();
 	}
 
 	public BowlingSource() {
@@ -57,9 +56,11 @@ public class BowlingSource implements DataSource {
 	}
 
 	@Override
-	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
-		// TODO Auto-generated method stub
-		return null;
+	public void downLoadDataSource(String fromDate, String toDate) {
+		loadData();
+		
 	}
+
+	
 
 }

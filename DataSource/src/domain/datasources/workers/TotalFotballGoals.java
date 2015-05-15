@@ -18,26 +18,26 @@ private TreeMap<LocalDate, Double> data = null;
 
 
 	@Override
-	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate)
+	public void downLoadDataSource(String fromDate, String toDate)
 	{
-		TreeMap<LocalDate, Double> output = new TreeMap<LocalDate, Double>();
+		data = new TreeMap<LocalDate, Double>();
 
 		List<Event> events = new EverysportApi().getAllsvenskan().downLoad(fromDate, toDate);
 		
 		for (Event event : events)
 		{
 			Double totalScore = new Double(event.getHomeTeamScore() + event.getVisitingTeamScore());
-			if(output.get(event.getStartDate()) != null)
+			if(data.get(event.getStartDate()) != null)
 			{
-				output.put(event.getStartDate(), output.get(event.getStartDate()) + totalScore);
+				data.put(event.getStartDate(), data.get(event.getStartDate()) + totalScore);
 			}
 			else
 			{
-				output.put(event.getStartDate(), totalScore);				
+				data.put(event.getStartDate(), totalScore);				
 			}
 		}
-		data = output;
-		return output;
+		
+		
 	}
 
 	@Override

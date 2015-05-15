@@ -18,7 +18,7 @@ public class FootballSpectatorSource implements DataSource {
 
 	public FootballSpectatorSource() {
 		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		loadData();
+		
 	}
 
 	protected FootballSpectatorSource(ApiHandler handler2) {
@@ -56,8 +56,10 @@ public class FootballSpectatorSource implements DataSource {
 		return meta;
 	}
 
+
 	@Override
-	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
-		return null;	
+	public void downLoadDataSource(String fromDate,
+			String toDate) {
+		loadData();
 	}
 }

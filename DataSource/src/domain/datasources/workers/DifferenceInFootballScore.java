@@ -18,7 +18,7 @@ public class DifferenceInFootballScore implements DataSource {
 	public DifferenceInFootballScore() {
 		map = new TreeMap<LocalDate, Double>();
 		this.handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		loadData();
+		
 	}
 
 	protected DifferenceInFootballScore(ApiHandler handler) {
@@ -60,9 +60,9 @@ public class DifferenceInFootballScore implements DataSource {
 	}
 
 	@Override
-	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
-		// TODO Auto-generated method stub
-		return null;
+	public void downLoadDataSource(String fromDate, String toDate) {
+		loadData();
+		
 	}
 
 }

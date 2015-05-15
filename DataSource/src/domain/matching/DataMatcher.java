@@ -34,13 +34,11 @@ public class DataMatcher {
 	 *            The resolution of correlation.
 	 */
 	public DataMatcher(DataSource dataSourceX, DataSource dataSourceY,
-			Resolution resolution, String fDate, String tDate) {
+			Resolution resolution) {
 		super();
 		this.dataSourceX = dataSourceX;
 		this.dataSourceY = dataSourceY;
 		this.resolution = resolution;
-		this.dataSourceX.getData(fDate, tDate);
-		this.dataSourceY.getData(fDate, tDate);
 	}
 
 	/**

@@ -16,29 +16,20 @@ public class SunAltitudeAtNoon implements DataSource {
 
 	public SunAltitudeAtNoon() {
 		data = new TreeMap<LocalDate, Double>();
-		loadData();
+		
 	}
-
-	private void loadData() {
-		List<Time> times = new WeatherAPI().getTimes("2001-01-01","2010-01-01");
-		for (Time time : times) {
-			data.put(time.getDate(), time.getLocation().getSun().getNoon()
-					.getAltitude());
-		}
-	}
-
 
 	@Override
-	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
+	public void downLoadDataSource(String fromDate, String toDate) {
 
-		TreeMap<LocalDate, Double> output = new TreeMap<LocalDate, Double>();
+		data = new TreeMap<LocalDate, Double>();
 		List<Time> times = new WeatherAPI().getTimes(fromDate, toDate);
 
 		for (Time time : times) {
-			output.put(time.getDate(), time.getLocation().getSun().getNoon().getAltitude());
+			data.put(time.getDate(), time.getLocation().getSun().getNoon().getAltitude());
 		}
-		data = output;
-		return output;
+		
+		
 	}
 
 	@Override

@@ -21,8 +21,7 @@ public class BitCoinOpenSource implements DataSource {
 	public BitCoinOpenSource() {
 		data = new TreeMap<LocalDate, Double>();
 		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		List<Open> list = new BitCoinOpenApi(handler).getChanges();
-		insertInMap(list);
+		
 	}
 
 	protected BitCoinOpenSource(ApiHandler handler) {
@@ -56,12 +55,7 @@ public class BitCoinOpenSource implements DataSource {
 		return metaData;
 	}
 
-	@Override
-	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate)
-	{
-		filterOnDates(fromDate, toDate);
-		return data;
-	}
+	
 
 	private void filterOnDates(String fromDate, String toDate) 
 	{
@@ -73,6 +67,13 @@ public class BitCoinOpenSource implements DataSource {
 		{
 			data.put(entry.getKey(), entry.getValue());
 		}
+	}
+
+	@Override
+	public void downLoadDataSource(String fromDate, String toDate) {
+		List<Open> list = new BitCoinOpenApi(handler).getChanges();
+		insertInMap(list);
+		filterOnDates(fromDate, toDate);
 	}
 
 }

@@ -21,12 +21,6 @@ public class TotalGoalDataSource implements DataSource
 		this.loader = loader;
 		this.title = title;
 	}
-
-
-	@Override
-	public TreeMap<LocalDate, Double> getData() {
-		return data;
-	}
 	
 	@Override
 	public MetaData getMetaData() {
@@ -42,18 +36,14 @@ public class TotalGoalDataSource implements DataSource
 	}
 
 	@Override
-	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
-		if(data == null){
-			events = loader.downLoad(fromDate, toDate);
-			loadData();
-		}
-		System.out.println("HEJSAN HOPPSAN: "+data.toString());
+	public TreeMap<LocalDate, Double> getData() {
+		System.out.println(data.toString());
 		return data;
 	}
 
-	private void loadData() {
+	private void loadData(List<Event> ev) {
 		data = new TreeMap<LocalDate, Double>();
-		for (Event event : events) {
+		for (Event event : ev) {
 			
 			Double totalScore = new Double(event.getHomeTeamScore()
 					+ event.getVisitingTeamScore());
@@ -69,5 +59,13 @@ public class TotalGoalDataSource implements DataSource
 			}
 			
 		}
+	}
+
+
+	@Override
+	public void downLoadDataSource(String fromDate, String toDate) 
+	{
+		events = loader.downLoad(fromDate, toDate);
+		loadData(events);
 	}
 }

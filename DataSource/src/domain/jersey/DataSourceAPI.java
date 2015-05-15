@@ -56,7 +56,9 @@ public class DataSourceAPI {
 				: Resolution.DAY;
 		
 		DataSource dataSource1 = factory.getDataSource(ds1);
+		dataSource1.downLoadDataSource(startDate, endDate);
 		DataSource dataSource2 = factory.getDataSource(ds2);
+		dataSource2.downLoadDataSource(startDate, endDate);
 	
 		
 		if (mod != null) {
@@ -80,7 +82,7 @@ public class DataSourceAPI {
 		}
 
 		ResultingData resultingData = new DataMatcher(dataSource1, dataSource2,
-				resolution, startDate, endDate).match();
+				resolution).match();
 
 		resultingData.setXMeta(dataSource1.getMetaData());
 		resultingData.setYMeta(dataSource2.getMetaData());
@@ -111,19 +113,20 @@ public class DataSourceAPI {
 		for (int i = 0; i < input.size(); i++) {
 			if (i == 0) {
 				DataSource tmpSource = factory.getDataSource(input.get(i));
-				System.out.println("DataSourceName -----> " + tmpSource.getMetaData().getName());
 				if (tmpSource == null) {
 					return Response.status(Response.Status.BAD_REQUEST).build();
 				}
+				tmpSource.downLoadDataSource(fDate, tDate);
 				tmpSource = new Interpolator().fillOutMissingDays(tmpSource,
-						Resolution.DAY, fDate, tDate);
+						Resolution.DAY);
 
-				data = new DataSourceFormatter(tmpSource, fDate, tDate)
+				data = new DataSourceFormatter(tmpSource)
 						.toMergeableFormat();
 			} else {
+				DataSource dataS = factory.getDataSource(input.get(i));
+				dataS.downLoadDataSource(fDate, tDate);
 				data = new DataSourceMerger(data,
-						new DataSourceFormatter(factory.getDataSource(input
-								.get(i)), fDate, tDate).toMergeableFormat())
+						new DataSourceFormatter(dataS).toMergeableFormat())
 						.merge(Resolution.DAY);
 
 			}

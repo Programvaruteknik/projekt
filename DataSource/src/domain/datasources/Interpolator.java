@@ -84,8 +84,8 @@ public class Interpolator {
 	 * @param sc
 	 *            The map which will be filled with the missing dates.
 	 */
-	public DataSource fillOutMissingDays(DataSource sc, Resolution resolution, String fDate, String tDate) {
-		TreeMap<LocalDate, Double> map = sc.getData(fDate, tDate);
+	public DataSource fillOutMissingDays(DataSource sc, Resolution resolution) {
+		TreeMap<LocalDate, Double> map = sc.getData();
 		System.out.println(map.isEmpty() + "  >----- is Map empty");
 		TreeMap<LocalDate, Double> copyMap = new TreeMap<>();
 		LocalDate first = getFirst(sc);
@@ -114,10 +114,11 @@ public class Interpolator {
 				return sc.getMetaData();
 			}
 
+
 			@Override
-			public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
-				// TODO Auto-generated method stub
-				return copyMap;
+			public void downLoadDataSource(
+					String fromDate, String toDate) {
+			
 			}
 		};
 		return copySource;

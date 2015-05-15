@@ -17,19 +17,22 @@ public class TvSource implements DataSource {
 	private String id;
 	private String name;
 
-	public TvSource() {
+	public TvSource(String id)
+	{
 		handler = (new ApiHandler(new UrlFetcher(), new JsonParser()));
+		this.id = id;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	protected TvSource(ApiHandler handlerParam) {
+	protected TvSource(ApiHandler handlerParam, String id) {
 		handler = handlerParam;
+		this.id = id;
 	}
 
-	protected void loadData(String id) {
+	protected void loadData() {
 		TvApi api = new TvApi(handler);
 		api.setId(id);
 		for (SendingDay day : api.getAirDates()) {
@@ -57,9 +60,9 @@ public class TvSource implements DataSource {
 	}
 
 	@Override
-	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
-		// TODO Auto-generated method stub
-		return null;
+	public void downLoadDataSource(String fromDate, String toDate) {
+		loadData();
+		
 	}
 
 }

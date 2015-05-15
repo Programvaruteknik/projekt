@@ -9,11 +9,11 @@ public class DataSourceFormatter
 {
 	private DataSource dataSource;
 
-	public DataSourceFormatter(DataSource dataSource, String fromDate, String toDate)
+	public DataSourceFormatter(DataSource dataSource)
 	{
 		super();
 		this.dataSource = dataSource;
-		this.dataSource.getData(fromDate, toDate);
+		
 	}
 	
 	public TreeMap<LocalDate, ArrayList<Double>> toMergeableFormat()

@@ -6,13 +6,12 @@ import domain.datasources.workers.general.TvSource;
 public class TvSourceCommunity extends TvSource {
 
 	public TvSourceCommunity() {
-		loadData("318");
+		super("318");
 		setName("Airdate for Community");
 	}
 	
 	protected TvSourceCommunity(ApiHandler handler) {
-		super(handler);
-		loadData("318");
+		super(handler, "318");
 		setName("Airdate for Community");
 	}
 

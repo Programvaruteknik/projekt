@@ -17,7 +17,7 @@ public class BitCoinVolume implements DataSource {
 	
 	public BitCoinVolume(){
 		this.handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		loadData();
+		
 	}
 	
 	protected BitCoinVolume(ApiHandler hand) {
@@ -50,9 +50,9 @@ public class BitCoinVolume implements DataSource {
 	}
 
 	@Override
-	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
-		// TODO Auto-generated method stub
-		return null;
+	public void downLoadDataSource(String fromDate, String toDate) {
+		loadData();
+		
 	}
 
 }

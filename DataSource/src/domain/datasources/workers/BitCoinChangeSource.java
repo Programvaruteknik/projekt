@@ -69,15 +69,11 @@ public class BitCoinChangeSource implements DataSource {
 			data.put(entry.getKey(), entry.getValue());
 		}
 	}
-	
+
 	@Override
-	public TreeMap<LocalDate, Double> getData(String fromDate, String toDate) {
-		if(!isFilterd)
-		{
-			filterOnDates(fromDate, toDate);
-			isFilterd = !isFilterd;
-		}
-		return data;
+	public void downLoadDataSource(String fromDate, String toDate) {
+		loadData();
+		filterOnDates(fromDate, toDate);
 	}
 
 }

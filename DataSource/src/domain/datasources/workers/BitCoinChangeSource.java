@@ -1,4 +1,3 @@
-
 package domain.datasources.workers;
 
 import java.time.LocalDate;
@@ -7,73 +6,38 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import com.sun.net.ssl.internal.www.protocol.https.Handler;
+
+import jdk.internal.org.objectweb.asm.Handle;
 import domain.api.ApiHandler;
 import domain.api.BitCoinChangeApi;
 import domain.api.models.bitcoin.Change;
+import domain.api.models.bitcoin.ChangeList;
 import domain.api.serialization.JsonParser;
 import domain.api.url.UrlFetcher;
 import domain.datasources.DataSource;
 import domain.datasources.model.MetaData;
+import domain.datasources.workers.general.GenericBitCoinSource;
 
-public class BitCoinChangeSource implements DataSource {
-	private TreeMap<LocalDate, Double> data;
-	private ApiHandler handler;
+public class BitCoinChangeSource extends GenericBitCoinSource {
 	private boolean isFilterd = false;
 
+	public BitCoinChangeSource(ApiHandler handler) {
+		super(handler);
+		setTitle("Change In Canadian Bitcoin Index");
+	}
+
 	public BitCoinChangeSource() {
-		data = new TreeMap<LocalDate, Double>();
-		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		loadData();
+		super();
+		setTitle("Change In Canadian Bitcoin Index");
 	}
 
-	protected BitCoinChangeSource(ApiHandler handlerParam) {
-		data = new TreeMap<LocalDate, Double>();
-		handler = handlerParam;
-		loadData();
-	}
-
-	private void loadData() {
-		List<Change> list = new BitCoinChangeApi(handler).getChanges();
-		
-		for (Change change : list) {
-			data.put(LocalDate.parse(change.getDate()), change.getChange());
+	@Override
+	protected void loadData() {
+		ChangeList list = handler.get(url, ChangeList.class);
+		for(Change c : list.getChanges()){
+			data.put(LocalDate.parse(c.getDate()),c.getChange());
 		}
-	}
-
-	@Override
-	public TreeMap<LocalDate, Double> getData() {
-		return data;
-	}
-
-	@Override
-	public MetaData getMetaData() {
-		MetaData metaData;
-		metaData = new MetaData();
-		metaData.setLicense("");
-		metaData.setOwner("cbix");
-		metaData.setUrl("https://www.cbix.ca");
-		metaData.setTitle("Change In Canadian Bitcoin Index");
-		metaData.setUnit("BTC");
-		metaData.setHasData(!data.isEmpty());
-		return metaData;
-	}
-	
-	private void filterOnDates(String fromDate, String toDate) 
-	{
-		SortedMap<LocalDate, Double> subMap = data.subMap(LocalDate.parse(fromDate),true, LocalDate.parse(toDate), true);
-		
-		System.out.println(subMap.size());
-		data = new TreeMap<>();
-		for(Map.Entry<LocalDate, Double> entry : subMap.entrySet())
-		{
-			data.put(entry.getKey(), entry.getValue());
-		}
-	}
-
-	@Override
-	public void downLoadDataSource(String fromDate, String toDate) {
-		loadData();
-		filterOnDates(fromDate, toDate);
 	}
 
 }

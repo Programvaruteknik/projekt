@@ -43,19 +43,19 @@ public class DataSourceFactory
 		addToMap(new TotalGoalDataSource("Totala mål per dag i Allsvenskan 2014", new EverysportApi().getAllsvenskan()),"Allsvenskan");
 		addToMap(new TotalGoalDataSource("Totala mål per dag i SHL 2014", new EverysportApi().getSHL()),"SHL 2014");
 		
-//		addToMap(new SunAltitudeAtNoon(),"Solens altitude");
+		addToMap(new SunAltitudeAtNoon(),"Solens altitude");
 //		
-//		addToMap(new BitCoinOpenSource(),"Bitcoin Open Values");
-//		addToMap(new BitCoinChangeSource(),"Bitcoin Change values");
-//		addToMap(new BitCoinVolume(),"Bitcoin Volume values");
+		addToMap(new BitCoinOpenSource(),"Bitcoin Open Values");
+		addToMap(new BitCoinChangeSource(),"Bitcoin Change values");
+		addToMap(new BitCoinVolume(),"Bitcoin Volume values");
 //		
-//		addToMap(new TvSourceCommunity(),"Tv Community");
-//		addToMap(new TvSourceDoctorWho(),"Tv DoctorWho ");
-//		addToMap(new TvFriendsSource(),"Tv Friends");
+		addToMap(new TvSourceCommunity(),"Tv Community");
+		addToMap(new TvSourceDoctorWho(),"Tv DoctorWho ");
+		addToMap(new TvFriendsSource(),"Tv Friends");
 //		
-//		addToMap(new FootballSpectatorSource(),"Football specator");
-//		addToMap(new DifferenceInFootballScore(),"Football difference in score");
-//		addToMap(new BowlingSource(),"Bowling");
+		addToMap(new FootballSpectatorSource(),"Football specator");
+		addToMap(new DifferenceInFootballScore(),"Football difference in score");
+		addToMap(new BowlingSource(),"Bowling");
 
 	}
 	

@@ -6,53 +6,31 @@ import java.util.TreeMap;
 import domain.api.ApiHandler;
 import domain.api.models.bitcoin.Volume;
 import domain.api.models.bitcoin.VolumeList;
-import domain.api.serialization.JsonParser;
-import domain.api.url.UrlFetcher;
-import domain.datasources.DataSource;
-import domain.datasources.model.MetaData;
+import domain.datasources.workers.general.GenericBitCoinSource;
 
-public class BitCoinVolume implements DataSource {
-	private ApiHandler handler;
-	private TreeMap<LocalDate,Double> map = new TreeMap<LocalDate,Double>();
+public class BitCoinVolume extends GenericBitCoinSource {
 	
-	public BitCoinVolume(){
-		this.handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		
+	public BitCoinVolume(ApiHandler handler) {
+		super(handler);
+		setTitle("Bitcoin volume");
 	}
-	
-	protected BitCoinVolume(ApiHandler hand) {
-		this.handler = hand;
-		loadData();
+
+	public BitCoinVolume() {
+		super();
+		setTitle("Bitcoin volume");
 	}
-	
-	private void loadData(){
-		VolumeList list = handler.get("http://api.cbix.ca/v1/history?limit=100", VolumeList.class);
+
+	@Override
+	protected void loadData(){
+		VolumeList list = handler.get(url, VolumeList.class);
 		for(Volume v : list.getChanges()){
-			map.put(LocalDate.parse(v.getDate()), v.getVolume());
+			data.put(LocalDate.parse(v.getDate()), v.getVolume());
 		}
 	}
 	
 	@Override
 	public TreeMap<LocalDate, Double> getData() {
-		return map;
-	}
-
-	@Override
-	public MetaData getMetaData() {
-		MetaData meta = new MetaData();
-		meta.setHasData(!map.isEmpty());
-		meta.setLicense("");
-		meta.setOwner("cbix");
-		meta.setTitle("Bitcoin volume");
-		meta.setUrl("https://www.cbix.ca");
-		meta.setUnit("BTC");
-		return meta;
-	}
-
-	@Override
-	public void downLoadDataSource(String fromDate, String toDate) {
-		loadData();
-		
+		return data;
 	}
 
 }

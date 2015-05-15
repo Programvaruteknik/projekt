@@ -29,28 +29,14 @@ public class LeagueRegister {
 
 	public Map<String, Integer> getSHL() {
 		Map<String, Integer> leagueYear = new TreeMap<>();
-		leagueYear.put("2015", 574);
-		leagueYear.put("2014-2015", 574);
-		leagueYear.put("2013-2014", 476);
-		leagueYear.put("2012-2013", 447);
-		leagueYear.put("2011-2012", 404);
-		leagueYear.put("2010-2011", 330);
-		leagueYear.put("2009-2010", 322);
-		leagueYear.put("2008-2009", 286);
-		leagueYear.put("2007-2008", 253);
-		leagueYear.put("2006-2007", 195);
-		leagueYear.put("2005-2006", 112);
-		leagueYear.put("2004-2005", 96);
-		leagueYear.put("2003-2004", 79);
-		leagueYear.put("2002-2003", 61);
-		leagueYear.put("2001-2002", 48);
-		leagueYear.put("2000-2001", 30);
+		leagueYear.put("2014-2015",66817 );
+		leagueYear.put("2013-2014", 60243);
+		
 		return leagueYear;
 	}
 
 	public Map<String, Integer> getBandy() {
 		Map<String, Integer> leagueYear = new TreeMap<>();
-		leagueYear.put("2015", 67536);
 		leagueYear.put("2014-2015", 67536);
 		leagueYear.put("2013-2014", 62038);
 		leagueYear.put("2012-2013", 54745);

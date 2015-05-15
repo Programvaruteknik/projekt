@@ -26,15 +26,15 @@ public class EverysportApi {
 		map = register.getFootballLeagues();
 		league = register.getIds(map);
 		
-		downLoadURL d = new downLoadURL(baseURL + league, EverysportEvents.class);
+		downLoadURL d = new downLoadURL(baseURL +"league="+ league, EverysportEvents.class);
 		return d;
 	}
 
 	public downLoadURL getSHL() {
 		map = register.getSHL();
 		league = register.getIds(map);
-
-		downLoadURL d = new downLoadURL(baseURL + league, EverysportEvents.class);
+		System.out.println("URL Hockey " + baseURL +"league="+ league);
+		downLoadURL d = new downLoadURL(baseURL +"league="+ league, EverysportEvents.class);
 		return d;
 	}
 
@@ -51,7 +51,7 @@ public class EverysportApi {
 		map = register.getAmericanFootball();
 		league = register.getIds(map);
 
-		downLoadURL d = new downLoadURL(baseURL + league, EverysportEvents.class);
+		downLoadURL d = new downLoadURL(baseURL +"league="+ league, EverysportEvents.class);
 		return d;
 	}
 
@@ -59,7 +59,7 @@ public class EverysportApi {
 		map = register.getBasket();
 		league = register.getIds(map);
 		
-		downLoadURL d = new downLoadURL(baseURL + league, EverysportEvents.class);
+		downLoadURL d = new downLoadURL(baseURL +"league="+ league, EverysportEvents.class);
 		return d;
 
 	}

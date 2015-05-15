@@ -24,12 +24,12 @@ public class BowlingSource implements DataSource {
 	public BowlingSource() {
 		map = new TreeMap<LocalDate, Double>();
 		this.handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		loadData("fromDate", "toDate");
+		
 	}
 
 	private void loadData(String fromDate, String toDate) {
 		EverysportEvents events = handler
-				.get(baseURL + "fromDate=" + fromDate + "&toDate=" + toDate +"&limit=5000",
+				.get(baseURL + "fromDate=" + fromDate + "&toDate=" + toDate +"&limit=1000",
 						EverysportEvents.class);
 		if(events != null)
 		{

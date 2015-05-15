@@ -1,6 +1,7 @@
 package domain.datasources.workers;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -15,7 +16,7 @@ import domain.datasources.DataSource;
 import domain.datasources.model.MetaData;
 
 public class FootballSpectatorSource implements DataSource {
-	private TreeMap<LocalDate, Double> map;
+	private TreeMap<LocalDate, Double> map = new TreeMap<LocalDate, Double>();
 	private ApiHandler handler;
 	private String leagueIDS;
 	private String baseURL = "http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&league=";
@@ -33,14 +34,18 @@ public class FootballSpectatorSource implements DataSource {
 	}
 
 	protected void loadData(String fromDate, String toDate) {
-		map = new TreeMap<LocalDate, Double>();
+		
 		EverysportEvents events = handler
 				.get(baseURL + leagueIDS + "&fromDate=" + fromDate + "&toDate=" +toDate+ "&limit=5000",
 						EverysportEvents.class);
-		for (Event e : events.getEvents()) {
-			Facts f = e.getFacts();
-			Double d = new Double(f.getSpectators());
-			map.put(e.getStartDate(), d);
+		if(events != null)
+		{
+			List<Event> ev = events.getEvents();
+			for (Event e : ev) {
+				Facts f = e.getFacts();
+				Double d = new Double(f.getSpectators());
+				map.put(e.getStartDate(), d);
+			}			
 		}
 
 	}

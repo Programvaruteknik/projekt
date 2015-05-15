@@ -36,8 +36,9 @@ public class FootballSpectatorSource implements DataSource {
 	protected void loadData(String fromDate, String toDate) {
 		
 		EverysportEvents events = handler
-				.get(baseURL + leagueIDS + "&fromDate=" + fromDate + "&toDate=" +toDate+ "&limit=5000",
+				.get(baseURL + leagueIDS + "&fromDate=" + fromDate + "&toDate=" +toDate+ "&limit=1000",
 						EverysportEvents.class);
+		System.out.println("events" + (events!= null));
 		if(events != null)
 		{
 			List<Event> ev = events.getEvents();

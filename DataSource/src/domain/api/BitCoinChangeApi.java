@@ -15,7 +15,10 @@ public class BitCoinChangeApi {
 	public List<Change> getChanges() {
 		ChangeList changes = handler.get(
 				"http://api.cbix.ca/v1/history?limit=100", ChangeList.class);
-		return changes.getChanges();
+		if(changes != null)
+			return changes.getChanges();
+		else 
+			return null;
 	}
 
 }

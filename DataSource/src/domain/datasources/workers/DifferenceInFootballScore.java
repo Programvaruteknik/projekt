@@ -41,11 +41,11 @@ public class DifferenceInFootballScore implements DataSource {
 
 	private void loadData(String fromDate, String toDate) {
 		EverysportEvents events = handler
-				.get(baseURL+leagueIDS +"fromDate=" + fromDate + "&toDate=" + toDate + "&limit=5000",
+				.get(baseURL+leagueIDS +"fromDate=" + fromDate + "&toDate=" + toDate + "&limit=1000",
 						EverysportEvents.class);
-		List<Event> eventList = events.getEvents();
-		if(eventList != null)
+		if(events != null)
 		{
+			List<Event> eventList = events.getEvents();
 			for (Event e : eventList) {
 				int home = e.getHomeTeamScore();
 				int visiting = e.getVisitingTeamScore();

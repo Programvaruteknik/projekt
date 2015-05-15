@@ -50,7 +50,7 @@ public class EverysportApi {
 	public downLoadURL getSuperSerienAmrekanskFotboll() {
 		map = register.getAmericanFootball();
 		league = register.getIds(map);
-
+		System.out.println("Amerikanske URL " + baseURL +"league="+ league); 
 		downLoadURL d = new downLoadURL(baseURL +"league="+ league, EverysportEvents.class);
 		return d;
 	}

@@ -11,7 +11,7 @@ import domain.api.url.UrlFetcher;
 
 public class downLoadURL
 {
-	private String baseURL = "http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&";
+	
 	private ApiHandler downloader;
 	private String URL;
 	private Type T;

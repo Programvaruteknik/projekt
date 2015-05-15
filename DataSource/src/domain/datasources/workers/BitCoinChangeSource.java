@@ -22,18 +22,17 @@ public class BitCoinChangeSource implements DataSource {
 	public BitCoinChangeSource() {
 		data = new TreeMap<LocalDate, Double>();
 		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
-		loadData();
+		;
 	}
 
 	protected BitCoinChangeSource(ApiHandler handlerParam) {
 		data = new TreeMap<LocalDate, Double>();
 		handler = handlerParam;
-		loadData();
+		
 	}
 
 	private void loadData() {
 		List<Change> list = new BitCoinChangeApi(handler).getChanges();
-		
 		if(list != null)
 		{
 			for (Change change : list) {

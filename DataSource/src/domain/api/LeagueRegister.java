@@ -54,21 +54,9 @@ public class LeagueRegister {
 
 	public Map<String, Integer> getAmericanFootball() {
 		Map<String, Integer> leagueYear = new TreeMap<>();
-		leagueYear.put("2015", 595);
-		leagueYear.put("2014-2015", 568);
-		leagueYear.put("2013-2014", 485);
-		leagueYear.put("2012-2013", 441);
-		leagueYear.put("2011-2012", 399);
-		leagueYear.put("2010-2011", 359);
-		leagueYear.put("2009-2010", 310);
-		leagueYear.put("2008-2009", 280);
-		leagueYear.put("2007-2008", 207);
-		leagueYear.put("2006-2007", 170);
-		leagueYear.put("2005-2006", 108);
-		leagueYear.put("2004-2005", 8673);
-		leagueYear.put("2003-2004", 7466);
-		leagueYear.put("2001-2002", 4719);
-		leagueYear.put("2000-2001", 3754);
+		leagueYear.put("2014-2015", 68721);
+		leagueYear.put("2013-2014", 62110);
+		leagueYear.put("2012-2013", 58862);
 		return leagueYear;
 	}
 

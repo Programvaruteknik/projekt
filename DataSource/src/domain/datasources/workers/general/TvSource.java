@@ -54,7 +54,7 @@ public class TvSource implements DataSource {
 		meta.setTitle(name);
 		meta.setUrl("http://www.tvmaze.com");
 		meta.setUnit("Day of the month");
-		meta.setHasData(!data.isEmpty());
+		
 		return meta;
 	}
 

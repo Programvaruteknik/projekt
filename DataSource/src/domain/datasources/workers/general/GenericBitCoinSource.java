@@ -54,7 +54,7 @@ public class GenericBitCoinSource implements DataSource {
 		metaData.setUrl("https://www.cbix.ca");
 		metaData.setTitle(title);
 		metaData.setUnit("BTC");
-		metaData.setHasData(!data.isEmpty());
+		
 		return metaData;
 	}
 

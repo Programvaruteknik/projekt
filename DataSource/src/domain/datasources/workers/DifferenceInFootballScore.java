@@ -69,7 +69,7 @@ public class DifferenceInFootballScore implements DataSource {
 		meta.setUrl("http://www.everysport.com");
 		meta.setLicense("");
 		meta.setUnit("Goals");
-		meta.setHasData(!map.isEmpty());
+		
 		return meta;
 
 	}

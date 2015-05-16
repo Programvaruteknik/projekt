@@ -141,11 +141,25 @@ public class DataSourceAPI {
 			}
 
 		}
-
+		
 		ArrayList<MetaData> metaList = new ArrayList<MetaData>();
 		for (DataSource source : allDataSources) {
 			metaList.add(source.getMetaData());
 		}
+		for(DataSource dsData : hasData)
+		{
+			MetaData metadsData = dsData.getMetaData();
+			metadsData.setMeanValue(DataSourceCalculator.getAverage(dsData));
+			metadsData.setSum(DataSourceCalculator.getSum(dsData));
+			metadsData.setHasData(true);
+			metaList.add(metadsData);
+		}
+		
+		for(DataSource dsNoneData : noneData)
+		{
+			metaList.add(dsNoneData.getMetaData());
+		}
+		
 		input.add(0, "Date");
 
 		DataSourcePackage sourcePackage = new DataSourcePackage(input,

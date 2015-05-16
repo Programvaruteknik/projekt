@@ -64,7 +64,7 @@ public class FootballSpectatorSource implements DataSource {
 		meta.setUrl("http://www.everysport.com");
 		meta.setLicense("");
 		meta.setUnit("Spectators");
-		meta.setHasData(!map.isEmpty());
+		
 		return meta;
 	}
 

@@ -42,7 +42,7 @@ public class SunAltitudeAtNoon implements DataSource {
 		meta.setUrl("http://met.no");
 		meta.setTitle("Solens altitud vid 12");
 		meta.setUnit("Grader");
-		//meta.setHasData(!data.isEmpty());
+		
 		return meta;
 	}
 

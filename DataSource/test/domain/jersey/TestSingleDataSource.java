@@ -37,9 +37,15 @@ public class TestSingleDataSource {
 
 	@Before
 	public void setup() {
+		mockSource = mock(DataSource.class);
 		api = new DataSourceAPI();
 		data = new TreeMap<>();
 		factory = mock(DataSourceFactory.class);
+		when(mockSource.getData()).thenReturn(data);
+		MetaData data = new MetaData(){
+			
+		};
+		when(mockSource.getMetaData()).thenReturn(data);
 	}
 
 	@Test
@@ -48,7 +54,7 @@ public class TestSingleDataSource {
 		data.put(LocalDate.parse("2001-01-02"), 2.0);
 		data.put(LocalDate.parse("2001-01-01"), 1.0);
 
-		mockSource = mock(DataSource.class);
+
 		when(mockSource.getData()).thenReturn(data);
 		when(factory.getDataSource("mockSource")).thenReturn(mockSource);
 
@@ -164,8 +170,6 @@ public class TestSingleDataSource {
 		data.put(LocalDate.parse("2001-01-02"), 2.0);
 		data.put(LocalDate.parse("2001-01-01"), 1.0);
 
-		mockSource = mock(DataSource.class);
-		when(mockSource.getData()).thenReturn(data);
 		when(factory.getDataSource("mockSource")).thenReturn(mockSource);
 		api.setFactory(factory);
 
@@ -176,10 +180,11 @@ public class TestSingleDataSource {
 		entity = (String) resp.getEntity();
 
 		jsonMap = new Gson().fromJson(entity, Map.class);
-
+System.out.println(jsonMap);
 		headerList = (ArrayList<String>) jsonMap.get("header");
 		list = (Map<String, ArrayList<Double>>) jsonMap.get("data");
-
+assertNotEquals(null, list);
+assertFalse(list.isEmpty());
 		assertEquals(1, list.get("2001-01-01").size());
 		assertEquals(1, list.get("2001-01-02").size());
 		assertEquals(1, list.get("2001-01-03").size());

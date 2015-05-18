@@ -53,7 +53,7 @@ public class BowlingSource implements DataSource {
 		meta.setUnit("Goals");
 		meta.setUrl("http://www.everysport.com");
 		meta.setOwner("Everysport");
-		
+		meta.setHasData(!map.isEmpty());
 		return meta;
 	}
 

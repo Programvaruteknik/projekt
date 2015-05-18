@@ -22,6 +22,9 @@ public class BitCoinOpenSource extends GenericBitCoinSource {
 	@Override
 	protected void loadData(){
 		OpenList list = handler.get(url, OpenList.class);
+		if(!list.getOpeningValues().isEmpty()){
+			setHasData();
+		}
 		for(Open o : list.getOpeningValues()){
 			data.put(LocalDate.parse(o.getDate()),o.getOpenValue());
 		}

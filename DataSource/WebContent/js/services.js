@@ -11,10 +11,18 @@ angular.module('services', [])
 		modification = angular.toJson(modList);
 		
 		if(selectedDataSource.length ===2)
-
 			
-			var fDate = dateObject.startDate || "2004-01-01";
-			var tDate = dateObject.endDate || "2014-12-01";
+			console.log(dateObject);
+			
+			var fDate = "2004-01-01";
+			var tDate = "2014-12-01";
+			if(dateObject !== null)
+			{
+				
+				fDate = dateObject.startDate || "2004-01-01";
+				tDate = dateObject.endDate || "2014-12-01";
+			}
+			
 			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution&modification=:modification").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution, modification:modification, startDate:fDate, endDate: tDate}, function(data) {
 
 				if(!data.xMeta.hasData)

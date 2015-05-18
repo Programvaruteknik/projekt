@@ -124,7 +124,6 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services', '720kb
 	
 	$scope.$watch("endDate", function(newVal, oldVal){
 		$scope.matchDate.endDate = newVal;
-		console.log($scope.matchDate)
 		if($scope.matchDate.startDate && $scope.matchDate.endDate){
 				resolution = $scope.selectedResolution === "Resolution"?"DAY":$scope.selectedResolution;
 				CorrelationChart.select($scope.selectedDataSource, resolution,$scope.selectedRegression, $scope.matchDate).then(function(data){

@@ -73,6 +73,14 @@ public class DateModelator implements ModelatingComand
 				
 				return output;
 			}
+
+		
+
+			@Override
+			public void downLoadDataSource(String fromDate, String toDate) {
+				// TODO Auto-generated method stub
+				
+			}
 		};
 		
 		return output;

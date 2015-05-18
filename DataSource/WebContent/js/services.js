@@ -2,7 +2,8 @@ angular.module('services', [])
 .service('CorrelationChart', function($resource, $q) {
   
 	var that = this;
-	this.select = function (selectedDataSource, resolution,regression, modList){
+
+	this.select = function (selectedDataSource, resolution,regression, dateObject, modList){
 		var degree= 1;
 
 		var deferred = $q.defer();
@@ -10,9 +11,11 @@ angular.module('services', [])
 		modification = angular.toJson(modList);
 		
 		if(selectedDataSource.length ===2)
-		{
+
 			
-			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution&modification=:modification").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution, modification:modification}, function(data) {
+			var fDate = dateObject.startDate || "2004-01-01";
+			var tDate = dateObject.endDate || "2014-12-01";
+			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution&modification=:modification").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution, modification:modification, startDate:fDate, endDate: tDate}, function(data) {
 
 				if(!data.xMeta.hasData)
 				{
@@ -42,14 +45,14 @@ angular.module('services', [])
 				{
 					that.chart.options.trendlines[0].type = regression;
 				}
-				that.chart.options.hAxis.title = data.xMeta.title;
-				that.chart.options.vAxis.title = data.yMeta.title;
+				
+				that.chart.options.hAxis.title = data.xMeta.title + " (" + data.xMeta.unit + ")";
+				that.chart.options.vAxis.title = data.yMeta.title + " (" + data.yMeta.unit + ")";
 				
 				var output = {chartData:chartData, metaData:[data.xMeta,data.yMeta]}
 				
 				deferred.resolve(output);
 			});
-		}
 
 		return deferred.promise;
 		
@@ -83,11 +86,12 @@ angular.module('services', [])
 .service('DataSourceChart', function($resource, $q) {
 	
 	
-	
-	this.select = function (selectedDataSource){
+	/* */
+	this.select = function (selectedDataSource, dateObject){
 		var deferred = $q.defer();
-		
-		$resource("api/dataSource/:dataSource").get({dataSource:angular.toJson(selectedDataSource)}, function(data) {
+		var fDate = dateObject.startDate || "2013-01-01";
+		var tDate = dateObject.endDate || "2014-11-01";
+		$resource("api/dataSource/:dataSource").get({dataSource:angular.toJson(selectedDataSource), fromDate:fDate, toDate : tDate}, function(data) {
 			
 			angular.forEach(data.metaDataList, function(value, key) {
 					if(!value.hasData)
@@ -116,7 +120,7 @@ angular.module('services', [])
 			  "data":[["",""],[0,0]],
 			  "options": {
 				  title: 'Data Sources',
-				  pointSize: 12,
+				  pointSize: 4,
 				  interpolateNulls: true,
 			}
 	}

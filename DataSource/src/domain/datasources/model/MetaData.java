@@ -6,10 +6,48 @@ import domain.jersey.model.Modification;
 
 public class MetaData
 {
-	private String title, url, owner, license, unit;
+	private String title, url, owner, license, unit,firstDate,lastDate;
+	private double meanValue,sum;
 	private boolean hasData;
 	
+
 	private List<Modification> modList;
+
+
+
+
+	public double getMeanValue() {
+		return meanValue;
+	}
+
+	public void setMeanValue(double meanValue) {
+		this.meanValue = meanValue;
+	}
+
+	public double getSum() {
+		return sum;
+	}
+
+	public void setSum(double sum) {
+		this.sum = sum;
+	}
+
+	public String getFirstDate() {
+		return firstDate;
+	}
+
+	public void setFirstDate(String firstDate) {
+		this.firstDate = firstDate;
+	}
+
+	public String getLastDate() {
+		return lastDate;
+	}
+
+	public void setLastDate(String lastDate) {
+		this.lastDate = lastDate;
+	}
+
 
 	public String getTitle()
 	{
@@ -33,17 +71,17 @@ public class MetaData
 
 	public String getUrl()
 	{
-		return null;
+		return url;
 	}
 
 	public Object getOwner()
 	{
-		return null;
+		return owner;
 	}
 
 	public Object getLicense()
 	{
-		return null;
+		return license;
 	}
 
 	public void setTitle(String title)
@@ -61,7 +99,7 @@ public class MetaData
 		this.unit = unit;
 	}
 
-	public boolean isHasData()
+	public boolean containsData()
 	{
 		return hasData;
 	}

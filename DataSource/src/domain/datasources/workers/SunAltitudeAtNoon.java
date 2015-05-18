@@ -14,22 +14,24 @@ public class SunAltitudeAtNoon implements DataSource {
 
 	private TreeMap<LocalDate, Double> data;
 
-	
-	
-	public SunAltitudeAtNoon()
-	{
+	public SunAltitudeAtNoon() {
 		data = new TreeMap<LocalDate, Double>();
-		List<Time> times = new WeatherAPI().getTimes();
-
-		for (Time time : times) {
-			data.put(time.getDate(), time.getLocation().getSun().getNoon().getAltitude());
-		}
+		
 	}
 
 	@Override
-	public TreeMap<LocalDate, Double> getData() {
+	public void downLoadDataSource(String fromDate, String toDate) {
 
-		return data;
+		data = new TreeMap<LocalDate, Double>();
+		List<Time> times = new WeatherAPI().getTimes(fromDate, toDate);
+		if(times != null)
+		{
+			for (Time time : times) {
+				data.put(time.getDate(), time.getLocation().getSun().getNoon().getAltitude());
+			}			
+		}
+		
+		
 	}
 
 	@Override
@@ -40,8 +42,24 @@ public class SunAltitudeAtNoon implements DataSource {
 		meta.setUrl("http://met.no");
 		meta.setTitle("Solens altitud vid 12");
 		meta.setUnit("Grader");
-		meta.setHasData(!data.isEmpty());
+		//meta.setHasData(!data.isEmpty());
 		return meta;
+	}
+
+	@Override
+	public TreeMap<LocalDate, Double> getData() {
+		// TODO Auto-generated method stub
+		return data;
+	}
+	
+	public double getMedel()
+	{
+		double sum = 0;
+		for(Double d : data.values())
+		{
+			sum += d;
+		}
+		return sum/data.values().size();
 	}
 
 }

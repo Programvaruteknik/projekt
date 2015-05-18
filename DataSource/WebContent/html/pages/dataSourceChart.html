@@ -15,8 +15,17 @@
 			ng-options="dataSource for dataSource in dataSources"
 			ng-change="select()">
 		</select>
-
-		<div google-chart class="chart" chart="chart" /></div>
+			<div>
+		<datepicker date-format="yyyy-MM-dd"  date-max-limit="{{toDay}}" style="width: 300px; padding-rigth:15px">
+  			<input ng-model="startDate" type="text" style="width: 275px; heigth : 50px;" placeholder="Start Date"/>
+  			
+		</datepicker> 	
+		<datepicker  date-format="yyyy-MM-dd" date-min-limit="{{datepick.startDate}}" date-max-limit="{{toDay}}" style="width: 300px; padding-left:15px">
+  			<input ng-model="endDate" type="text" style="width: 275px; heigth : 50px;" placeholder="End Date"/>
+  			
+		</datepicker> 	
+		</div>
+		<div style="padding-top: 50px" google-chart class="chart" chart="chart" /></div>
 
 
 		<button type="button" class="tiny button primary radius"

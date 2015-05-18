@@ -68,7 +68,7 @@ public class TestGetMetadata {
 		when(factory.getDataSource("sc2")).thenReturn(sc2Mock);
 		
 		api.setFactory(factory);
-		Response resp = api.getSources("['sc1','sc2']");
+		Response resp = api.getSources("['sc1','sc2']","2009-12-12", "2014-12-12");
 		String json = (String) resp.getEntity();
 		Map<String,Object> map = new JsonParser().deserialize(json, Map.class);
 		ArrayList<Object> metaData = (ArrayList<Object>) map.get("metaDataList");

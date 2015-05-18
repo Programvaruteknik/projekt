@@ -12,7 +12,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import domain.api.serialization.JsonParser;
@@ -23,7 +22,6 @@ import domain.datasources.DataSourceMerger;
 import domain.datasources.Interpolator;
 import domain.datasources.model.MetaData;
 import domain.datasources.modulateing.DateModelator;
-import domain.datasources.modulateing.ModelatingComand;
 import domain.jersey.model.DataSourcePackage;
 import domain.jersey.model.Modification;
 import domain.matching.DataMatcher;
@@ -36,6 +34,7 @@ import domain.matching.ResultingData;
  * depending on the the contents of the method.
  * 
  * @author Rasmus, Rickard
+ * @changes Jens.
  *
  */
 @Path("/dataSource")
@@ -50,14 +49,19 @@ public class DataSourceAPI {
 	public Response getCorrelationData(@QueryParam("dataSource1") String ds1,
 			@QueryParam("dataSource2") String ds2,
 			@QueryParam("resolution") String res,
-			@QueryParam("modification") String mod) {
+			@QueryParam("modification") String mod,
+			@QueryParam("startDate") String startDate,
+			@QueryParam("endDate") String endDate) {
 
 		Resolution resolution = res != null ? Resolution.valueOf(res)
 				: Resolution.DAY;
 
 		DataSource dataSource1 = factory.getDataSource(ds1);
+		dataSource1.downLoadDataSource(startDate, endDate);
 		DataSource dataSource2 = factory.getDataSource(ds2);
 		
+		dataSource2.downLoadDataSource(startDate, endDate);
+
 		if(mod != null && !mod.equals(""))
 		{
 			
@@ -68,9 +72,8 @@ public class DataSourceAPI {
 				if(dataSource1.getMetaData().getName().equals(modification.getDataSourceName()))
 				{
 					dataSource1 = modulateDataSource(dataSource1, modification);
-				}
-				else if(dataSource2.getMetaData().getName().equals(modification.getDataSourceName()))
-				{
+				} else if (dataSource2.getMetaData().getName()
+						.equals(modification.getDataSourceName())) {
 					dataSource2 = modulateDataSource(dataSource2, modification);
 				}
 			}
@@ -99,7 +102,9 @@ public class DataSourceAPI {
 
 	@GET
 	@Path("/{dataSource}")
-	public Response getSources(@PathParam("dataSource") String ds) {
+	public Response getSources(@PathParam("dataSource") String ds,
+			@QueryParam("fromDate") String fDate,
+			@QueryParam("toDate") String tDate) {
 
 		ArrayList<String> input = new JsonParser().deserialize(ds,
 				new TypeToken<ArrayList<String>>() {
@@ -107,30 +112,47 @@ public class DataSourceAPI {
 
 		TreeMap<LocalDate, ArrayList<Double>> data = null;
 
-		for (int i = 0; i < input.size(); i++) {
-			if (i == 0) {
-				DataSource tmpSource = factory.getDataSource(input.get(i));
+		List<DataSource> hasData = new ArrayList<DataSource>();
+		List<DataSource> noneData = new ArrayList<DataSource>();
+		List<DataSource> allDataSources = new ArrayList<DataSource>();
 
-				tmpSource = new Interpolator().fillOutMissingDays(tmpSource,
-						Resolution.DAY);
-
-				data = new DataSourceFormatter(tmpSource).toMergeableFormat();
-			} else {
-				data = new DataSourceMerger(data,
-						new DataSourceFormatter(factory.getDataSource(input
-										.get(i))).toMergeableFormat())
-						.merge(Resolution.DAY);
-
-			}
+		for (String dSource : input) {
+			allDataSources.add(factory.getDataSource(dSource));
 		}
+
+		for (DataSource dataSource : allDataSources) {
+			if (dataSource == null) {
+				return badRequestResponse();
+			}
+			dataSource.downLoadDataSource(fDate, tDate);
+			if (dataSource.getData().isEmpty())
+				noneData.add(dataSource);
+			else
+				hasData.add(dataSource);
+		}
+
+		DataSource tmp = null;
+		for (int i = 0; i < hasData.size(); i++) {
+			if (i == 0) {
+				tmp = new Interpolator().fillOutMissingDays(hasData.get(i),
+						Resolution.DAY);
+				data = new DataSourceFormatter(tmp).toMergeableFormat();
+			} else {
+				data = new DataSourceMerger(data, new DataSourceFormatter(
+						hasData.get(i)).toMergeableFormat())
+						.merge(Resolution.DAY);
+			}
+
+		}
+
 		ArrayList<MetaData> metaList = new ArrayList<MetaData>();
-		for(String sourceName : input){
-			DataSource src = factory.getDataSource(sourceName);
-			metaList.add(src.getMetaData());
+		for (DataSource source : allDataSources) {
+			metaList.add(source.getMetaData());
 		}
 		input.add(0, "Date");
 
-		DataSourcePackage sourcePackage = new DataSourcePackage(input, metaList,data);
+		DataSourcePackage sourcePackage = new DataSourcePackage(input,
+				metaList, data);
 		String json = new JsonParser().serializeNulls(sourcePackage);
 		return okRequest(json);
 	}
@@ -168,10 +190,11 @@ public class DataSourceAPI {
 		String json = new JsonParser().serialize(array);
 		return Response.status(200).entity(json).build();
 	}
-	
-	private DataSource modulateDataSource(DataSource dataSource , Modification modification)
-	{
-		return new DateModelator(dataSource, modification.getYear(), modification.getMonth(), modification.getDays()).execute();
+
+	private DataSource modulateDataSource(DataSource dataSource,
+			Modification modification) {
+		return new DateModelator(dataSource, modification.getYear(),
+				modification.getMonth(), modification.getDays()).execute();
 	}
 
 	protected MetaData getMetaData(String string) {

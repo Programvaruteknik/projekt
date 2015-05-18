@@ -41,6 +41,12 @@ public class DataMatcherTest {
 			meta.setUnit("mm");
 			return meta;
 		}
+
+		@Override
+		public void downLoadDataSource(String fromDate, String toDate) {
+			// TODO Auto-generated method stub
+			
+		}
 	};
 
 	private DataSource sourceY = new DataSource() {
@@ -61,6 +67,12 @@ public class DataMatcherTest {
 			meta.setTitle("Temperatur");
 			meta.setUnit("Kelvin");
 			return meta;
+		}
+
+		@Override
+		public void downLoadDataSource(String fromDate, String toDate) {
+			// TODO Auto-generated method stub
+			
 		}
 	};
 

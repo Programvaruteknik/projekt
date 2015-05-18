@@ -12,31 +12,33 @@ import domain.datasources.model.MetaData;
 
 public class TotalFotballGoals implements DataSource
 {
-	private TreeMap<LocalDate, Double> data;
-	
-	public TotalFotballGoals()
-	{
-		data = new TreeMap<LocalDate, Double>();
-		List<Event> events = new EverysportApi().getEvents();
-		for (Event event : events)
-		{
-			Double totalScore = new Double(event.getHomeTeamScore() + event.getVisitingTeamScore());
-			if(data.get(event.getStartDate()) != null)
-			{
-				data.put(event.getStartDate(), data.get(event.getStartDate()) + totalScore);
-			}
-			else
-			{
-				data.put(event.getStartDate(), totalScore);				
-			}
-		}
+private String name ="Totala mål per dag i Allsvenskan";
+private String unit="Mål";
+private TreeMap<LocalDate, Double> data = null;
 
-	}
 
 	@Override
-	public TreeMap<LocalDate, Double> getData()
+	public void downLoadDataSource(String fromDate, String toDate)
 	{
-		return data;
+		data = new TreeMap<LocalDate, Double>();
+
+		List<Event> events = new EverysportApi().getAllsvenskan().downLoad(fromDate, toDate);
+		if(events != null){			
+			for (Event event : events)
+			{
+				Double totalScore = new Double(event.getHomeTeamScore() + event.getVisitingTeamScore());
+				if(data.get(event.getStartDate()) != null)
+				{
+					data.put(event.getStartDate(), data.get(event.getStartDate()) + totalScore);
+				}
+				else
+				{
+					data.put(event.getStartDate(), totalScore);				
+				}
+			}
+		}
+		
+		
 	}
 
 	@Override
@@ -45,11 +47,35 @@ public class TotalFotballGoals implements DataSource
 		meta.setLicense("");
 		meta.setUrl("http://www.everysport.com/");
 		meta.setOwner("Everyport");
-		meta.setTitle("Totala mål per dag i Allsvenskan");
+		meta.setTitle(name);
 		meta.setUnit("Mål");
 		meta.setHasData(!data.isEmpty());
-		
-		
+		meta.setFirstDate("2000");
+		meta.setLastDate("2015");
+		if(!meta.containsData()){
+			meta.setSum(getSum());
+			meta.setMeanValue(getMedel());
+		}
 		return meta;
+	}
+
+	@Override
+	public TreeMap<LocalDate, Double> getData() {
+		return data;
+	}
+	
+	private double getMedel()
+	{
+		double sum = getSum();
+		return sum/data.values().size();
+	}
+
+	private double getSum() {
+		double sum = 0;
+		for(Double d : data.values())
+		{
+			sum += d;
+		}
+		return sum;
 	}
 }

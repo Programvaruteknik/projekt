@@ -1,4 +1,4 @@
-angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
+angular.module('controllers', ['googlechart','mm.foundation', 'services', '720kb.datepicker' ])
 .controller("dataSourceChartController", function($scope, $resource, DataSourceChart){
 	
 	
@@ -7,10 +7,10 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 	});
 	
 	var chartData = [];
-
+	var dataSources = [];
 	$scope.select = function (){
-		
-		DataSourceChart.select($scope.selectedDataSource).then(function(data){
+		dataSources.push($scope.selectedDataSource);
+		DataSourceChart.select($scope.selectedDataSource, $scope.datepick).then(function(data){
 			$scope.chart.data = data;
 			
 			var query = $scope.selectedDataSource;
@@ -25,10 +25,42 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 	
 	$scope.chart = DataSourceChart.chart;
 	
+	$scope.toDay = new Date().toISOString();
+	/* Use $scope.metaData for min-date*/
+	
+	
+	$scope.datepick = {
+			startDate : undefined,
+			endDate : undefined
+	}
+	
+	
+	
+	
+	
+	
+	$scope.$watch("startDate", function(newVal, oldVal){
+		$scope.datepick.startDate = newVal;
+		$scope.endDate = undefined;
+	})
+	
+	$scope.$watch("endDate", function(newVal, oldVal){
+		$scope.datepick.endDate = newVal;
+		if($scope.datepick.startDate && $scope.datepick.endDate){
+			dataSources.forEach(function(data){
+				DataSourceChart.select(data, $scope.datepick).then(function(data){
+					$scope.chart.data = data;
+				})})
+		}
+	})
 })
 
 .controller("correlationChartController", function($scope, $resource, CorrelationChart){
-	
+	$scope.toDay = new Date().toISOString();
+	$scope.matchDate = {
+			startDate : undefined,
+			endDate : undefined
+	}
 	$resource("api/dataSource/list").query(function(data) {
 		$scope.dataSources = data;
 	});
@@ -46,6 +78,7 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 	{
 		$scope.selectedResolution = resolution;
 		$scope.updateChart();
+
 	}
 	
 	$scope.setRegression = function(regression){	
@@ -66,9 +99,10 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 		var regression = $scope.selectedRegression;
 		var modList = $scope.modList;
 		
-		CorrelationChart.select(selectedDataSource, resolution, regression, modList).then(function(data){
+		CorrelationChart.select(selectedDataSource, resolution, regression, null, modList).then(function(data){
 			$scope.chart.data = data.chartData;
 			$scope.metaData = data.metaData;
+
 		});	
 		
 		console.log($scope.metaData);
@@ -82,6 +116,22 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services' ])
 //			}];
 	
 	$scope.modList = [];
+	
+	$scope.$watch("startDate", function(newVal, oldVal){
+		$scope.matchDate.startDate = newVal;
+		$scope.endDate = undefined;
+	})
+	
+	$scope.$watch("endDate", function(newVal, oldVal){
+		$scope.matchDate.endDate = newVal;
+		console.log($scope.matchDate)
+		if($scope.matchDate.startDate && $scope.matchDate.endDate){
+				resolution = $scope.selectedResolution === "Resolution"?"DAY":$scope.selectedResolution;
+				CorrelationChart.select($scope.selectedDataSource, resolution,$scope.selectedRegression, $scope.matchDate).then(function(data){
+					$scope.chart.data = data;
+			})
+		}
+	})
 	
 	$scope.chart = CorrelationChart.chart;
 })

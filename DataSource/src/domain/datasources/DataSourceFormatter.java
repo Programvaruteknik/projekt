@@ -13,6 +13,7 @@ public class DataSourceFormatter
 	{
 		super();
 		this.dataSource = dataSource;
+		
 	}
 	
 	public TreeMap<LocalDate, ArrayList<Double>> toMergeableFormat()

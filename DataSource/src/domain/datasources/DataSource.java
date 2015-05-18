@@ -19,6 +19,7 @@ public interface DataSource {
 	 * @return Map<LocalDate,Double> The map.
 	 */
 	public TreeMap<LocalDate, Double> getData();
+	public void downLoadDataSource(String fromDate, String toDate);
 
 	public MetaData getMetaData();
 

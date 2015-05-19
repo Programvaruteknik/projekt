@@ -15,9 +15,6 @@ public class DateModelator implements ModelatingComand
 	private DataSource dataSource;
 	private int years, months, days;
 
-	
-	
-
 	public DateModelator(DataSource dataSource, int years, int months, int days)
 	{
 		this.dataSource = dataSource;
@@ -25,9 +22,6 @@ public class DateModelator implements ModelatingComand
 		this.months = months;
 		this.days = days;
 	}
-
-
-
 
 	@Override
 	public DataSource execute()
@@ -56,7 +50,6 @@ public class DateModelator implements ModelatingComand
 			public MetaData getMetaData()
 			{
 				MetaData output = dataSource.getMetaData();
-				
 				List<Modification> list = output.getModList();
 				
 				if(list == null)
@@ -69,12 +62,9 @@ public class DateModelator implements ModelatingComand
 				list.add(modification);
 				
 				output.setModList(list); 
-				
-				
+								
 				return output;
-			}
-
-		
+			}		
 
 			@Override
 			public void downLoadDataSource(String fromDate, String toDate) {

@@ -39,6 +39,8 @@ import domain.matching.ResultingData;
  */
 @Path("/dataSource")
 public class DataSourceAPI {
+	private DataSourceFactory factory;
+	private DataSource dataSource1, dataSource2;
 
 	public DataSourceAPI() {
 		factory = new DataSourceFactory();
@@ -56,27 +58,14 @@ public class DataSourceAPI {
 		Resolution resolution = res != null ? Resolution.valueOf(res)
 				: Resolution.DAY;
 
-		DataSource dataSource1 = factory.getDataSource(ds1);
+		dataSource1 = factory.getDataSource(ds1);
 		dataSource1.downLoadDataSource(startDate, endDate);
-		DataSource dataSource2 = factory.getDataSource(ds2);
-		
+		dataSource2 = factory.getDataSource(ds2);
+
 		dataSource2.downLoadDataSource(startDate, endDate);
 
-		if(mod != null && !mod.equals(""))
-		{
-			
-			List<Modification> modList = new JsonParser().deserialize(mod, new TypeToken<List<Modification>>(){}.getType());
-			
-			for (Modification modification : modList)
-			{
-				if(dataSource1.getMetaData().getName().equals(modification.getDataSourceName()))
-				{
-					dataSource1 = modulateDataSource(dataSource1, modification);
-				} else if (dataSource2.getMetaData().getName()
-						.equals(modification.getDataSourceName())) {
-					dataSource2 = modulateDataSource(dataSource2, modification);
-				}
-			}
+		if (mod != null && !mod.equals("")) {
+			modulateSources(mod);
 		}
 
 		if (dataSource1 == null || dataSource2 == null) {
@@ -86,7 +75,6 @@ public class DataSourceAPI {
 		ResultingData resultingData = new DataMatcher(dataSource1, dataSource2,
 				resolution).match();
 
-		
 		resultingData.setXMeta(dataSource1.getMetaData());
 		resultingData.setYMeta(dataSource2.getMetaData());
 
@@ -94,7 +82,28 @@ public class DataSourceAPI {
 				.entity(new JsonParser().serializeNulls(resultingData)).build();
 	}
 
-	DataSourceFactory factory;
+	private void modulateSources(String mod) {
+		List<Modification> modList = new JsonParser().deserialize(mod,
+				new TypeToken<List<Modification>>() {
+				}.getType());
+
+		for (Modification modification : modList) {
+			String modificationName = modification.getDataSourceName();
+			if (dataSource1.getMetaData().getName()
+					.equals(modificationName)) {
+				dataSource1 = modulateDataSource(dataSource1, modification);
+			} else if (dataSource2.getMetaData().getName()
+					.equals(modificationName)) {
+				dataSource2 = modulateDataSource(dataSource2, modification);
+			}
+		}
+	}
+
+	private DataSource modulateDataSource(DataSource dataSource,
+			Modification modification) {
+		return new DateModelator(dataSource, modification.getYear(),
+				modification.getMonth(), modification.getDays()).execute();
+	}
 
 	protected void setFactory(DataSourceFactory factory) {
 		this.factory = factory;
@@ -189,12 +198,6 @@ public class DataSourceAPI {
 		String s = string;
 		String json = new JsonParser().serialize(array);
 		return Response.status(200).entity(json).build();
-	}
-
-	private DataSource modulateDataSource(DataSource dataSource,
-			Modification modification) {
-		return new DateModelator(dataSource, modification.getYear(),
-				modification.getMonth(), modification.getDays()).execute();
 	}
 
 	protected MetaData getMetaData(String string) {

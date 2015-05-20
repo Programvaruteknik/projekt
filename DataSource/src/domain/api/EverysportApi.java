@@ -8,58 +8,56 @@ import domain.api.models.everysport.Event;
 import domain.api.models.everysport.EverysportEvents;
 import domain.api.serialization.JsonParser;
 import domain.api.url.UrlFetcher;
-import domain.datasources.workers.downLoadURL;
+import domain.datasources.workers.DownLoadURL;
 
 public class EverysportApi {
 	private ApiHandler handler;
 	private String baseURL = "http://api.everysport.com/v1/events?apikey=1769e0fdbeabd60f479b1dcaff03bf5c&";
+	private LeagueRegister register;
+	private Map<String, Integer> map;
+	private String league;
 
 	public EverysportApi() {
 		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
+		register = new LeagueRegister();
 	}
 
-	LeagueRegister register = new LeagueRegister();
-	Map<String, Integer> map;
-	String league;
 
-	public downLoadURL getAllsvenskan() {
+	public DownLoadURL getAllsvenskan() {
 		map = register.getFootballLeagues();
 		league = register.getIds(map);
 		
-		downLoadURL d = new downLoadURL(baseURL +"league="+ league, EverysportEvents.class);
+		DownLoadURL d = new DownLoadURL(baseURL +"league="+ league, EverysportEvents.class);
 		return d;
 	}
 
-	public downLoadURL getSHL() {
+	public DownLoadURL getSHL() {
 		map = register.getSHL();
 		league = register.getIds(map);
-		System.out.println("URL Hockey " + baseURL +"league="+ league);
-		downLoadURL d = new downLoadURL(baseURL +"league="+ league, EverysportEvents.class);
+		DownLoadURL d = new DownLoadURL(baseURL +"league="+ league, EverysportEvents.class);
 		return d;
 	}
 
-	public downLoadURL getBandyDivition1Södra() {
+	public DownLoadURL getBandyDivition1Södra() {
 		map = register.getBandy();
 		league = register.getIds(map);
 
-		downLoadURL d = new downLoadURL(baseURL +"league="+ league, EverysportEvents.class);
-		System.out.println("TA DENNA URL: "+baseURL + league);
+		DownLoadURL d = new DownLoadURL(baseURL +"league="+ league, EverysportEvents.class);
 		return d;
 	}
 
-	public downLoadURL getSuperSerienAmrekanskFotboll() {
+	public DownLoadURL getSuperSerienAmrekanskFotboll() {
 		map = register.getAmericanFootball();
 		league = register.getIds(map);
-		System.out.println("Amerikanske URL " + baseURL +"league="+ league); 
-		downLoadURL d = new downLoadURL(baseURL +"league="+ league, EverysportEvents.class);
+		DownLoadURL d = new DownLoadURL(baseURL +"league="+ league, EverysportEvents.class);
 		return d;
 	}
 
-	public downLoadURL getBasketliganGrundserien() {
+	public DownLoadURL getBasketliganGrundserien() {
 		map = register.getBasket();
 		league = register.getIds(map);
 		
-		downLoadURL d = new downLoadURL(baseURL +"league="+ league, EverysportEvents.class);
+		DownLoadURL d = new DownLoadURL(baseURL +"league="+ league, EverysportEvents.class);
 		return d;
 
 	}

@@ -8,16 +8,16 @@ import domain.api.models.everysport.Event;
 import domain.api.models.everysport.EverysportEvents;
 import domain.datasources.DataSource;
 import domain.datasources.model.MetaData;
-import domain.datasources.workers.downLoadURL;
+import domain.datasources.workers.DownLoadURL;
 
 public class TotalGoalDataSource implements DataSource
 {
 	private TreeMap<LocalDate, Double> data;
 	private List<Event> events;
 	private String title;
-	private downLoadURL loader;
+	private DownLoadURL loader;
 	
-	public TotalGoalDataSource(String title, downLoadURL loader) 
+	public TotalGoalDataSource(String title, DownLoadURL loader) 
 	{
 		this.loader = loader;
 		this.title = title;

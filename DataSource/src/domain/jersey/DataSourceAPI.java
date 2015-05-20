@@ -167,27 +167,6 @@ public class DataSourceAPI {
 				.getNameAllDataSources()));
 	}
 
-	/**
-	 * Returns an json list of each data source. The sources are separated with
-	 * ','.
-	 * 
-	 * @param string
-	 *            The json list.
-	 * @return
-	 */
-	@GET
-	@Path("/metaData")
-	public Response getMeta(@QueryParam("list") String string) {
-		String[] list = string.split(",");
-		ArrayList<MetaData> array = new ArrayList<>();
-		for (String e : list) {
-			array.add(getMetaData(e));
-		}
-		String s = string;
-		String json = new JsonParser().serialize(array);
-		return Response.status(200).entity(json).build();
-	}
-
 	private DataSource modulateDataSource(DataSource dataSource,
 			Modification modification) {
 		return new DateModelator(dataSource, modification.getYear(),

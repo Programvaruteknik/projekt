@@ -29,7 +29,6 @@ public class TestBowlingSource {
 		
 		TreeMap<LocalDate,Double> map = source.getData();
 		double expectedScore = 10d;
-		System.out.println(map);
 		assertEquals(expectedScore, map.get(LocalDate.parse("2001-01-01")),0.01);
 		MetaData meta = source.getMetaData();
 		

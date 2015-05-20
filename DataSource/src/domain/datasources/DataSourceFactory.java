@@ -16,7 +16,7 @@ import domain.datasources.workers.SunAltitudeAtNoon;
 import domain.datasources.workers.TvFriendsSource;
 import domain.datasources.workers.TvSourceCommunity;
 import domain.datasources.workers.TvSourceDoctorWho;
-import domain.datasources.workers.downLoadURL;
+import domain.datasources.workers.DownLoadURL;
 import domain.datasources.workers.general.TotalGoalDataSource;
 
 public class DataSourceFactory

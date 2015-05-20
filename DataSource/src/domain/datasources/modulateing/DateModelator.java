@@ -8,12 +8,14 @@ import java.util.TreeMap;
 
 import domain.datasources.DataSource;
 import domain.datasources.model.MetaData;
-import domain.jersey.model.Modification;
 
 public class DateModelator implements ModelatingComand
 {
 	private DataSource dataSource;
 	private int years, months, days;
+
+	
+	
 
 	public DateModelator(DataSource dataSource, int years, int months, int days)
 	{
@@ -22,6 +24,9 @@ public class DateModelator implements ModelatingComand
 		this.months = months;
 		this.days = days;
 	}
+
+
+
 
 	@Override
 	public DataSource execute()
@@ -50,21 +55,23 @@ public class DateModelator implements ModelatingComand
 			public MetaData getMetaData()
 			{
 				MetaData output = dataSource.getMetaData();
-				List<Modification> list = output.getModList();
+				
+				List<ModelatingComand> list = output.getModList();
 				
 				if(list == null)
 				{
-					list = new ArrayList<Modification>();
+					list = new ArrayList<ModelatingComand>();
 				}
 				
-				Modification modification = new Modification(DateModelator.this.dataSource.getMetaData().getTitle(), DateModelator.this.years, DateModelator.this.months, DateModelator.this.days);
-				
-				list.add(modification);
+				list.add(DateModelator.this);
 				
 				output.setModList(list); 
-								
+				
+				
 				return output;
-			}		
+			}
+
+		
 
 			@Override
 			public void downLoadDataSource(String fromDate, String toDate) {

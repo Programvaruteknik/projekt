@@ -77,45 +77,33 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services', '720kb
 	$scope.setResolution = function(resolution)
 	{
 		$scope.selectedResolution = resolution;
-		$scope.updateChart();
-
+		updateChart($scope.selectedDataSource, resolution,$scope.selectedRegression, $scope.matchDate);
 	}
 	
 	$scope.setRegression = function(regression){	
 		$scope.selectedRegression = regression;
-		$scope.updateChart();
+		updateChart($scope.selectedDataSource, $scope.selectedResolution, regression, $scope.matchDate);
 	}
 	
 	$scope.select = function (){
-
-		$scope.updateChart();		
+		resolution = $scope.selectedResolution === "Resolution"?"DAY":$scope.selectedResolution;
+		updateChart($scope.selectedDataSource, resolution);
+		
+		var query = $scope.selectedDataSource;
+		console.log(query);
+		
+		$resource("api/dataSource/metaData?list="+$scope.selectedDataSource).query(function(data){
+			$scope.metaData = data;
+		});
+		
 	};
 	
-	
-	$scope.updateChart = function()
+	updateChart = function(selectedDataSource, resolution, regression)
 	{
-		var selectedDataSource = $scope.selectedDataSource;
-		var resolution = $scope.selectedResolution;
-		var regression = $scope.selectedRegression;
-		var modList = $scope.modList;
-		
-		CorrelationChart.select(selectedDataSource, resolution, regression, null, modList).then(function(data){
-			$scope.chart.data = data.chartData;
-			$scope.metaData = data.metaData;
-
+		CorrelationChart.select(selectedDataSource, resolution, regression, $scope.matchDate).then(function(data){
+			$scope.chart.data = data;
 		});	
-		
-		console.log($scope.metaData);
 	}
-	
-//	$scope.modList = [{
-//		dataSourceName:"Totala mål per dag i Allsvenskan",
-//		year:0,
-//		month:0,
-//		days:1
-//			}];
-	
-	$scope.modList = [];
 	
 	$scope.$watch("startDate", function(newVal, oldVal){
 		$scope.matchDate.startDate = newVal;
@@ -124,6 +112,7 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services', '720kb
 	
 	$scope.$watch("endDate", function(newVal, oldVal){
 		$scope.matchDate.endDate = newVal;
+		console.log($scope.matchDate)
 		if($scope.matchDate.startDate && $scope.matchDate.endDate){
 				resolution = $scope.selectedResolution === "Resolution"?"DAY":$scope.selectedResolution;
 				CorrelationChart.select($scope.selectedDataSource, resolution,$scope.selectedRegression, $scope.matchDate).then(function(data){
@@ -139,7 +128,7 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services', '720kb
 	$resource("api/dataSource/list").query(function(data) {
 		$scope.dataSources = data;
 	});
-		
+	
 	
 	$scope.select = function (){
 		

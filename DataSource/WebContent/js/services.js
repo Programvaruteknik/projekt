@@ -2,28 +2,16 @@ angular.module('services', [])
 .service('CorrelationChart', function($resource, $q) {
   
 	var that = this;
-
-	this.select = function (selectedDataSource, resolution,regression, dateObject, modList){
+	this.select = function (selectedDataSource, resolution,regression, dateObject){
 		var degree= 1;
 
 		var deferred = $q.defer();
-		
-		modification = angular.toJson(modList);
-		
 		if(selectedDataSource.length ===2)
+		{/**/
 			
-			console.log(dateObject);
-			
-			var fDate = "2004-01-01";
-			var tDate = "2014-12-01";
-			if(dateObject !== null)
-			{
-				
-				fDate = dateObject.startDate || "2004-01-01";
-				tDate = dateObject.endDate || "2014-12-01";
-			}
-			
-			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution&modification=:modification").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution, modification:modification, startDate:fDate, endDate: tDate}, function(data) {
+			var fDate = dateObject.startDate || "2004-01-01";
+			var tDate = dateObject.endDate || "2014-12-01";
+			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution, startDate:fDate, endDate: tDate}, function(data) {
 
 				if(!data.xMeta.hasData)
 				{
@@ -39,28 +27,22 @@ angular.module('services', [])
 					chartData.push([apiData.x,apiData.y]);
 				});
 				
-				if(regression === "polynomial (degree 2)")
-				{
+				if(regression === "polynomial (degree 2)"){
 					that.chart.options.trendlines[0].type = 'polynomial';
 					that.chart.options.trendlines[0].degree = 2;
-				}
-				else if(regression === "polynomial (degree 3)")
-				{
+				}else if(regression === "polynomial (degree 3)"){
 					that.chart.options.trendlines[0].type = 'polynomial';
 					that.chart.options.trendlines[0].degree = 3;
-				}
-				else
-				{
+				}else{
 					that.chart.options.trendlines[0].type = regression;
 				}
 				
 				that.chart.options.hAxis.title = data.xMeta.title + " (" + data.xMeta.unit + ")";
 				that.chart.options.vAxis.title = data.yMeta.title + " (" + data.yMeta.unit + ")";
 				
-				var output = {chartData:chartData, metaData:[data.xMeta,data.yMeta]}
-				
-				deferred.resolve(output);
+				deferred.resolve(chartData);
 			});
+		}
 
 		return deferred.promise;
 		

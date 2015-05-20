@@ -2,7 +2,7 @@ package domain.datasources.model;
 
 import java.util.List;
 
-import domain.jersey.model.Modification;
+import domain.datasources.modulateing.ModelatingComand;
 
 public class MetaData
 {
@@ -10,9 +10,7 @@ public class MetaData
 	private double meanValue,sum;
 	private boolean hasData;
 	
-
-	private List<Modification> modList;
-
+	private List<ModelatingComand> modList;
 
 
 
@@ -47,7 +45,6 @@ public class MetaData
 	public void setLastDate(String lastDate) {
 		this.lastDate = lastDate;
 	}
-
 
 	public String getTitle()
 	{
@@ -114,12 +111,12 @@ public class MetaData
 		return unit;
 	}
 
-	public List<Modification> getModList()
+	public List<ModelatingComand> getModList()
 	{
 		return modList;
 	}
 
-	public void setModList(List<Modification> modList)
+	public void setModList(List<ModelatingComand> modList)
 	{
 		this.modList = modList;
 	}

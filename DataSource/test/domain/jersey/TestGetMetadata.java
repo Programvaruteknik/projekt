@@ -58,6 +58,8 @@ public class TestGetMetadata {
 
 		DataSource sc1Mock = mock(DataSource.class);
 		DataSource sc2Mock = mock(DataSource.class);
+		when(sc1Mock.getMetaData()).thenReturn(new MetaData());
+		when(sc2Mock.getMetaData()).thenReturn(new MetaData());
 		
 		map1.put(LocalDate.parse("2001-01-01"), 1d);
 		map2.put(LocalDate.parse("2001-01-01"), 1d);

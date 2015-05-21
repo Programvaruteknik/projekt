@@ -27,6 +27,7 @@ import domain.jersey.model.Modification;
 import domain.matching.DataMatcher;
 import domain.matching.Resolution;
 import domain.matching.ResultingData;
+import domain.utility.DataSourceCalculator;
 
 /**
  * This is a single {@link Servlet} which is routing the paths specified above
@@ -141,11 +142,27 @@ public class DataSourceAPI {
 			}
 
 		}
-
+		
 		ArrayList<MetaData> metaList = new ArrayList<MetaData>();
-		for (DataSource source : allDataSources) {
-			metaList.add(source.getMetaData());
+//		for (DataSource source : allDataSources) {
+//			metaList.add(source.getMetaData());
+//		}
+		for(DataSource dsData : hasData)
+		{
+			MetaData metadsData = dsData.getMetaData();
+			metadsData.setMeanValue(DataSourceCalculator.getAverage(dsData));
+			metadsData.setSum(DataSourceCalculator.getSum(dsData));
+			metadsData.setHasData(true);
+			System.out.println("Contains data: "+metadsData.containsData());
+			metaList.add(metadsData);
 		}
+		
+		for(DataSource dsNoneData : noneData)
+		{
+			metaList.add(dsNoneData.getMetaData());
+			System.out.println("no data");
+		}
+		
 		input.add(0, "Date");
 
 		DataSourcePackage sourcePackage = new DataSourcePackage(input,

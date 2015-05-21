@@ -25,6 +25,9 @@ public class BitCoinChangeSource extends GenericBitCoinSource {
 	@Override
 	protected void loadData() {
 		ChangeList list = handler.get(url, ChangeList.class);
+		if(!list.getChanges().isEmpty()){
+			setHasData();
+		}
 		for(Change c : list.getChanges()){
 			data.put(LocalDate.parse(c.getDate()),c.getChange());
 

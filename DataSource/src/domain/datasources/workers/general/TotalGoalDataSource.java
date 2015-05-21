@@ -31,8 +31,7 @@ public class TotalGoalDataSource implements DataSource
 		meta.setOwner("Everyport");
 		meta.setTitle(title);
 		meta.setUnit("Mål");
-		if(data != null)
-			meta.setHasData(!data.isEmpty());
+		
 		return meta;
 	}
 

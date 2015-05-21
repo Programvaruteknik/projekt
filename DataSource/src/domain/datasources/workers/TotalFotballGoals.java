@@ -49,33 +49,15 @@ private TreeMap<LocalDate, Double> data = null;
 		meta.setOwner("Everyport");
 		meta.setTitle(name);
 		meta.setUnit("Mål");
-		meta.setHasData(!data.isEmpty());
+		
 		meta.setFirstDate("2000");
 		meta.setLastDate("2015");
-		if(!meta.containsData()){
-			meta.setSum(getSum());
-			meta.setMeanValue(getMedel());
-		}
+		
 		return meta;
 	}
 
 	@Override
 	public TreeMap<LocalDate, Double> getData() {
 		return data;
-	}
-	
-	private double getMedel()
-	{
-		double sum = getSum();
-		return sum/data.values().size();
-	}
-
-	private double getSum() {
-		double sum = 0;
-		for(Double d : data.values())
-		{
-			sum += d;
-		}
-		return sum;
 	}
 }

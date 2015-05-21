@@ -26,12 +26,14 @@ public class GenericBitCoinSource implements DataSource {
 
 	public GenericBitCoinSource() {
 		data = new TreeMap<LocalDate, Double>();
-		handler = new ApiHandler(new UrlFetcher(), new JsonParser());
+		handler = new ApiHandler(new UrlFetcher(), new JsonParser());metaData = new MetaData();
+		
 	}
 
 	protected GenericBitCoinSource(ApiHandler handlerParam) {
 		data = new TreeMap<LocalDate, Double>();
-		handler = handlerParam;
+		handler = handlerParam;metaData = new MetaData();
+		
 	}
 
 	@Override
@@ -44,17 +46,19 @@ public class GenericBitCoinSource implements DataSource {
 		loadData();
 		filterOnDates(fromDate, toDate);
 	}
-
+	MetaData metaData;
+	protected void setHasData(){
+		metaData.setHasData(true);
+	}
 	@Override
 	public MetaData getMetaData() {
-		MetaData metaData;
-		metaData = new MetaData();
+
 		metaData.setLicense("");
 		metaData.setOwner("cbix");
 		metaData.setUrl("https://www.cbix.ca");
 		metaData.setTitle(title);
 		metaData.setUnit("BTC");
-		metaData.setHasData(!data.isEmpty());
+		
 		return metaData;
 	}
 

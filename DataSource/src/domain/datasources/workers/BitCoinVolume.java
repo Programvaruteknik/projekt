@@ -22,8 +22,9 @@ public class BitCoinVolume extends GenericBitCoinSource {
 
 	protected void loadData(){
 		VolumeList list = handler.get("http://api.cbix.ca/v1/history?limit=5000", VolumeList.class);
-		if(list != null)
+		if(list != null || !list.getChanges().isEmpty())
 		{
+			setHasData();
 			for(Volume v : list.getChanges()){
 				data.put(LocalDate.parse(v.getDate()), v.getVolume());
 			}

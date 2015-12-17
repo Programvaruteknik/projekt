@@ -9,7 +9,7 @@ angular.module('directives', [])
 			$scope.addMod = function(){
 				
 				$scope.modList.push({
-					dataSourceName:"Solens altitud vid 12",
+					dataSourceName:"Solens altitude",
 					year:0,
 					month:0,
 					days:-1

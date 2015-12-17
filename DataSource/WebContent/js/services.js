@@ -2,16 +2,25 @@ angular.module('services', [])
 .service('CorrelationChart', function($resource, $q) {
   
 	var that = this;
-	this.select = function (selectedDataSource, resolution,regression, dateObject){
+	this.select = function (selectedDataSource, resolution,regression, modList, dateObject){
 		var degree= 1;
 
 		var deferred = $q.defer();
+		
+		modification = angular.toJson(modList);
+		
 		if(selectedDataSource.length ===2)
 		{/**/
 			
-			var fDate = dateObject.startDate || "2004-01-01";
-			var tDate = dateObject.endDate || "2014-12-01";
-			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution, startDate:fDate, endDate: tDate}, function(data) {
+			var fDate = "2004-01-01";
+			var tDate = "2014-12-01";		
+			if(dateObject !== undefined)
+			{
+				fDate = dateObject.startDate || "2004-01-01";
+				tDate = dateObject.endDate || "2014-12-01";		
+			}
+			
+			$resource("api/dataSource/correlationData?dataSource1=:dataSource1&dataSource2=:dataSource2&resolution=:resolution&modification=:modification").get({dataSource1:selectedDataSource[0],dataSource2:selectedDataSource[1], resolution:resolution, startDate:fDate, endDate: tDate, modification:modification}, function(data) {
 
 				if(!data.xMeta.hasData)
 				{

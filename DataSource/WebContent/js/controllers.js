@@ -56,6 +56,9 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services', '720kb
 })
 
 .controller("correlationChartController", function($scope, $resource, CorrelationChart){
+	
+	$scope.modList = [];
+	
 	$scope.toDay = new Date().toISOString();
 	$scope.matchDate = {
 			startDate : undefined,
@@ -77,17 +80,20 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services', '720kb
 	$scope.setResolution = function(resolution)
 	{
 		$scope.selectedResolution = resolution;
-		updateChart($scope.selectedDataSource, resolution,$scope.selectedRegression, $scope.matchDate);
+//		updateChart($scope.selectedDataSource, resolution,$scope.selectedRegression, $scope.matchDate);
+		$scope.updateChart();
 	}
 	
 	$scope.setRegression = function(regression){	
 		$scope.selectedRegression = regression;
-		updateChart($scope.selectedDataSource, $scope.selectedResolution, regression, $scope.matchDate);
+//		updateChart($scope.selectedDataSource, $scope.selectedResolution, regression, $scope.matchDate);
+		$scope.updateChart();
 	}
 	
 	$scope.select = function (){
 		resolution = $scope.selectedResolution === "Resolution"?"DAY":$scope.selectedResolution;
-		updateChart($scope.selectedDataSource, resolution);
+//		updateChart($scope.selectedDataSource, resolution);
+		$scope.updateChart();
 		
 		var query = $scope.selectedDataSource;
 		console.log(query);
@@ -98,13 +104,26 @@ angular.module('controllers', ['googlechart','mm.foundation', 'services', '720kb
 		
 	};
 	
+	$scope.updateChart = function()
+	{
+		var selectedDataSource = $scope.selectedDataSource;
+		var resolution = $scope.selectedResolution;
+		var regression = $scope.selectedRegression;
+		var modList = $scope.modList;
+		
+		CorrelationChart.select(selectedDataSource, resolution, regression, modList).then(function(data){
+			$scope.chart.data = data.chartData;
+			$scope.metaData = data.metaData;
+		});	
+	}
+/*	
 	updateChart = function(selectedDataSource, resolution, regression)
 	{
 		CorrelationChart.select(selectedDataSource, resolution, regression, $scope.matchDate).then(function(data){
 			$scope.chart.data = data;
 		});	
 	}
-	
+*/	
 	$scope.$watch("startDate", function(newVal, oldVal){
 		$scope.matchDate.startDate = newVal;
 		$scope.endDate = undefined;
